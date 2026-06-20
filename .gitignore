@@ -1,0 +1,32 @@
+# --- Research & planning (internal, do not commit) ---
+.source-docs/
+
+# --- Dependencies ---
+node_modules/
+.pnp
+.pnp.js
+
+# --- Build output (Astro / Vite) ---
+dist/
+.output/
+.vercel/
+.netlify/
+.astro/
+
+# --- Env & secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Logs ---
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

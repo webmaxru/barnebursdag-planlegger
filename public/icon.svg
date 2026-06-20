@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Bursdagskake">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF8FB3"/>
+      <stop offset="1" stop-color="#FF6B9D"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <ellipse cx="256" cy="404" rx="150" ry="26" fill="#ffffff" opacity="0.85"/>
+  <rect x="136" y="250" width="240" height="150" rx="22" fill="#FFF1D6"/>
+  <path d="M136 272c0-14 11-24 24-24h192c13 0 24 10 24 24v18c-18 0-18 16-36 16s-18-16-36-16-18 16-36 16-18-16-36-16-18 16-36 16-18-16-36-16-18 16-24-16z" fill="#FFFFFF"/>
+  <path d="M136 290c10 0 14 14 30 14s20-14 36-14 20 14 36 14 20-14 36-14 20 14 36 14 20-14 30-14v-8c-18 0-18 16-36 16s-18-16-36-16-18 16-36 16-18-16-36-16-18 16-36 16-18-16-30-16z" fill="#FF8FB3"/>
+  <rect x="246" y="170" width="20" height="84" rx="6" fill="#6CC4E8"/>
+  <path d="M256 120c14 14 18 26 18 36a18 18 0 1 1-36 0c0-10 4-22 18-36z" fill="#FFC93C"/>
+  <path d="M256 150c6 6 8 12 8 17a8 8 0 1 1-16 0c0-5 2-11 8-17z" fill="#FF7A00"/>
+  <g fill="#7AD3A0"><rect x="172" y="320" width="20" height="7" rx="3.5" transform="rotate(25 182 323)"/><rect x="310" y="332" width="20" height="7" rx="3.5" transform="rotate(-20 320 335)"/></g>
+  <g fill="#6CC4E8"><rect x="236" y="350" width="20" height="7" rx="3.5" transform="rotate(-15 246 353)"/></g>
+  <g fill="#FFC93C"><rect x="288" y="360" width="20" height="7" rx="3.5" transform="rotate(20 298 363)"/></g>
+</svg>

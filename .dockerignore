@@ -1,0 +1,13 @@
+node_modules
+dist
+.git
+.github
+.env
+.env.*
+.source-docs
+scripts
+*.log
+npm-debug.log*
+.vscode
+.idea
+README.md

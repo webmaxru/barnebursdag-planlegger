@@ -1,0 +1,55 @@
+export type Category = 'mat' | 'drikke' | 'servise' | 'pynt' | 'godteri';
+export type AgeBand = '3-4' | '5-6' | '7-9';
+export type CalcMode = 'perChild' | 'perGuest' | 'perTable' | 'ageCount' | 'fixed';
+
+/**
+ * A purchasable item in the configurable goods catalog.
+ * The calculation `mode` decides how the needed quantity is derived from the
+ * party config; `packSize` (if set) rounds the needed amount up to whole packs.
+ */
+export interface GoodItem {
+  id: string;
+  name: string;
+  emoji?: string;
+  category: Category;
+  unit: string;                          // 'stk', 'dl', 'g', 'sett', 'pakke', 'boks'
+  mode: CalcMode;
+  perChild?: Record<AgeBand, number>;    // mode 'perChild': qty = guests * perChild[band]
+  factor?: number;                       // mode 'perGuest'/'perTable': multiplier (default 1)
+  divisor?: number;                      // mode 'perTable': guests per unit (default 8)
+  growOn?: boolean;                      // mode 'ageCount': add 1 ("en å vokse på")
+  fixedQty?: number;                     // mode 'fixed': constant quantity (default 1)
+  packSize?: number;                     // items per purchasable pack
+  packUnit?: string;                     // human label, e.g. 'pakke (8 stk)'
+  priceMinNok?: number;                  // price per pack (or per item if no packSize)
+  priceMaxNok?: number;
+  homeOnly?: boolean;                    // hidden in barnehage (kindergarten) mode
+  allergyTags?: string[];                // e.g. ['svin','gluten','melk']
+  altNote?: string;                      // shown when an allergy filter matches
+  kassalSearch?: string;                 // search term for live Kassal.app prices
+  enabled: boolean;
+}
+
+export interface PartyConfig {
+  guests: number;
+  age: number;
+  type: 'hjemme' | 'barnehage';
+  duration: number;                      // hours
+  allergies: string[];
+}
+
+export interface LineItem {
+  id: string;
+  name: string;
+  emoji?: string;
+  category: Category;
+  neededQty: number;
+  unit: string;
+  packs?: number;
+  buyQty?: number;
+  packUnit?: string;
+  priceMin?: number;
+  priceMax?: number;
+  note?: string;
+  kassalSearch?: string;
+}

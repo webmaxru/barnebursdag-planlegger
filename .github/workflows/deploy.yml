@@ -1,0 +1,88 @@
+name: Build and deploy to Azure Container Apps
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/barnebursdag-planlegger
+  RESOURCE_GROUP: rg-barnebursdag
+  CONTAINERAPPS_ENV: cae-barnebursdag
+  CONTAINERAPP_NAME: barnebursdag
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ github.sha }}
+
+      - name: Make GHCR package public (best effort)
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api --method PATCH \
+            -H "Accept: application/vnd.github+json" \
+            /user/packages/container/barnebursdag-planlegger/visibility \
+            -f visibility=public \
+            && echo "Package set to public." \
+            || echo "Could not set visibility automatically – set it once in Package settings if needed (ACA also has pull credentials)."
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Container Apps
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            set -e
+            IMAGE="${{ env.IMAGE }}:${{ github.sha }}"
+            COMMON_REGISTRY=(--registry-server ghcr.io --registry-username "${{ github.actor }}" --registry-password "${{ secrets.GITHUB_TOKEN }}")
+
+            if az containerapp show -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" >/dev/null 2>&1; then
+              echo "Updating existing container app..."
+              az containerapp secret set -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
+                --secrets kassal-api-key="${{ secrets.KASSAL_API_KEY }}"
+              az containerapp registry set -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
+                --server ghcr.io --username "${{ github.actor }}" --password "${{ secrets.GITHUB_TOKEN }}"
+              az containerapp update -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
+                --image "$IMAGE" \
+                --set-env-vars KASSAL_API_KEY=secretref:kassal-api-key PORT=8080
+            else
+              echo "Creating container app..."
+              az containerapp create -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
+                --environment "${{ env.CONTAINERAPPS_ENV }}" \
+                --image "$IMAGE" \
+                --target-port 8080 --ingress external \
+                "${COMMON_REGISTRY[@]}" \
+                --secrets kassal-api-key="${{ secrets.KASSAL_API_KEY }}" \
+                --env-vars KASSAL_API_KEY=secretref:kassal-api-key PORT=8080 \
+                --min-replicas 1 --max-replicas 3 \
+                --cpu 0.5 --memory 1.0Gi
+            fi
+
+            FQDN=$(az containerapp show -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" --query properties.configuration.ingress.fqdn -o tsv)
+            echo "### 🎂 Deployed to https://$FQDN" >> "$GITHUB_STEP_SUMMARY"
