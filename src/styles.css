@@ -18,6 +18,7 @@
 * { box-sizing: border-box; }
 
 html, body { margin: 0; padding: 0; }
+html { width: 100%; overflow-x: hidden; }
 
 body {
   background: var(--bg);
@@ -25,6 +26,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .app {
@@ -45,6 +48,159 @@ body {
   color: transparent;
 }
 .hero p { margin: 6px 0 0; color: var(--muted); font-size: 1rem; }
+.hero-wizard { margin-top: 12px; }
+
+/* ---------- Wizard ---------- */
+.wizard {
+  width: 100%;
+  max-width: 560px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 18px 16px calc(104px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+}
+.wizard-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.wizard-title h1 {
+  margin: 0;
+  font-size: clamp(1.65rem, 8vw, 2.35rem);
+  letter-spacing: -0.04em;
+  line-height: 1.06;
+}
+.wizard-eyebrow {
+  margin: 0 0 4px;
+  color: var(--pink-d);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.wizard-skip {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+.wizard-progress {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 22px 0 14px;
+}
+.wizard-progress span {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--pink-l);
+}
+.wizard-progress span.active { background: var(--pink); }
+.wizard-body {
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 16px 20px;
+}
+.wizard-body h2 {
+  margin: 0 0 12px;
+  font-size: 1.45rem;
+}
+.wizard-intro {
+  margin: -4px 0 16px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.wizard-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(255, 248, 231, 0.94);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+}
+.wizard-nav button {
+  width: 100%;
+  max-width: 260px;
+  min-height: 52px;
+  border-radius: 16px;
+  padding: 14px 12px;
+  border: 1px solid var(--line);
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.wizard-nav button:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+.wizard-nav .primary {
+  background: var(--pink);
+  color: #fff;
+  border-color: var(--pink);
+  box-shadow: 0 4px 14px rgba(255, 107, 157, 0.35);
+}
+.wizard-nav .ghost {
+  background: #fff;
+  color: var(--ink);
+}
+
+/* ---------- Choice cards ---------- */
+.food-controls {
+  margin: 18px 0 10px;
+  padding-top: 4px;
+}
+.food-controls h2 {
+  margin: 0 0 8px;
+  font-size: 1.18rem;
+}
+.choice-group { margin: 14px 0; }
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+}
+.choice-card {
+  width: 100%;
+  min-height: 96px;
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 10px;
+  font-size: 1rem;
+  font-weight: 800;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.08s ease, border-color 0.12s ease, background 0.12s ease;
+}
+.choice-card span {
+  font-size: 2rem;
+  line-height: 1;
+}
+.choice-card.selected {
+  border-color: var(--pink);
+  background: var(--pink-l);
+  color: var(--pink-d);
+}
+.choice-card:active { transform: scale(0.97); }
 
 /* ---------- Cards ---------- */
 .card {
@@ -228,3 +384,9 @@ input[type='range']::-moz-range-thumb {
   .cl-section summary { font-weight: 700; }
   a::after { content: ''; }
 }
+
+/* --- UX polish (integration) --- */
+.wizard-head h1 { font-size: clamp(1.35rem, 5.2vw, 1.8rem); line-height: 1.12; margin: 2px 0 0; }
+.edit-block { margin: 10px 0 4px; }
+.edit-toggle { width: 100%; text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; font-weight: 700; color: var(--ink); cursor: pointer; }
+.edit-toggle:active { background: var(--pink-l); }

@@ -1,7 +1,7 @@
 import type { GoodItem } from './types';
 
 /** Bump when the default catalog shape/content changes (invalidates saved copies). */
-export const CATALOG_VERSION = 3;
+export const CATALOG_VERSION = 4;
 
 /**
  * Default Norwegian barnebursdag goods catalog.
@@ -15,19 +15,43 @@ export const DEFAULT_CATALOG: GoodItem[] = [
     mode: 'perChild', perChild: { '3-4': 1.5, '5-6': 2, '7-9': 2.5 },
     packSize: 8, packUnit: 'pakke (8 stk)', priceMinNok: 35, priceMaxNok: 55,
     allergyTags: ['svin'], altNote: 'Bytt til kyllingpølse for halal / uten svin.',
-    kassalSearch: 'pølser', enabled: true
+    kassalSearch: 'pølser', showIf: { mainDish: 'polser' }, enabled: true
   },
   {
     id: 'lomper', name: 'Lomper', emoji: '🫓', category: 'mat', unit: 'stk',
     mode: 'perChild', perChild: { '3-4': 1.5, '5-6': 2, '7-9': 2.5 },
     packSize: 8, packUnit: 'pakke (8 stk)', priceMinNok: 20, priceMaxNok: 30,
-    kassalSearch: 'lomper', enabled: true
+    kassalSearch: 'lomper', showIf: { mainDish: 'polser', sausageBread: 'lompe' }, enabled: true
   },
   {
-    id: 'polsebrod', name: 'Pølsebrød (alt. til lompe)', emoji: '🥖', category: 'mat', unit: 'stk',
+    id: 'polsebrod', name: 'Pølsebrød', emoji: '🥖', category: 'mat', unit: 'stk',
     mode: 'perChild', perChild: { '3-4': 1.5, '5-6': 2, '7-9': 2.5 },
     packSize: 8, packUnit: 'pakke (8 stk)', priceMinNok: 25, priceMaxNok: 35,
-    kassalSearch: 'pølsebrød', enabled: false
+    kassalSearch: 'pølsebrød', showIf: { mainDish: 'polser', sausageBread: 'polsebrod' }, enabled: true
+  },
+  {
+    id: 'pizza', name: 'Minipizza', emoji: '🍕', category: 'mat', unit: 'stk',
+    mode: 'perChild', perChild: { '3-4': 1.5, '5-6': 2, '7-9': 2.5 },
+    packSize: 8, packUnit: 'pizza (~8 stk)', priceMinNok: 40, priceMaxNok: 80,
+    kassalSearch: 'minipizza', showIf: { mainDish: 'pizza' }, enabled: true
+  },
+  {
+    id: 'ketchup', name: 'Ketchup', emoji: '🍅', category: 'mat', unit: 'flaske',
+    mode: 'perTable', divisor: 20, packSize: 1, packUnit: 'flaske',
+    priceMinNok: 25, priceMaxNok: 45, kassalSearch: 'ketchup',
+    showIf: { mainDish: 'polser' }, enabled: true
+  },
+  {
+    id: 'sennep', name: 'Sennep', emoji: '🟡', category: 'mat', unit: 'tube',
+    mode: 'perTable', divisor: 25, packSize: 1, packUnit: 'tube',
+    priceMinNok: 20, priceMaxNok: 40, kassalSearch: 'sennep',
+    showIf: { mainDish: 'polser' }, enabled: true
+  },
+  {
+    id: 'stektlok', name: 'Stekt løk', emoji: '🧅', category: 'mat', unit: 'boks',
+    mode: 'perTable', divisor: 15, packSize: 1, packUnit: 'boks',
+    priceMinNok: 25, priceMaxNok: 40, kassalSearch: 'stekt løk',
+    showIf: { mainDish: 'polser' }, enabled: true
   },
   {
     id: 'gluten-brod', name: 'Glutenfri lompe/brød', emoji: '🫓', category: 'mat', unit: 'stk',
@@ -129,7 +153,7 @@ export const DEFAULT_CATALOG: GoodItem[] = [
   {
     id: 'ballonger', name: 'Ballonger', emoji: '🎈', category: 'pynt', unit: 'stk',
     mode: 'perGuest', factor: 2, packSize: 10, packUnit: 'pakke (10 stk)',
-    priceMinNok: 30, priceMaxNok: 60, kassalSearch: 'ballonger', enabled: true
+    priceMinNok: 30, priceMaxNok: 60, kassalSearch: 'ballonger', audience: 'kids', enabled: true
   },
   {
     id: 'krone', name: 'Bursdagskrone', emoji: '👑', category: 'pynt', unit: 'stk',
@@ -142,11 +166,6 @@ export const DEFAULT_CATALOG: GoodItem[] = [
     priceMinNok: 29, priceMaxNok: 45, kassalSearch: 'kakelys', enabled: true
   },
   {
-    id: 'flagg', name: 'Norske bordflagg', emoji: '🇳🇴', category: 'pynt', unit: 'pakke',
-    mode: 'fixed', fixedQty: 1, packUnit: 'pakke (10 stk)',
-    priceMinNok: 25, priceMaxNok: 45, kassalSearch: 'bordflagg norge', enabled: true
-  },
-  {
     id: 'vimpel', name: 'Vimpelrekke / girlander', emoji: '🎉', category: 'pynt', unit: 'stk',
     mode: 'fixed', fixedQty: 1, priceMinNok: 29, priceMaxNok: 95,
     kassalSearch: 'vimpelrekke', enabled: false
@@ -156,23 +175,31 @@ export const DEFAULT_CATALOG: GoodItem[] = [
   {
     id: 'godtepose', name: 'Godteposer', emoji: '🍬', category: 'godteri', unit: 'stk',
     mode: 'perGuest', factor: 1, packSize: 6, packUnit: 'pakke (6 stk)',
-    priceMinNok: 29, priceMaxNok: 59, homeOnly: true, kassalSearch: 'godteposer', enabled: true
+    priceMinNok: 29, priceMaxNok: 59, homeOnly: true, kassalSearch: 'godteposer',
+    audience: 'kids', showIf: { treatBag: 'godteposer' }, enabled: true
   },
   {
     id: 'smagodt', name: 'Smågodt (til poser)', emoji: '🍭', category: 'godteri', unit: 'g',
     mode: 'perChild', perChild: { '3-4': 50, '5-6': 100, '7-9': 125 },
     homeOnly: true, allergyTags: ['svin'],
     altNote: 'Seigmenn inneholder svinegelatin – velg vegansk / Nonstop.',
-    kassalSearch: 'smågodt', enabled: true
+    kassalSearch: 'smågodt', audience: 'kids', enabled: true
   },
   {
     id: 'nott-godt', name: 'Nøttefri sjokolade/godteri', emoji: '🍫', category: 'godteri', unit: 'g',
     mode: 'perChild', perChild: { '3-4': 50, '5-6': 75, '7-9': 100 },
-    homeOnly: true, allergyScope: 'nott', kassalSearch: 'nøttefri sjokolade', enabled: true
+    homeOnly: true, allergyScope: 'nott', kassalSearch: 'nøttefri sjokolade',
+    audience: 'kids', enabled: true
   },
   {
     id: 'premier', name: 'Premier / smågaver (lek)', emoji: '🎁', category: 'godteri', unit: 'stk',
     mode: 'perGuest', factor: 1, priceMinNok: 10, priceMaxNok: 30,
-    kassalSearch: 'smågaver barn', enabled: false
+    kassalSearch: 'smågaver barn', audience: 'kids', enabled: false
+  },
+  {
+    id: 'pinata', name: 'Pinata med godteri', emoji: '🪅', category: 'godteri', unit: 'stk',
+    mode: 'fixed', fixedQty: 1, packUnit: 'til festen',
+    priceMinNok: 99, priceMaxNok: 199, kassalSearch: 'pinata',
+    showIf: { treatBag: 'pinata' }, audience: 'kids', enabled: true
   }
 ];

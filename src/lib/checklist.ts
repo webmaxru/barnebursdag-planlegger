@@ -57,7 +57,7 @@ export const CHECKLIST: ChecklistSection[] = [
     title: 'Pynt & servise',
     emoji: '🎈',
     items: [
-      'Ballonger og norske flagg',
+      'Ballonger og pynt',
       'Tallerkener, kopper, bestikk, servietter',
       'Bordduk og evt. tema-pynt',
       'Bursdagskrone til bursdagsbarnet',

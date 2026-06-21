@@ -1,6 +1,9 @@
 export type Category = 'mat' | 'drikke' | 'servise' | 'pynt' | 'godteri';
 export type AgeBand = '3-4' | '5-6' | '7-9';
 export type CalcMode = 'perChild' | 'perGuest' | 'perTable' | 'ageCount' | 'fixed';
+export type MainDish = 'polser' | 'pizza';
+export type SausageBread = 'lompe' | 'polsebrod';
+export type TreatBag = 'godteposer' | 'pinata';
 
 /**
  * A purchasable item in the configurable goods catalog.
@@ -28,15 +31,21 @@ export interface GoodItem {
   allergyScope?: string;                 // allergy-safe item scoped to affected kids
   altNote?: string;                      // shown when an allergy filter matches
   kassalSearch?: string;                 // search term for live Kassal.app prices
+  audience?: 'all' | 'kids';             // 'all' = kids+adults eat it; 'kids' = kids only
+  showIf?: Partial<{ mainDish: MainDish; sausageBread: SausageBread; treatBag: TreatBag }>;
   enabled: boolean;
 }
 
 export interface PartyConfig {
-  guests: number;
-  age: number;
+  age: number;                           // 1..14
+  guests: number;                        // 1..40 (kids)
+  adults: number;                        // 0..20 (accompanying adults / parents who stay)
   type: 'hjemme' | 'barnehage';
-  duration: number;                      // hours
+  duration: number;                      // 1..5 hours
   allergies: Record<string, number>;
+  mainDish: MainDish;
+  sausageBread: SausageBread;
+  treatBag: TreatBag;
 }
 
 export interface LineItem {

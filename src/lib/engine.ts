@@ -35,20 +35,27 @@ export function computeLineItem(item: GoodItem, cfg: PartyConfig): LineItem | nu
   if (!item.enabled) return null;
   if (cfg.type === 'barnehage' && item.homeOnly) return null;
 
-  const population = item.allergyScope ? (cfg.allergies[item.allergyScope] ?? 0) : cfg.guests;
-  if (item.allergyScope && population <= 0) return null;
+  if (item.showIf) {
+    for (const k of Object.keys(item.showIf)) {
+      if ((cfg as any)[k] !== (item.showIf as any)[k]) return null;
+    }
+  }
+
+  const kids = item.allergyScope ? (cfg.allergies[item.allergyScope] ?? 0) : cfg.guests;
+  if (item.allergyScope && kids <= 0) return null;
+  const adults = item.allergyScope ? 0 : (item.audience === 'kids' ? 0 : cfg.adults);
 
   const band = bandForAge(cfg.age);
   let needed = 0;
   switch (item.mode) {
     case 'perChild':
-      needed = population * (item.perChild?.[band] ?? 0);
+      needed = kids * (item.perChild?.[band] ?? 0) + adults * (item.perChild?.['7-9'] ?? 0);
       break;
     case 'perGuest':
-      needed = population * (item.factor ?? 1);
+      needed = (kids + adults) * (item.factor ?? 1);
       break;
     case 'perTable':
-      needed = Math.ceil(population / (item.divisor ?? 8)) * (item.factor ?? 1);
+      needed = Math.ceil((kids + adults) / (item.divisor ?? 8)) * (item.factor ?? 1);
       break;
     case 'ageCount':
       needed = cfg.age + (item.growOn ? 1 : 0);
@@ -79,7 +86,7 @@ export function computeLineItem(item: GoodItem, cfg: PartyConfig): LineItem | nu
 
   const notes: string[] = [];
   if (item.allergyScope) {
-    notes.push(`Trygt for ${population} barn (${ALLERGY_LABEL[item.allergyScope] ?? item.allergyScope})`);
+    notes.push(`Trygt for ${kids} barn (${ALLERGY_LABEL[item.allergyScope] ?? item.allergyScope})`);
   }
   if (item.altNote && item.allergyTags?.some((tag) => (cfg.allergies[tag] ?? 0) > 0)) {
     notes.push(item.altNote);

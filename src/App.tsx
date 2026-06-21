@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Controls from './components/Controls';
 import Results from './components/Results';
 import ConfigEditor from './components/ConfigEditor';
+import Wizard from './components/Wizard';
 import { computePlan } from './lib/engine';
 import { loadCatalog, saveCatalog, parseConfig, writeConfig, shareUrl } from './lib/store';
 import type { GoodItem, PartyConfig } from './lib/types';
@@ -10,8 +11,12 @@ import { track } from './lib/analytics';
 export default function App() {
   const [catalog, setCatalog] = useState<GoodItem[]>(() => loadCatalog());
   const [cfg, setCfg] = useState<PartyConfig>(() => parseConfig());
-  const [view, setView] = useState<'plan' | 'config'>('plan');
+  const [view, setView] = useState<'wizard' | 'app' | 'config'>(() => {
+    const hasParams = new URLSearchParams(window.location.search).toString().length > 0;
+    return hasParams || localStorage.getItem('kk.wizardDone') === '1' ? 'app' : 'wizard';
+  });
   const [toast, setToast] = useState('');
+  const [editOpen, setEditOpen] = useState(false);
 
   const plan = useMemo(() => computePlan(catalog, cfg), [catalog, cfg]);
 
@@ -74,27 +79,57 @@ export default function App() {
     setView('config');
   };
 
+  const finishWizard = (nextCfg: PartyConfig) => {
+    setCfg(nextCfg);
+    localStorage.setItem('kk.wizardDone', '1');
+    setView('app');
+  };
+
+  const skipWizard = () => {
+    localStorage.setItem('kk.wizardDone', '1');
+    setEditOpen(true);
+    setView('app');
+  };
+
+  if (view === 'wizard') {
+    return <Wizard cfg={cfg} onChange={setCfg} onFinish={finishWizard} onSkip={skipWizard} />;
+  }
+
   return (
-    <div className="app">
+    <div className="app" data-testid="app">
       <header className="hero">
         <h1><span aria-hidden>🎂</span> Kakeklar</h1>
         <p>Riktig mengde til barnebursdagen – på to glidere.</p>
+        <button type="button" data-testid="open-wizard" className="mini-btn hero-wizard" onClick={() => setView('wizard')}>
+          ✨ Veiviser
+        </button>
       </header>
 
-      {view === 'plan' ? (
+      {view === 'app' ? (
         <>
-          <Controls cfg={cfg} onChange={setCfg} />
           <Results plan={plan} cfg={cfg} onOpenConfig={openConfig} />
+          <section className="edit-block no-print">
+            <button
+              type="button"
+              className="disclosure edit-toggle"
+              data-testid="toggle-edit"
+              aria-expanded={editOpen}
+              onClick={() => setEditOpen((o) => !o)}
+            >
+              {editOpen ? '▾' : '▸'} ✏️ Endre alder, gjester, mat og allergier
+            </button>
+            {editOpen && <Controls cfg={cfg} onChange={setCfg} />}
+          </section>
         </>
       ) : (
-        <ConfigEditor catalog={catalog} onChange={setCatalog} onClose={() => setView('plan')} />
+        <ConfigEditor catalog={catalog} onChange={setCatalog} onClose={() => setView('app')} />
       )}
 
       <footer className="foot">
         <p>Kakeklar er gratis · ingen innlogging · for norske foreldre. Mengdene er anbefalinger – juster fritt.</p>
       </footer>
 
-      {view === 'plan' && (
+      {view === 'app' && (
         <nav className="actionbar no-print" aria-label="Handlinger">
           <button onClick={share} className="primary">📤 Del</button>
           <button onClick={printPlan} className="ghost">🖨️ Skriv ut</button>

@@ -68,11 +68,15 @@ export function parseConfig(): PartyConfig {
     if (id && Number.isFinite(n) && n > 0) allergies[id] = n;
   });
   return {
+    age: clamp(num('alder', 6), 1, 14),
     guests: clamp(num('gjester', 12), 1, 40),
-    age: clamp(num('alder', 6), 1, 12),
+    adults: clamp(num('voksne', 0), 0, 20),
     type: p.get('type') === 'barnehage' ? 'barnehage' : 'hjemme',
+    duration: clamp(num('varighet', 2), 1, 5),
     allergies,
-    duration: clamp(num('varighet', 2), 1, 5)
+    mainDish: p.get('rett') === 'pizza' ? 'pizza' : 'polser',
+    sausageBread: p.get('brod') === 'polsebrod' ? 'polsebrod' : 'lompe',
+    treatBag: p.get('pose') === 'pinata' ? 'pinata' : 'godteposer'
   };
 }
 
@@ -80,6 +84,7 @@ function toParams(cfg: PartyConfig): URLSearchParams {
   const p = new URLSearchParams();
   p.set('gjester', String(cfg.guests));
   p.set('alder', String(cfg.age));
+  if (cfg.adults > 0) p.set('voksne', String(cfg.adults));
   if (cfg.type !== 'hjemme') p.set('type', cfg.type);
   const allergies = Object.entries(cfg.allergies)
     .filter(([, n]) => n > 0)
@@ -87,6 +92,9 @@ function toParams(cfg: PartyConfig): URLSearchParams {
     .join(',');
   if (allergies) p.set('allergi', allergies);
   if (cfg.duration !== 2) p.set('varighet', String(cfg.duration));
+  if (cfg.mainDish !== 'polser') p.set('rett', cfg.mainDish);
+  if (cfg.sausageBread !== 'lompe') p.set('brod', cfg.sausageBread);
+  if (cfg.treatBag !== 'godteposer') p.set('pose', cfg.treatBag);
   return p;
 }
 
