@@ -30,7 +30,7 @@ export interface GoodItem {
   altNote?: string;                      // shown when an allergy filter matches
   kassalSearch?: string;                 // search term for live Kassal.app prices
   audience?: 'all' | 'kids';             // 'all' = kids+adults eat it; 'kids' = kids only
-  showIf?: Partial<{ mainDish: MainDish; pinata: boolean }>;
+  showIf?: Partial<{ mainDish: MainDish }>;
   breadKind?: 'lompe' | 'polsebrod';     // scaled by breadRatio + margin when mainDish==='polser'
   enabled: boolean;
 }
@@ -44,7 +44,6 @@ export interface PartyConfig {
   allergies: Record<string, number>;
   mainDish: MainDish;
   breadRatio: number;                    // 0..100 = percent that is LOMPE (rest is pølsebrød). Default 50.
-  pinata: boolean;                       // optional add-on; godteposer is always included. Default false.
 }
 
 export interface LineItem {

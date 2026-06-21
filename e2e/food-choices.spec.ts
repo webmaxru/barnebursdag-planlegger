@@ -74,17 +74,9 @@ test('choosing pizza replaces hot dogs and condiments', async ({ page }) => {
   await expect(item(page, /Ketchup$/)).toHaveCount(0);
 });
 
-test('pinata is an optional add-on alongside godteposer', async ({ page }) => {
+test('godteposer is included by default and pinata is not in the wizard', async ({ page }) => {
   await finishDefaultWizard(page);
+
   await expect(item(page, /Godteposer$/)).toBeVisible();
   await expect(item(page, /Pinata/)).toHaveCount(0);
-
-  await page.evaluate(() => localStorage.clear());
-  await goToWizardStep(page, 3);
-  await page.getByTestId('toggle-pinata').click();
-
-  await finishWizardFromStep3(page);
-
-  await expect(item(page, /Godteposer$/)).toBeVisible();
-  await expect(item(page, /Pinata/)).toBeVisible();
 });

@@ -24,15 +24,16 @@ Detailed documentation for the Norwegian kids' birthday party purchase planner.
 
 A parent opens the app and is guided by a short **3-step wizard** — who's celebrating (child's age,
 number of kids, and accompanying **adults**) → allergies and dietary restrictions → food choices
-(pølser vs pizza, lompe/pølsebrød ratio, and optional piñata; godteposer are included by default for
-home parties) — or taps **"Hopp over"** into **advanced mode** (the full controls). Either way they
+(pølser vs pizza and lompe/pølsebrød ratio; godteposer are included by default for home parties) — or
+taps **"Hopp over"** into **advanced mode** (the full controls). Either way they
 instantly get an age-aware shopping list (food, drink, tableware, decorations) with quantities rounded
 up to real Norwegian pack sizes, plus a printable checklist and timeline. After the wizard the app
 **leads with the Handleliste**. A **home vs. kindergarten** toggle adjusts for Helsedirektoratet sugar
 guidance, allergy/restriction **quantity** sliders count both kids and accompanying adults, and the
-entire goods catalog is **user-editable**. State lives in the URL so a plan can be shared with a
-co-parent or the class chat. No login, no cookies, Norwegian-first, with a thin footer credit line:
-Made in Norway by [Maxim Salnikov](https://www.linkedin.com/in/webmax/) and a link to the
+entire goods catalog is **user-editable**; piñata is a disabled-by-default catalog item enabled in
+**Tilpass varelisten**. State lives in the URL so a plan can be shared with a co-parent or the class
+chat. No login, no cookies, Norwegian-first, with the shared footer shown on every page:
+"Kakeklar er gratis…" plus Made in Norway by [Maxim Salnikov](https://www.linkedin.com/in/webmax/) and a link to the
 [GitHub repo](https://github.com/webmaxru/barnebursdag-planlegger).
 
 > If you are an AI agent working on this repo, also read

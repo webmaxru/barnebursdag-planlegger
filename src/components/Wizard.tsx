@@ -133,19 +133,6 @@ export default function Wizard({ cfg, onChange, onFinish, onSkip }: Props) {
                 <p className="hint">Vi legger til ketchup, sennep og stekt løk automatisk.</p>
               </>
             )}
-
-            <div className="choice-group">
-              <p className="field-label">Godteri</p>
-              <p className="hint">Godteposer er med som standard. Pinata er valgfritt.</p>
-              <button
-                type="button" data-testid="toggle-pinata"
-                className={`choice-card toggle${cfg.pinata ? ' selected' : ''}`}
-                aria-pressed={cfg.pinata}
-                onClick={() => set({ pinata: !cfg.pinata })}
-              >
-                <span aria-hidden>🪅</span><strong>Legg til pinata</strong>
-              </button>
-            </div>
           </div>
         )}
       </div>

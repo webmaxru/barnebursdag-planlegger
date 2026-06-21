@@ -17,6 +17,7 @@ test('wizard is visible on first load and step 1 has the primary sliders', async
 
   await expect(page.getByTestId('wizard')).toBeVisible();
   await expect(page.getByTestId('wizard-step-1')).toBeVisible();
+  await expect(page.getByText('Made in Norway')).toBeVisible();
   await expect(page.locator('#alder')).toBeVisible();
   await expect(page.locator('#gjester')).toBeVisible();
   await expect(page.locator('#voksne')).toBeVisible();

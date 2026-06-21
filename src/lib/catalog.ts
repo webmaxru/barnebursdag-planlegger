@@ -1,7 +1,7 @@
 import type { GoodItem } from './types';
 
 /** Bump when the default catalog shape/content changes (invalidates saved copies). */
-export const CATALOG_VERSION = 5;
+export const CATALOG_VERSION = 6;
 
 /**
  * Default Norwegian barnebursdag goods catalog.
@@ -199,7 +199,6 @@ export const DEFAULT_CATALOG: GoodItem[] = [
   {
     id: 'pinata', name: 'Pinata med godteri', emoji: '🪅', category: 'godteri', unit: 'stk',
     mode: 'fixed', fixedQty: 1, packUnit: 'til festen',
-    priceMinNok: 99, priceMaxNok: 199, kassalSearch: 'pinata',
-    showIf: { pinata: true }, audience: 'kids', enabled: true
+    priceMinNok: 99, priceMaxNok: 199, kassalSearch: 'pinata', audience: 'kids', enabled: false
   }
 ];

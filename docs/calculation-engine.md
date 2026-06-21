@@ -15,7 +15,6 @@ interface PartyConfig {
   allergies: Record<string, number>;
   mainDish: 'polser' | 'pizza';
   breadRatio: number; // 0..100, percent lompe (default 50)
-  pinata: boolean;    // default false; godteposer are included by default
 }
 ```
 
@@ -85,11 +84,10 @@ never round down and run short.
 
 ## Food choices & gating (`showIf` / `audience`)
 
-The wizard and advanced controls set `mainDish`, `breadRatio`, and `pinata`. Catalog items can use
-`showIf` to appear only when every listed config field matches; `showIf` supports `{ mainDish, pinata }`.
-This keeps pølser, minipizza, condiments, godteposer, and the optional pinata as ordinary catalog rows
-rather than engine branches. If `showIf` does not match, `computeLineItem` returns `null` and the item
-is hidden.
+The wizard and advanced controls set `mainDish` and `breadRatio`. Catalog items can use `showIf` to
+appear only when every listed config field matches; `showIf` supports `{ mainDish }`. This keeps pølser,
+minipizza, condiments, and godteposer as ordinary catalog rows rather than engine branches. If `showIf`
+does not match, `computeLineItem` returns `null` and the item is hidden.
 
 Bread is not an either/or choice. The pølse bread rows declare `breadKind?: 'lompe' | 'polsebrod'`, and
 `breadRatio` is the percent of bread demand assigned to lomper (default `50`). The other share goes to
@@ -97,8 +95,9 @@ pølsebrød. A `BREAD_MARGIN = 0.15` (~15% extra) is added to **both** non-zero 
 rounding so neither bread type runs out. At `breadRatio = 0` only pølsebrød appears; at `100` only
 lomper appear. The URL stores this as `brod=<ratio>` (for example `brod=70`).
 
-Godteposer are included by default for home parties. Pinata is now a separate optional add-on controlled
-by `pinata: boolean` (`pinata=1` in the URL); the old `treatBag`/`pose` state is gone.
+Godteposer are included by default for home parties. Pinata is a normal catalog item with
+`enabled: false` and no `showIf`; users enable it with the per-item checkbox in **Tilpass varelisten**.
+The old `treatBag`/`pose` state is gone, and there is no `pinata` field or URL parameter.
 
 `audience` controls whether adults are included in population math:
 

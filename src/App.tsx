@@ -3,6 +3,7 @@ import Controls from './components/Controls';
 import Results from './components/Results';
 import ConfigEditor from './components/ConfigEditor';
 import Wizard from './components/Wizard';
+import Footer from './components/Footer';
 import { computePlan } from './lib/engine';
 import { loadCatalog, saveCatalog, parseConfig, writeConfig, shareUrl } from './lib/store';
 import type { GoodItem, PartyConfig } from './lib/types';
@@ -92,7 +93,12 @@ export default function App() {
   };
 
   if (view === 'wizard') {
-    return <Wizard cfg={cfg} onChange={setCfg} onFinish={finishWizard} onSkip={skipWizard} />;
+    return (
+      <>
+        <Wizard cfg={cfg} onChange={setCfg} onFinish={finishWizard} onSkip={skipWizard} />
+        <Footer />
+      </>
+    );
   }
 
   return (
@@ -125,15 +131,7 @@ export default function App() {
         <ConfigEditor catalog={catalog} onChange={setCatalog} onClose={() => setView('app')} />
       )}
 
-      <footer className="foot">
-        <p>Kakeklar er gratis · ingen innlogging · for norske foreldre. Mengdene er anbefalinger – juster fritt.</p>
-        <p className="foot-credit">
-          Made in Norway by{' '}
-          <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener noreferrer">Maxim Salnikov</a>
-          {' · '}
-          <a href="https://github.com/webmaxru/barnebursdag-planlegger" target="_blank" rel="noopener noreferrer">GitHub</a>
-        </p>
-      </footer>
+      <Footer />
 
       {view === 'app' && (
         <nav className="actionbar no-print" aria-label="Handlinger">

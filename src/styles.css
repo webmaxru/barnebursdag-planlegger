@@ -393,5 +393,5 @@ input[type='range']::-moz-range-thumb {
 .foot-credit { margin-top: 6px; font-size: 0.78rem; }
 .foot-credit a { color: inherit; text-decoration: underline; }
 .bread-ratio .ratio-ends { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
-.bread-ratio input[type='range'] { width: 100%; }
+.bread-ratio input[type='range'] { width: 100%; background: var(--pink-l); }
 .choice-card.toggle { width: 100%; justify-content: flex-start; }

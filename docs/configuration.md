@@ -23,7 +23,6 @@ interface GoodItem {
   breadKind?: 'lompe' | 'polsebrod'; // pølse bread rows split by PartyConfig.breadRatio
   showIf?: Partial<{
     mainDish: 'polser' | 'pizza';
-    pinata: boolean;
   }>;                         // item is shown only when every listed config value matches
   packSize?: number;          // round up to whole packs
   packUnit?: string;          // label, e.g. 'pakke (8 stk)'
@@ -40,9 +39,10 @@ interface GoodItem {
 
 See [calculation-engine.md](calculation-engine.md) for how each `mode` is evaluated.
 
-The wizard sets `mainDish`, `breadRatio` (0–100 percent lompe, default 50), and `pinata` (default
-false); advanced mode (`Controls`) can change them too. Godteposer are included by default for home
-parties, while pinata is a separate optional add-on.
+The wizard sets `mainDish` and `breadRatio` (0–100 percent lompe, default 50); advanced mode
+(`Controls`) can change them too. Godteposer are included by default for home parties. Pinata is not a
+wizard option or `PartyConfig` field; it is a disabled-by-default catalog item that users enable with
+the per-item checkbox in **Tilpass varelisten**.
 
 ## Editing in the app (Tilpass)
 
@@ -69,13 +69,13 @@ Changes apply live to the result list and are saved automatically.
 On load, a saved catalog is used **only if** its stored version matches the current `CATALOG_VERSION`;
 otherwise the defaults are returned. This prevents stale custom catalogs from breaking after a schema
 change. **Bump `CATALOG_VERSION` in `catalog.ts` whenever you change the default catalog's shape.**
-The current shipped `CATALOG_VERSION` is **5**.
+The current shipped `CATALOG_VERSION` is **6**.
 
 ## Import / export format
 
 ```json
 {
-  "version": 5,
+  "version": 6,
   "items": [ { "id": "polser", "name": "Pølser", "...": "..." } ]
 }
 ```
@@ -96,13 +96,14 @@ The current shipped `CATALOG_VERSION` is **5**.
 | Drikke | Saft, Brus (7+) |
 | Servise | Tallerkener, Kopper, Servietter, Bestikk, Bordduk, Sugerør* |
 | Pynt | Ballonger, Bursdagskrone, Kakelys, Vimpelrekke* |
-| Godteri | Godteposer, Pinata, Smågodt, Premier* |
+| Godteri | Godteposer, Pinata*, Smågodt, Premier* |
 
 \* shipped disabled by default (`enabled: false`).
 
-Pølser/minipizza, condiments, and pinata are gated by the wizard's food choices via `showIf`. Lomper
-and pølsebrød are selected together by `breadRatio`; both appear according to the ratio, with a ~15%
-extra margin applied to each non-zero bread share before pack rounding.
+Pølser/minipizza and condiments are gated by the wizard's food choices via `showIf`. Lomper and
+pølsebrød are selected together by `breadRatio`; both appear according to the ratio, with a ~15% extra
+margin applied to each non-zero bread share before pack rounding. Pinata ships as `enabled: false` and
+has no `showIf`.
 
 ## URL state for food choices
 
@@ -110,6 +111,5 @@ extra margin applied to each non-zero bread share before pack rounding.
 
 - `breadRatio: number` — stored as `brod=<ratio>` (for example `brod=70`). The old `brod=polsebrod`
   form is gone.
-- `pinata: boolean` — stored as `pinata=1` when enabled.
 
-The old `pose` URL parameter is no longer emitted or read.
+The old `pose` and `pinata` URL parameters are no longer emitted or read.

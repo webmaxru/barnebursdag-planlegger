@@ -76,7 +76,6 @@ export function parseConfig(): PartyConfig {
     allergies,
     mainDish: p.get('rett') === 'pizza' ? 'pizza' : 'polser',
     breadRatio: clamp(num('brod', 50), 0, 100),
-    pinata: p.get('pinata') === '1',
   };
 }
 
@@ -94,7 +93,6 @@ function toParams(cfg: PartyConfig): URLSearchParams {
   if (cfg.duration !== 2) p.set('varighet', String(cfg.duration));
   if (cfg.mainDish !== 'polser') p.set('rett', cfg.mainDish);
   if (cfg.breadRatio !== 50) p.set('brod', String(cfg.breadRatio));
-  if (cfg.pinata) p.set('pinata', '1');
   return p;
 }
 
