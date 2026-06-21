@@ -87,6 +87,23 @@ az deployment group create -g rg-barnebursdag \
   --parameters appInsightsResourceId="$(az monitor app-insights component show --app kakeklar-insights -g rg-barnebursdag --query id -o tsv)"
 ```
 
+### The portal dashboard (Microsoft.Portal/dashboards)
+
+A pinnable Azure **dashboard** "Kakeklar – Key Metrics" (`kakeklar-key-metrics`) is deployed to
+`rg-barnebursdag`. Open it directly:
+**[portal.azure.com → Kakeklar – Key Metrics](https://portal.azure.com/#@/dashboard/arm/subscriptions/d0b7d6ee-17bf-4c4f-b79d-4f6c2cb583fd/resourceGroups/rg-barnebursdag/providers/Microsoft.Portal/dashboards/kakeklar-key-metrics)**
+(or Azure portal → **Dashboard** → Browse → *Kakeklar – Key Metrics*).
+
+Nine tiles: visitors/traffic over time, engagement events per day, top events, key actions, the
+wizard funnel, child-age distribution, guest-count distribution, and the home-vs-barnehage split.
+It is the same data as the workbook, in an at-a-glance pinned layout.
+
+Defined as code in [`infra/dashboard.json`](../infra/dashboard.json). Redeploy with:
+
+```bash
+az deployment group create -g rg-barnebursdag --template-file infra/dashboard.json
+```
+
 ### Handy KQL (Logs blade)
 
 ```kusto
@@ -104,6 +121,22 @@ customEvents
 | where name in ('plan_shared','plan_printed','config_opened','price_lookup')
 | summarize count() by name
 ```
+
+## Pull metrics from the terminal
+
+Don't want to open the portal? Run the bundled script to print the key metrics straight in your shell:
+
+```powershell
+npm run insights                              # last 30 days (default)
+pwsh -NoProfile -File ./scripts/insights.ps1 -Days 7
+```
+
+It prints **visitors & traffic, engagement events/day, top events, key actions, the wizard funnel,**
+and **child-age / guest-count / home-vs-barnehage distributions** — sourced from Application Insights
+via `az monitor app-insights query`. The script auto-installs the `application-insights` CLI
+extension, resolves the app id from `kakeklar-insights` (override with `-AppId`/`-Component`/
+`-ResourceGroup`), and is empty-safe (shows `(no data yet)` where there's nothing). Requires
+`az login`. Source: [`scripts/insights.ps1`](../scripts/insights.ps1).
 
 ## Turning analytics off
 

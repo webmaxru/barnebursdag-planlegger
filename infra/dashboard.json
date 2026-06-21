@@ -1,0 +1,700 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dashboardName": {
+      "type": "string",
+      "defaultValue": "kakeklar-key-metrics",
+      "metadata": {
+        "description": "Azure resource name for the shared Portal dashboard."
+      }
+    },
+    "dashboardDisplayName": {
+      "type": "string",
+      "defaultValue": "Kakeklar - Key Metrics",
+      "metadata": {
+        "description": "Display name shown in the Azure Portal dashboard list."
+      }
+    },
+    "appInsightsResourceId": {
+      "type": "string",
+      "defaultValue": "/subscriptions/d0b7d6ee-17bf-4c4f-b79d-4f6c2cb583fd/resourceGroups/rg-barnebursdag/providers/microsoft.insights/components/kakeklar-insights",
+      "metadata": {
+        "description": "Resource ID of the Kakeklar Application Insights component."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location used to store the dashboard JSON."
+      }
+    }
+  },
+  "variables": {
+    "workbookResourceId": "[resourceId('microsoft.insights/workbooks', 'cbdcfb71-b028-5069-8aa2-fd8dd6632f74')]",
+    "dashboardResourceId": "[resourceId('Microsoft.Portal/dashboards', parameters('dashboardName'))]",
+    "timeRange": "P30D"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Portal/dashboards",
+      "apiVersion": "2015-08-01-preview",
+      "name": "[parameters('dashboardName')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "hidden-title": "[parameters('dashboardDisplayName')]"
+      },
+      "properties": {
+        "lenses": {
+          "0": {
+            "order": 0,
+            "parts": {
+              "0": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "colSpan": 12,
+                  "rowSpan": 2
+                },
+                "metadata": {
+                  "inputs": [],
+                  "type": "Extension/HubsExtension/PartType/MarkdownPart",
+                  "settings": {
+                    "content": {
+                      "settings": {
+                        "content": "[concat('# Kakeklar - Key Metrics\n\nShared Azure Portal dashboard for cookieless Application Insights engagement metrics. Open the complementary [Kakeklar - User Engagement workbook](https://portal.azure.com/#@/resource', variables('workbookResourceId'), ').')]",
+                        "title": "Kakeklar - Key Metrics",
+                        "subtitle": "Application Insights: kakeklar-insights",
+                        "markdownUri": null
+                      }
+                    }
+                  }
+                }
+              },
+              "1": {
+                "position": {
+                  "x": 0,
+                  "y": 2,
+                  "colSpan": 6,
+                  "rowSpan": 4
+                },
+                "metadata": {
+                  "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+                  "inputs": [
+                    {
+                      "name": "Scope",
+                      "value": {
+                        "resourceIds": [
+                          "[parameters('appInsightsResourceId')]"
+                        ]
+                      }
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "timestamp",
+                          "type": "datetime"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "Visits",
+                            "type": "long"
+                          },
+                          {
+                            "name": "Sessions",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "PartId",
+                      "value": "[guid(variables('dashboardResourceId'), 'visitors-traffic-over-time')]"
+                    },
+                    {
+                      "name": "Version",
+                      "value": "2.0"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "value": "[variables('timeRange')]"
+                    },
+                    {
+                      "name": "Query",
+                      "value": "pageViews | summarize Visits=count(), Sessions=dcount(session_Id) by bin(timestamp, 1d) | render timechart"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Visitors / traffic over time"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "Daily page loads and ephemeral sessions"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "FrameControlChart"
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "value": "Line"
+                    },
+                    {
+                      "name": "IsQueryContainTimeRange",
+                      "value": false
+                    }
+                  ]
+                }
+              },
+              "2": {
+                "position": {
+                  "x": 6,
+                  "y": 2,
+                  "colSpan": 6,
+                  "rowSpan": 4
+                },
+                "metadata": {
+                  "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+                  "inputs": [
+                    {
+                      "name": "Scope",
+                      "value": {
+                        "resourceIds": [
+                          "[parameters('appInsightsResourceId')]"
+                        ]
+                      }
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "timestamp",
+                          "type": "datetime"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "Events",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "PartId",
+                      "value": "[guid(variables('dashboardResourceId'), 'engagement-events-per-day')]"
+                    },
+                    {
+                      "name": "Version",
+                      "value": "2.0"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "value": "[variables('timeRange')]"
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents | summarize Events=count() by bin(timestamp, 1d) | render timechart"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Engagement events per day"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "Daily customEvents volume"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "FrameControlChart"
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "value": "Line"
+                    },
+                    {
+                      "name": "IsQueryContainTimeRange",
+                      "value": false
+                    }
+                  ]
+                }
+              },
+              "3": {
+                "position": {
+                  "x": 0,
+                  "y": 6,
+                  "colSpan": 4,
+                  "rowSpan": 4
+                },
+                "metadata": {
+                  "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+                  "inputs": [
+                    {
+                      "name": "Scope",
+                      "value": {
+                        "resourceIds": [
+                          "[parameters('appInsightsResourceId')]"
+                        ]
+                      }
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "name",
+                          "type": "string"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "Count",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "PartId",
+                      "value": "[guid(variables('dashboardResourceId'), 'top-events')]"
+                    },
+                    {
+                      "name": "Version",
+                      "value": "2.0"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "value": "[variables('timeRange')]"
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents | summarize Count=count() by name | order by Count desc"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Top events"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "All custom event names by count"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "FrameControlChart"
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "value": "StackedBar"
+                    },
+                    {
+                      "name": "IsQueryContainTimeRange",
+                      "value": false
+                    }
+                  ]
+                }
+              },
+              "4": {
+                "position": {
+                  "x": 4,
+                  "y": 6,
+                  "colSpan": 4,
+                  "rowSpan": 4
+                },
+                "metadata": {
+                  "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+                  "inputs": [
+                    {
+                      "name": "Scope",
+                      "value": {
+                        "resourceIds": [
+                          "[parameters('appInsightsResourceId')]"
+                        ]
+                      }
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "name",
+                          "type": "string"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "Count",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "PartId",
+                      "value": "[guid(variables('dashboardResourceId'), 'key-actions')]"
+                    },
+                    {
+                      "name": "Version",
+                      "value": "2.0"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "value": "[variables('timeRange')]"
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents | where name in ('party_configured','plan_shared','plan_printed','price_lookup','config_opened') | summarize Count=count() by name | order by Count desc"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Key actions"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "Primary engagement actions"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "FrameControlChart"
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "value": "StackedBar"
+                    },
+                    {
+                      "name": "IsQueryContainTimeRange",
+                      "value": false
+                    }
+                  ]
+                }
+              },
+              "5": {
+                "position": {
+                  "x": 8,
+                  "y": 6,
+                  "colSpan": 4,
+                  "rowSpan": 4
+                },
+                "metadata": {
+                  "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+                  "inputs": [
+                    {
+                      "name": "Scope",
+                      "value": {
+                        "resourceIds": [
+                          "[parameters('appInsightsResourceId')]"
+                        ]
+                      }
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "name",
+                          "type": "string"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "Count",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "PartId",
+                      "value": "[guid(variables('dashboardResourceId'), 'wizard-funnel')]"
+                    },
+                    {
+                      "name": "Version",
+                      "value": "2.0"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "value": "[variables('timeRange')]"
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents | where name startswith 'wizard' | summarize Count=count() by name"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Wizard funnel"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "Started, steps, completed, skipped"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "FrameControlChart"
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "value": "StackedBar"
+                    },
+                    {
+                      "name": "IsQueryContainTimeRange",
+                      "value": false
+                    }
+                  ]
+                }
+              },
+              "6": {
+                "position": {
+                  "x": 0,
+                  "y": 10,
+                  "colSpan": 4,
+                  "rowSpan": 4
+                },
+                "metadata": {
+                  "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+                  "inputs": [
+                    {
+                      "name": "Scope",
+                      "value": {
+                        "resourceIds": [
+                          "[parameters('appInsightsResourceId')]"
+                        ]
+                      }
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "age",
+                          "type": "long"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "Parties",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "PartId",
+                      "value": "[guid(variables('dashboardResourceId'), 'child-age-distribution')]"
+                    },
+                    {
+                      "name": "Version",
+                      "value": "2.0"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "value": "[variables('timeRange')]"
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents | where name == 'party_configured' | extend age = toint(customDimensions.age) | summarize Parties=count() by age | order by age asc | render columnchart"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Child age distribution"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "party_configured age counts"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "FrameControlChart"
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "value": "StackedColumn"
+                    },
+                    {
+                      "name": "IsQueryContainTimeRange",
+                      "value": false
+                    }
+                  ]
+                }
+              },
+              "7": {
+                "position": {
+                  "x": 4,
+                  "y": 10,
+                  "colSpan": 4,
+                  "rowSpan": 4
+                },
+                "metadata": {
+                  "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+                  "inputs": [
+                    {
+                      "name": "Scope",
+                      "value": {
+                        "resourceIds": [
+                          "[parameters('appInsightsResourceId')]"
+                        ]
+                      }
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "guests",
+                          "type": "long"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "Parties",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "PartId",
+                      "value": "[guid(variables('dashboardResourceId'), 'guest-count-distribution')]"
+                    },
+                    {
+                      "name": "Version",
+                      "value": "2.0"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "value": "[variables('timeRange')]"
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents | where name == 'party_configured' | extend guests = toint(customDimensions.guests) | summarize Parties=count() by guests | order by guests asc | render columnchart"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Guest-count distribution"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "party_configured guest counts"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "FrameControlChart"
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "value": "StackedColumn"
+                    },
+                    {
+                      "name": "IsQueryContainTimeRange",
+                      "value": false
+                    }
+                  ]
+                }
+              },
+              "8": {
+                "position": {
+                  "x": 8,
+                  "y": 10,
+                  "colSpan": 4,
+                  "rowSpan": 4
+                },
+                "metadata": {
+                  "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+                  "inputs": [
+                    {
+                      "name": "Scope",
+                      "value": {
+                        "resourceIds": [
+                          "[parameters('appInsightsResourceId')]"
+                        ]
+                      }
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "partyType",
+                          "type": "string"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "Count",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "PartId",
+                      "value": "[guid(variables('dashboardResourceId'), 'home-vs-barnehage-split')]"
+                    },
+                    {
+                      "name": "Version",
+                      "value": "2.0"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "value": "[variables('timeRange')]"
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents | where name == 'party_configured' | summarize Count=count() by partyType = tostring(customDimensions.partyType)"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Home vs barnehage split"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "partyType distribution"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "FrameControlChart"
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "value": "Pie"
+                    },
+                    {
+                      "name": "IsQueryContainTimeRange",
+                      "value": false
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "metadata": {
+          "model": {
+            "timeRange": {
+              "value": {
+                "relative": {
+                  "duration": 30,
+                  "timeUnit": 2
+                }
+              },
+              "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "dashboardResourceId": {
+      "type": "string",
+      "value": "[variables('dashboardResourceId')]"
+    },
+    "portalDashboardUrl": {
+      "type": "string",
+      "value": "[concat('https://portal.azure.com/#@/dashboard/arm', variables('dashboardResourceId'))]"
+    }
+  }
+}

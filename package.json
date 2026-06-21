@@ -13,6 +13,7 @@
     "dev:server": "node --watch --env-file=.env server/index.js",
     "build": "vite build",
     "icons": "node scripts/gen-icons.mjs",
+    "insights": "pwsh -NoProfile -File scripts/insights.ps1",
     "start": "node server/index.js",
     "start:local": "node --env-file=.env server/index.js",
     "preview": "vite preview",
