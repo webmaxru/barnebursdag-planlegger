@@ -46,4 +46,4 @@ Allow: /
 User-agent: Meta-ExternalAgent
 Allow: /
 
-Sitemap: https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/sitemap.xml
+Sitemap: https://kakeklar.push.foo/sitemap.xml
