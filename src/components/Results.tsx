@@ -63,7 +63,7 @@ function Row({ it }: { it: LineItem }) {
         {it.packs == null && it.packUnit && <span className="badge">{it.packUnit}</span>}
         {it.priceMin != null && <span className="price">{krRange(it.priceMin, it.priceMax)}</span>}
       </div>
-      {it.note && <p className="row-note">⚠️ {it.note}</p>}
+      {it.note && <p className="row-note">{it.note.startsWith('Trygt') ? '✅' : '⚠️'} {it.note}</p>}
       {it.kassalSearch && <PriceLookup search={it.kassalSearch} />}
     </li>
   );

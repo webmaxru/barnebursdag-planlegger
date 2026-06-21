@@ -14,6 +14,14 @@ export const CATEGORY_EMOJI: Record<Category, string> = {
   mat: '🍽️', drikke: '🥤', servise: '🍴', pynt: '🎈', godteri: '🍬'
 };
 
+export const ALLERGY_LABEL: Record<string, string> = {
+  gluten: 'glutenallergi',
+  melk: 'melkeallergi',
+  egg: 'eggallergi',
+  nott: 'nøtteallergi',
+  svin: 'uten svin'
+};
+
 export function bandForAge(age: number): AgeBand {
   if (age <= 4) return '3-4';
   if (age <= 6) return '5-6';
@@ -27,17 +35,20 @@ export function computeLineItem(item: GoodItem, cfg: PartyConfig): LineItem | nu
   if (!item.enabled) return null;
   if (cfg.type === 'barnehage' && item.homeOnly) return null;
 
+  const population = item.allergyScope ? (cfg.allergies[item.allergyScope] ?? 0) : cfg.guests;
+  if (item.allergyScope && population <= 0) return null;
+
   const band = bandForAge(cfg.age);
   let needed = 0;
   switch (item.mode) {
     case 'perChild':
-      needed = cfg.guests * (item.perChild?.[band] ?? 0);
+      needed = population * (item.perChild?.[band] ?? 0);
       break;
     case 'perGuest':
-      needed = cfg.guests * (item.factor ?? 1);
+      needed = population * (item.factor ?? 1);
       break;
     case 'perTable':
-      needed = Math.ceil(cfg.guests / (item.divisor ?? 8)) * (item.factor ?? 1);
+      needed = Math.ceil(population / (item.divisor ?? 8)) * (item.factor ?? 1);
       break;
     case 'ageCount':
       needed = cfg.age + (item.growOn ? 1 : 0);
@@ -67,7 +78,10 @@ export function computeLineItem(item: GoodItem, cfg: PartyConfig): LineItem | nu
   }
 
   const notes: string[] = [];
-  if (item.altNote && item.allergyTags && cfg.allergies.some((a) => item.allergyTags!.includes(a))) {
+  if (item.allergyScope) {
+    notes.push(`Trygt for ${population} barn (${ALLERGY_LABEL[item.allergyScope] ?? item.allergyScope})`);
+  }
+  if (item.altNote && item.allergyTags?.some((tag) => (cfg.allergies[tag] ?? 0) > 0)) {
     notes.push(item.altNote);
   }
 

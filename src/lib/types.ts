@@ -25,6 +25,7 @@ export interface GoodItem {
   priceMaxNok?: number;
   homeOnly?: boolean;                    // hidden in barnehage (kindergarten) mode
   allergyTags?: string[];                // e.g. ['svin','gluten','melk']
+  allergyScope?: string;                 // allergy-safe item scoped to affected kids
   altNote?: string;                      // shown when an allergy filter matches
   kassalSearch?: string;                 // search term for live Kassal.app prices
   enabled: boolean;
@@ -35,7 +36,7 @@ export interface PartyConfig {
   age: number;
   type: 'hjemme' | 'barnehage';
   duration: number;                      // hours
-  allergies: string[];
+  allergies: Record<string, number>;
 }
 
 export interface LineItem {

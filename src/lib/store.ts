@@ -61,11 +61,17 @@ export function parseConfig(): PartyConfig {
     const v = parseInt(p.get(k) || '', 10);
     return Number.isFinite(v) ? v : d;
   };
+  const allergies: Record<string, number> = {};
+  (p.get('allergi') || '').split(',').map((s) => s.trim()).filter(Boolean).forEach((part) => {
+    const [id, cnt] = part.split(':');
+    const n = parseInt(cnt ?? '1', 10);
+    if (id && Number.isFinite(n) && n > 0) allergies[id] = n;
+  });
   return {
     guests: clamp(num('gjester', 12), 1, 40),
     age: clamp(num('alder', 6), 1, 12),
     type: p.get('type') === 'barnehage' ? 'barnehage' : 'hjemme',
-    allergies: (p.get('allergi') || '').split(',').map((s) => s.trim()).filter(Boolean),
+    allergies,
     duration: clamp(num('varighet', 2), 1, 5)
   };
 }
@@ -75,7 +81,11 @@ function toParams(cfg: PartyConfig): URLSearchParams {
   p.set('gjester', String(cfg.guests));
   p.set('alder', String(cfg.age));
   if (cfg.type !== 'hjemme') p.set('type', cfg.type);
-  if (cfg.allergies.length) p.set('allergi', cfg.allergies.join(','));
+  const allergies = Object.entries(cfg.allergies)
+    .filter(([, n]) => n > 0)
+    .map(([k, n]) => `${k}:${n}`)
+    .join(',');
+  if (allergies) p.set('allergi', allergies);
   if (cfg.duration !== 2) p.set('varighet', String(cfg.duration));
   return p;
 }

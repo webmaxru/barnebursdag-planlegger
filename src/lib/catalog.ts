@@ -1,7 +1,7 @@
 import type { GoodItem } from './types';
 
 /** Bump when the default catalog shape/content changes (invalidates saved copies). */
-export const CATALOG_VERSION = 2;
+export const CATALOG_VERSION = 3;
 
 /**
  * Default Norwegian barnebursdag goods catalog.
@@ -30,12 +30,42 @@ export const DEFAULT_CATALOG: GoodItem[] = [
     kassalSearch: 'pølsebrød', enabled: false
   },
   {
+    id: 'gluten-brod', name: 'Glutenfri lompe/brød', emoji: '🫓', category: 'mat', unit: 'stk',
+    mode: 'perChild', perChild: { '3-4': 1.5, '5-6': 2, '7-9': 2.5 },
+    packSize: 6, packUnit: 'pakke (6 stk)', priceMinNok: 35, priceMaxNok: 55,
+    allergyScope: 'gluten', kassalSearch: 'glutenfri lompe', enabled: true
+  },
+  {
+    id: 'svin-polser', name: 'Kyllingpølser (uten svin)', emoji: '🌭', category: 'mat', unit: 'stk',
+    mode: 'perChild', perChild: { '3-4': 1.5, '5-6': 2, '7-9': 2.5 },
+    packSize: 8, packUnit: 'pakke (8 stk)', priceMinNok: 45, priceMaxNok: 69,
+    allergyScope: 'svin', kassalSearch: 'kyllingpølser', enabled: true
+  },
+  {
     id: 'kake', name: 'Bursdagskake', emoji: '🎂', category: 'mat', unit: 'stk',
     mode: 'perChild', perChild: { '3-4': 1, '5-6': 1, '7-9': 1.25 },
     packSize: 20, packUnit: 'langpannekake (~20 biter)', priceMinNok: 150, priceMaxNok: 250,
     homeOnly: true, allergyTags: ['gluten', 'melk', 'egg'],
     altNote: 'Se glutenfri/melkefri kakemiks (Toro/Regal).',
     kassalSearch: 'sjokoladekake', enabled: true
+  },
+  {
+    id: 'gluten-kake', name: 'Glutenfri kake/muffins', emoji: '🧁', category: 'mat', unit: 'stk',
+    mode: 'perChild', perChild: { '3-4': 1, '5-6': 1, '7-9': 1 },
+    packSize: 12, packUnit: 'pakke (12 stk)', priceMinNok: 49, priceMaxNok: 79,
+    homeOnly: true, allergyScope: 'gluten', kassalSearch: 'glutenfri muffins', enabled: true
+  },
+  {
+    id: 'melk-kake', name: 'Melkefri kake/muffins', emoji: '🧁', category: 'mat', unit: 'stk',
+    mode: 'perChild', perChild: { '3-4': 1, '5-6': 1, '7-9': 1 },
+    packSize: 12, packUnit: 'pakke (12 stk)', priceMinNok: 49, priceMaxNok: 79,
+    homeOnly: true, allergyScope: 'melk', kassalSearch: 'melkefri muffins', enabled: true
+  },
+  {
+    id: 'egg-bakst', name: 'Eggfri bakst', emoji: '🧁', category: 'mat', unit: 'stk',
+    mode: 'perChild', perChild: { '3-4': 1, '5-6': 1, '7-9': 1 },
+    packSize: 12, packUnit: 'pakke (12 stk)', priceMinNok: 49, priceMaxNok: 79,
+    homeOnly: true, allergyScope: 'egg', kassalSearch: 'eggfri kake', enabled: true
   },
   {
     id: 'frukt', name: 'Frukt (oppkuttet)', emoji: '🍓', category: 'mat', unit: 'g',
@@ -134,6 +164,11 @@ export const DEFAULT_CATALOG: GoodItem[] = [
     homeOnly: true, allergyTags: ['svin'],
     altNote: 'Seigmenn inneholder svinegelatin – velg vegansk / Nonstop.',
     kassalSearch: 'smågodt', enabled: true
+  },
+  {
+    id: 'nott-godt', name: 'Nøttefri sjokolade/godteri', emoji: '🍫', category: 'godteri', unit: 'g',
+    mode: 'perChild', perChild: { '3-4': 50, '5-6': 75, '7-9': 100 },
+    homeOnly: true, allergyScope: 'nott', kassalSearch: 'nøttefri sjokolade', enabled: true
   },
   {
     id: 'premier', name: 'Premier / smågaver (lek)', emoji: '🎁', category: 'godteri', unit: 'stk',

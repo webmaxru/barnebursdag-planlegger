@@ -5,41 +5,26 @@ import type { PartyConfig } from '../lib/types';
 import { track } from '../lib/analytics';
 
 const ALLERGIES = [
-  { id: 'nott', label: 'Nøttefri' },
   { id: 'gluten', label: 'Glutenfri' },
   { id: 'melk', label: 'Melkefri' },
-  { id: 'svin', label: 'Uten svin' },
-  { id: 'egg', label: 'Eggfri' }
+  { id: 'egg', label: 'Eggfri' },
+  { id: 'nott', label: 'Nøttefri' },
+  { id: 'svin', label: 'Uten svin' }
 ];
 
 export default function Controls({ cfg, onChange }: { cfg: PartyConfig; onChange: (c: PartyConfig) => void }) {
   const [open, setOpen] = useState(false);
   const set = (patch: Partial<PartyConfig>) => onChange({ ...cfg, ...patch });
-  const toggleAllergy = (id: string) => {
-    const on = !cfg.allergies.includes(id);
-    set({ allergies: on ? [...cfg.allergies, id] : cfg.allergies.filter((a) => a !== id) });
-    track('allergy_toggled', { allergy: id, on });
+  const setAllergy = (id: string, count: number) => {
+    const next = { ...cfg.allergies };
+    if (count > 0) next[id] = count; else delete next[id];
+    set({ allergies: next });
+    track('allergy_changed', { allergy: id, count });
   };
   const suggested = suggestedGuests(cfg.age);
 
   return (
     <section className="card controls">
-      <Slider
-        id="gjester"
-        emoji="🧒"
-        label="Antall gjester"
-        value={cfg.guests}
-        min={1}
-        max={40}
-        onChange={(v) => set({ guests: v })}
-        hint={`Vanlig regel: «alder + 1» = ${suggested} gjester`}
-      />
-      {cfg.guests !== suggested && (
-        <button type="button" className="link-btn" onClick={() => { set({ guests: suggested }); track('suggested_guests_used', { age: cfg.age, guests: suggested }); }}>
-          Bruk foreslått antall ({suggested})
-        </button>
-      )}
-
       <Slider
         id="alder"
         emoji="🎂"
@@ -49,6 +34,17 @@ export default function Controls({ cfg, onChange }: { cfg: PartyConfig; onChange
         max={12}
         suffix=" år"
         onChange={(v) => set({ age: v })}
+      />
+
+      <Slider
+        id="gjester"
+        emoji="🧒"
+        label="Antall gjester"
+        value={cfg.guests}
+        min={1}
+        max={40}
+        onChange={(v) => set({ guests: v })}
+        hint={`Vanlig regel: «alder + 1» = ${suggested} gjester`}
       />
 
       <div className="segmented" role="tablist" aria-label="Type feiring">
@@ -66,20 +62,19 @@ export default function Controls({ cfg, onChange }: { cfg: PartyConfig; onChange
 
       {open && (
         <div className="advanced">
-          <p className="field-label">Allergier / hensyn</p>
-          <div className="chips">
-            {ALLERGIES.map((a) => (
-              <button
-                key={a.id}
-                type="button"
-                className={'chip' + (cfg.allergies.includes(a.id) ? ' on' : '')}
-                aria-pressed={cfg.allergies.includes(a.id)}
-                onClick={() => toggleAllergy(a.id)}
-              >
-                {a.label}
-              </button>
-            ))}
-          </div>
+          <p className="field-label">Allergier – antall barn</p>
+          {ALLERGIES.map((a) => (
+            <Slider
+              key={a.id}
+              id={`al-${a.id}`}
+              label={a.label}
+              value={Math.min(cfg.allergies[a.id] ?? 0, cfg.guests)}
+              min={0}
+              max={cfg.guests}
+              suffix=" barn"
+              onChange={(n) => setAllergy(a.id, n)}
+            />
+          ))}
           <Slider id="varighet" emoji="⏱️" label="Varighet" value={cfg.duration} min={1} max={5} suffix=" t" onChange={(v) => set({ duration: v })} />
         </div>
       )}

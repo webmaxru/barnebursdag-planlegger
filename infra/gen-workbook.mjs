@@ -59,7 +59,7 @@ const content = {
     q('Topp hendelser', 'customEvents\n| summarize Antall = count() by name\n| sort by Antall desc', 'barchart', 1),
     q(
       'Nøkkelhandlinger',
-      "customEvents\n| where name in ('plan_shared','plan_printed','config_opened','config_changed','price_lookup','suggested_guests_used','allergy_toggled','party_type_changed','pwa_installed')\n| summarize Antall = count() by name\n| sort by Antall desc",
+      "customEvents\n| where name in ('plan_shared','plan_printed','config_opened','config_changed','price_lookup','allergy_changed','party_type_changed','pwa_installed')\n| summarize Antall = count() by name\n| sort by Antall desc",
       'table',
       1
     ),
