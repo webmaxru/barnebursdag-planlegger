@@ -69,11 +69,15 @@ jobs:
               echo "Updating existing container app..."
               az containerapp secret set -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
                 --secrets kassal-api-key="${{ secrets.KASSAL_API_KEY }}" appinsights-connection-string="${{ secrets.APPINSIGHTS_CONNECTION_STRING }}"
-              az containerapp registry set -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
-                --server ghcr.io --username "${{ github.actor }}" --password "${{ secrets.GITHUB_TOKEN }}"
-              az containerapp update -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
+              # Give the secret update time to settle, then retry the image/env update on transient ACA write conflicts.
+              sleep 10
+              n=0
+              until az containerapp update -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
                 --image "$IMAGE" \
-                --set-env-vars KASSAL_API_KEY=secretref:kassal-api-key APPLICATIONINSIGHTS_CONNECTION_STRING=secretref:appinsights-connection-string PORT=8080
+                --set-env-vars KASSAL_API_KEY=secretref:kassal-api-key APPLICATIONINSIGHTS_CONNECTION_STRING=secretref:appinsights-connection-string PORT=8080; do
+                n=$((n+1)); if [ "$n" -ge 5 ]; then echo "update failed after $n retries"; exit 1; fi
+                echo "Transient conflict — retry $n in 15s..."; sleep 15
+              done
             else
               echo "Creating container app..."
               az containerapp create -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
