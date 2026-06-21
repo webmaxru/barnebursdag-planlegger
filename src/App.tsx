@@ -32,7 +32,7 @@ export default function App() {
   const share = async () => {
     const url = shareUrl(cfg);
     const data = {
-      title: 'Barnebursdag-planlegger',
+      title: 'Kakeklar',
       text: `Handleliste for ${cfg.guests} gjester på ${cfg.age} år 🎂`,
       url
     };
@@ -50,8 +50,8 @@ export default function App() {
   return (
     <div className="app">
       <header className="hero">
-        <h1><span aria-hidden>🎂</span> Barnebursdag&shy;planlegger</h1>
-        <p>Dra i to glidere – så vet du nøyaktig hva du skal kjøpe.</p>
+        <h1><span aria-hidden>🎂</span> Kakeklar</h1>
+        <p>Riktig mengde til barnebursdagen – på to glidere.</p>
       </header>
 
       {view === 'plan' ? (
@@ -64,7 +64,7 @@ export default function App() {
       )}
 
       <footer className="foot">
-        <p>Gratis · ingen innlogging · for norske foreldre. Mengdene er anbefalinger – juster fritt.</p>
+        <p>Kakeklar er gratis · ingen innlogging · for norske foreldre. Mengdene er anbefalinger – juster fritt.</p>
       </footer>
 
       {view === 'plan' && (

@@ -1,4 +1,4 @@
-# 🎂 Barnebursdag-planlegger
+# 🎂 Kakeklar
 
 A dead-simple, mobile-first web app that tells Norwegian parents **exactly how much to buy**
 for a child's birthday party (*barnebursdag*). Drag **two sliders** — number of guests and the

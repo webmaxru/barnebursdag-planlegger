@@ -3,42 +3,257 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Barnebursdag-planlegger — hvor mye trenger du?</title>
-    <meta name="description" content="Dra i to glidere – antall gjester og barnets alder – og få en komplett handleliste til barnebursdagen. Mat, drikke, servise, pynt og sjekkliste. Gratis, ingen innlogging." />
+    <title>Kakeklar – hvor mye trenger du til barnebursdagen?</title>
+    <meta
+      name="description"
+      content="Kakeklar er en gratis barnebursdag-kalkulator: se hvor mye mat du trenger, og få handleliste for gjester, alder, drikke, servise og pynt."
+    />
+    <meta name="application-name" content="Kakeklar" />
+    <meta name="author" content="Kakeklar" />
+    <meta name="theme-color" content="#FF6B9D" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
+    <link rel="canonical" href="https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/" />
+    <link rel="alternate" hreflang="nb" href="https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/" />
+    <link rel="alternate" hreflang="x-default" href="https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
     <link rel="apple-touch-icon" href="/icon-180.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#FF6B9D" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Bursdag" />
-    <link rel="canonical" href="/" />
+    <meta name="apple-mobile-web-app-title" content="Kakeklar" />
 
-    <!-- Open Graph / share previews (WhatsApp, Facebook, Snapchat) -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kakeklar" />
     <meta property="og:locale" content="nb_NO" />
-    <meta property="og:title" content="Barnebursdag-planlegger — hvor mye trenger du?" />
-    <meta property="og:description" content="To glidere → komplett handleliste til barnebursdagen. Mat, drikke, servise, pynt og sjekkliste." />
-    <meta property="og:image" content="/icon-512.png" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:title" content="Kakeklar – hvor mye trenger du til barnebursdagen?" />
+    <meta
+      property="og:description"
+      content="Riktig mengde til barnebursdagen – på to glidere. Få alderssmart handleliste for mat, drikke, servise, pynt og sjekkliste."
+    />
+    <meta property="og:url" content="https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/" />
+    <meta property="og:image" content="https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Kakeklar beregner handleliste til norsk barnebursdag" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kakeklar – hvor mye trenger du til barnebursdagen?" />
+    <meta
+      name="twitter:description"
+      content="Riktig mengde til barnebursdagen – på to glidere. Få handleliste for mat, drikke, servise, pynt og sjekkliste."
+    />
+    <meta name="twitter:image" content="https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/og-image.png" />
+
+    <style>
+      #root .seo-fallback {
+        min-height: 100vh;
+        box-sizing: border-box;
+        padding: clamp(1.5rem, 6vw, 4rem);
+        background: #FFF8E7;
+        color: #2C2236;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+
+      #root .seo-fallback main {
+        max-width: 860px;
+        margin: 0 auto;
+      }
+
+      #root .seo-fallback h1 {
+        margin: 0 0 0.5rem;
+        color: #FF6B9D;
+        font-size: clamp(2.5rem, 12vw, 5rem);
+        line-height: 1;
+      }
+
+      #root .seo-fallback h2 {
+        margin-top: 2rem;
+        color: #2C2236;
+      }
+
+      #root .seo-fallback .tagline {
+        margin: 0 0 1rem;
+        font-size: clamp(1.25rem, 4vw, 2rem);
+        font-weight: 700;
+      }
+
+      #root .seo-fallback .card {
+        margin-top: 1.25rem;
+        padding: 1.25rem;
+        border: 2px solid rgba(44, 34, 54, 0.12);
+        border-radius: 1.25rem;
+        background: #fff;
+        box-shadow: 0 16px 40px rgba(44, 34, 54, 0.08);
+      }
+
+      #root .seo-fallback ul,
+      #root .seo-fallback ol {
+        padding-left: 1.25rem;
+      }
+
+      #root .seo-fallback dt {
+        margin-top: 1rem;
+        font-weight: 800;
+      }
+
+      #root .seo-fallback dd {
+        margin: 0.25rem 0 0;
+      }
+    </style>
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "Barnebursdag-planlegger",
-        "description": "Beregn mat, drikke og utstyr til barnebursdag basert på antall gjester og barnets alder.",
+        "name": "Kakeklar",
+        "url": "https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/",
+        "description": "Gratis kalkulator og handleliste for norsk barnebursdag basert på antall gjester og barnets alder.",
         "applicationCategory": "LifestyleApplication",
         "operatingSystem": "Web",
         "inLanguage": "nb",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "NOK" }
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "NOK"
+        },
+        "featureList": [
+          "Beregn mengder med glidere for antall gjester og barnets alder",
+          "Alderstilpasset handleliste for mat, drikke, servise og pynt",
+          "Sjekkliste for barnebursdag hjemme eller i barnehage",
+          "Mobilvennlig bruk uten innlogging"
+        ],
+        "image": "https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/og-image.png"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Kakeklar",
+        "url": "https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/",
+        "logo": "https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/icon-512.png"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Hvor mange gjester bør man invitere i barnebursdag?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "En enkel tommelfingerregel er alder + 1 gjest. Et barn som fyller 6 år kan for eksempel invitere rundt 7 barn, justert etter plass, budsjett og barnets ønsker."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Hvor mye mat trenger jeg per barn?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Planlegg omtrent 1–2 pølser med lompe per barn, litt snacks, kake og nok drikke. Kakeklar justerer mengdene etter alder og antall gjester."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Er Kakeklar gratis?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ja. Kakeklar er gratis å bruke og krever ingen betaling."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Fungerer Kakeklar for barnehagefeiring?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ja. Du kan bruke Kakeklar til både feiring hjemme og i barnehage, med handleliste for enkle, praktiske bursdagsvalg."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Trenger jeg å logge inn?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nei. Kakeklar fungerer uten konto, innlogging eller registrering."
+            }
+          }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Hjem",
+            "item": "https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/"
+          }
+        ]
       }
     </script>
   </head>
   <body>
-    <div id="root"></div>
-    <noscript>Denne planleggeren trenger JavaScript for å regne ut handlelisten.</noscript>
+    <div id="root">
+      <div class="seo-fallback">
+        <main>
+          <h1>Kakeklar</h1>
+          <p class="tagline">Riktig mengde til barnebursdagen – på to glidere.</p>
+          <p>
+            Kakeklar er en gratis, mobilvennlig kalkulator for norsk barnebursdag. Velg antall gjester og barnets alder,
+            så får du en alderssmart handleliste med mat, drikke, servise, pynt og en praktisk sjekkliste.
+          </p>
+
+          <section class="card" aria-labelledby="how-it-works">
+            <h2 id="how-it-works">Slik funker det</h2>
+            <ol>
+              <li>Dra glideren for antall gjester.</li>
+              <li>Velg barnets alder, typisk 3–9 år.</li>
+              <li>Få forslag til riktige mengder og en handleklar liste for bursdagen.</li>
+            </ol>
+          </section>
+
+          <section class="card" aria-labelledby="shopping-list">
+            <h2 id="shopping-list">Eksempel på handleliste</h2>
+            <ul>
+              <li>Pølser</li>
+              <li>Lomper</li>
+              <li>Bursdagskake</li>
+              <li>Saft</li>
+              <li>Tallerkener</li>
+              <li>Ballonger</li>
+              <li>Godteposer</li>
+            </ul>
+          </section>
+
+          <section class="card" aria-labelledby="faq">
+            <h2 id="faq">Ofte stilte spørsmål</h2>
+            <dl>
+              <dt>Hvor mange gjester bør man invitere i barnebursdag?</dt>
+              <dd>En enkel tommelfingerregel er alder + 1 gjest, justert etter plass, budsjett og barnets ønsker.</dd>
+              <dt>Hvor mye mat trenger jeg per barn?</dt>
+              <dd>Planlegg omtrent 1–2 pølser med lompe per barn, litt snacks, kake og nok drikke.</dd>
+              <dt>Er Kakeklar gratis?</dt>
+              <dd>Ja. Kakeklar er gratis å bruke.</dd>
+              <dt>Fungerer Kakeklar for barnehagefeiring?</dt>
+              <dd>Ja. Kakeklar kan brukes til både feiring hjemme og i barnehage.</dd>
+              <dt>Trenger jeg å logge inn?</dt>
+              <dd>Nei. Kakeklar fungerer uten konto, innlogging eller registrering.</dd>
+            </dl>
+          </section>
+        </main>
+      </div>
+    </div>
+    <noscript>Kakeklar trenger JavaScript for å vise den interaktive kalkulatoren.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

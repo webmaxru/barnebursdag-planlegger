@@ -1,0 +1,55 @@
+# Kakeklar
+
+> Kakeklar er en gratis, norsk og mobilvennlig kalkulator som hjelper foreldre å beregne riktig mengde mat, drikke, servise og pynt til barnebursdag.
+
+Kakeklar bruker to enkle valg: antall gjester og barnets alder. Resultatet er en aldersbevisst handleliste og sjekkliste for barnebursdag, slik at familier raskt kan planlegge uten å kjøpe altfor lite eller altfor mye.
+
+## Hva det gjør
+
+- Beregner omtrent hvor mye mat og drikke som trengs til norsk barnebursdag.
+- Foreslår praktiske innkjøp som pølser, lomper, bursdagskake, saft, tallerkener, ballonger og godteposer.
+- Gir en sjekkliste for planlegging før feiringen.
+- Tilpasser forslag etter barnets alder og antall gjester.
+
+## Slik bruker du det
+
+1. Åpne Kakeklar på mobil eller desktop.
+2. Dra glideren for antall gjester.
+3. Dra glideren for barnets alder.
+4. Les handlelisten og sjekklisten, og bruk den når du handler til bursdagen.
+
+## Nøkkelfakta
+
+- Gratis å bruke.
+- Ingen innlogging eller konto.
+- Norsk innhold på Bokmål.
+- Laget for barnebursdag for barn omtrent 3–9 år.
+- Støtter planlegging for både hjemmebursdag og barnehagefeiring.
+- Tagline: "Riktig mengde til barnebursdagen – på to glidere."
+
+## FAQ
+
+### Hvor mange gjester bør man invitere i barnebursdag?
+
+En vanlig tommelfingerregel er alder + 1 gjest. Et barn som fyller 6 år kan for eksempel invitere rundt 7 barn, men tallet bør justeres etter plass, budsjett og barnets ønsker.
+
+### Hvor mye mat trenger jeg per barn?
+
+Som grovt utgangspunkt kan du beregne 1–2 pølser med lompe per barn, litt snacks, kake og nok drikke. Yngre barn spiser ofte mindre enn eldre barn, så alder og aktivitetsnivå betyr noe.
+
+### Hva bør stå på en handleliste til barnebursdag?
+
+Typiske punkter er pølser, lomper, bursdagskake, saft eller annen drikke, tallerkener, kopper, servietter, ballonger og eventuelt godteposer.
+
+### Er Kakeklar gratis?
+
+Ja. Kakeklar er gratis og krever ingen betaling.
+
+### Trenger jeg å logge inn?
+
+Nei. Kakeklar fungerer uten konto, innlogging eller registrering.
+
+## Lenker
+
+- Hjem: https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/
+- Sitemap: https://barnebursdag.redbay-75e0a43a.norwayeast.azurecontainerapps.io/sitemap.xml

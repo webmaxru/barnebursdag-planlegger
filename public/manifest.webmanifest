@@ -1,7 +1,7 @@
 {
-  "name": "Barnebursdag-planlegger",
-  "short_name": "Bursdag",
-  "description": "Beregn mat, drikke og utstyr til barnebursdag – to enkle glidere.",
+  "name": "Kakeklar",
+  "short_name": "Kakeklar",
+  "description": "Riktig mengde til barnebursdagen – på to glidere.",
   "start_url": "/?source=pwa",
   "id": "/?source=pwa",
   "display": "standalone",

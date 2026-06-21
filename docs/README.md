@@ -1,4 +1,4 @@
-# Barnebursdag-planlegger — Documentation
+# Kakeklar — Documentation
 
 Detailed documentation for the Norwegian kids' birthday party purchase planner.
 

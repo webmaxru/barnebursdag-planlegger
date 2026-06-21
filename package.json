@@ -1,9 +1,9 @@
 {
-  "name": "barnebursdag-planlegger",
+  "name": "kakeklar",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Viral Norwegian kids' birthday party purchase planner – two sliders, instant shopping quantities.",
+  "description": "Kakeklar: Norwegian kids' birthday party purchase planner – two sliders, instant shopping quantities.",
   "engines": { "node": ">=20" },
   "scripts": {
     "dev": "concurrently -k -n SERVER,CLIENT -c blue,magenta \"npm:dev:server\" \"npm:dev:client\"",

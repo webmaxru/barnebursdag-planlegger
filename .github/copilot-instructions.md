@@ -1,4 +1,4 @@
-# Copilot instructions — Barnebursdag-planlegger
+# Copilot instructions — Kakeklar
 
 Guidance for AI agents (and humans) working in this repo. The **Hard-won lessons** section near the
 bottom is the important part: it lists the things that cost the most time during the first build so

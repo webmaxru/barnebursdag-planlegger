@@ -55,5 +55,5 @@ app.use(express.static(DIST, { maxAge: '1h', index: false }));
 app.get('*', (_req, res) => res.sendFile(path.join(DIST, 'index.html')));
 
 app.listen(PORT, () => {
-  console.log(`🎂 Barnebursdag-planlegger kjører på http://0.0.0.0:${PORT}  (kassal: ${KASSAL_API_KEY ? 'på' : 'av'})`);
+  console.log(`🎂 Kakeklar kjører på http://0.0.0.0:${PORT}  (kassal: ${KASSAL_API_KEY ? 'på' : 'av'})`);
 });

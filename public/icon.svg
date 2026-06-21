@@ -1,19 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Bursdagskake">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#FF8FB3"/>
-      <stop offset="1" stop-color="#FF6B9D"/>
-    </linearGradient>
-  </defs>
-  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
-  <ellipse cx="256" cy="404" rx="150" ry="26" fill="#ffffff" opacity="0.85"/>
-  <rect x="136" y="250" width="240" height="150" rx="22" fill="#FFF1D6"/>
-  <path d="M136 272c0-14 11-24 24-24h192c13 0 24 10 24 24v18c-18 0-18 16-36 16s-18-16-36-16-18 16-36 16-18-16-36-16-18 16-36 16-18-16-36-16-18 16-24-16z" fill="#FFFFFF"/>
-  <path d="M136 290c10 0 14 14 30 14s20-14 36-14 20 14 36 14 20-14 36-14 20 14 36 14 20-14 30-14v-8c-18 0-18 16-36 16s-18-16-36-16-18 16-36 16-18-16-36-16-18 16-36 16-18-16-30-16z" fill="#FF8FB3"/>
-  <rect x="246" y="170" width="20" height="84" rx="6" fill="#6CC4E8"/>
-  <path d="M256 120c14 14 18 26 18 36a18 18 0 1 1-36 0c0-10 4-22 18-36z" fill="#FFC93C"/>
-  <path d="M256 150c6 6 8 12 8 17a8 8 0 1 1-16 0c0-5 2-11 8-17z" fill="#FF7A00"/>
-  <g fill="#7AD3A0"><rect x="172" y="320" width="20" height="7" rx="3.5" transform="rotate(25 182 323)"/><rect x="310" y="332" width="20" height="7" rx="3.5" transform="rotate(-20 320 335)"/></g>
-  <g fill="#6CC4E8"><rect x="236" y="350" width="20" height="7" rx="3.5" transform="rotate(-15 246 353)"/></g>
-  <g fill="#FFC93C"><rect x="288" y="360" width="20" height="7" rx="3.5" transform="rotate(20 298 363)"/></g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Kakeklar appikon">
+  <rect width="512" height="512" rx="104" fill="#FF6B9D"/>
+  <path d="M90 126h28M104 112v28" stroke="#FFF8E7" stroke-width="14" stroke-linecap="round" opacity=".85"/>
+  <path d="M405 94h30M420 79v30" stroke="#FFC93C" stroke-width="13" stroke-linecap="round"/>
+  <path d="M88 354h26M101 341v26" stroke="#6CC4E8" stroke-width="12" stroke-linecap="round"/>
+  <rect x="157" y="260" width="198" height="141" rx="30" fill="#FFF8E7"/>
+  <path d="M157 288c0-21 17-38 38-38h122c21 0 38 17 38 38v13c-23 0-23 19-46 19s-23-19-46-19-23 19-46 19-23-19-46-19c-10 0-15 4-14-13z" fill="#fff"/>
+  <path d="M157 313c13 0 18 16 35 16s22-16 40-16 22 16 40 16 22-16 40-16 22 16 43 16v-22c-23 0-23 19-46 19s-23-19-46-19-23 19-46 19-23-19-46-19c-7 0-11 2-14 6z" fill="#E0457E"/>
+  <path d="M157 364h198v7c0 17-13 30-30 30H187c-17 0-30-13-30-30z" fill="#FFE3EF"/>
+  <rect x="240" y="167" width="32" height="90" rx="12" fill="#6CC4E8"/>
+  <path d="M256 95c26 25 34 46 34 63a34 34 0 1 1-68 0c0-17 8-38 34-63z" fill="#FFC93C"/>
+  <path d="M256 133c11 12 15 22 15 30a15 15 0 1 1-30 0c0-8 4-18 15-30z" fill="#FFF8E7"/>
+  <rect x="200" y="349" width="30" height="10" rx="5" fill="#7AD3A0" transform="rotate(19 215 354)"/>
+  <rect x="281" y="350" width="30" height="10" rx="5" fill="#FFC93C" transform="rotate(-17 296 355)"/>
+  <circle cx="367" cy="365" r="69" fill="#7AD3A0"/>
+  <path d="M335 365l23 24 43-55" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
