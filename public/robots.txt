@@ -46,4 +46,4 @@ Allow: /
 User-agent: Meta-ExternalAgent
 Allow: /
 
-Sitemap: https://kakeklar.push.foo/sitemap.xml
+Sitemap: https://kakeklar.no/sitemap.xml

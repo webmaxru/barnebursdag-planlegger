@@ -14,7 +14,7 @@ Detailed documentation for the Norwegian kids' birthday party purchase planner.
 
 ## At a glance
 
-- **Live:** https://kakeklar.push.foo
+- **Live:** https://kakeklar.no
 - **Repo:** https://github.com/webmaxru/barnebursdag-planlegger
 - **Image:** `ghcr.io/webmaxru/barnebursdag-planlegger` (public)
 - **Stack:** Node.js + Express (server) · Vite + React + TypeScript (client) · Kassal.app (prices)

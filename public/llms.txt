@@ -51,5 +51,5 @@ Nei. Kakeklar fungerer uten konto, innlogging eller registrering.
 
 ## Lenker
 
-- Hjem: https://kakeklar.push.foo/
-- Sitemap: https://kakeklar.push.foo/sitemap.xml
+- Hjem: https://kakeklar.no/
+- Sitemap: https://kakeklar.no/sitemap.xml
