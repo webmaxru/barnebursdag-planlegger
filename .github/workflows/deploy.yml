@@ -63,7 +63,6 @@ jobs:
           inlineScript: |
             set -e
             IMAGE="${{ env.IMAGE }}:${{ github.sha }}"
-            COMMON_REGISTRY=(--registry-server ghcr.io --registry-username "${{ github.actor }}" --registry-password "${{ secrets.GITHUB_TOKEN }}")
 
             if az containerapp show -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" >/dev/null 2>&1; then
               echo "Updating existing container app..."
@@ -84,7 +83,6 @@ jobs:
                 --environment "${{ env.CONTAINERAPPS_ENV }}" \
                 --image "$IMAGE" \
                 --target-port 8080 --ingress external \
-                "${COMMON_REGISTRY[@]}" \
                 --secrets kassal-api-key="${{ secrets.KASSAL_API_KEY }}" appinsights-connection-string="${{ secrets.APPINSIGHTS_CONNECTION_STRING }}" \
                 --env-vars KASSAL_API_KEY=secretref:kassal-api-key APPLICATIONINSIGHTS_CONNECTION_STRING=secretref:appinsights-connection-string PORT=8080 \
                 --min-replicas 1 --max-replicas 3 \

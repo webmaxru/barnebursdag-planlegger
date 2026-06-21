@@ -10,6 +10,7 @@ Detailed documentation for the Norwegian kids' birthday party purchase planner.
 | [api.md](api.md) | Server API reference: `/api/health`, `/api/kassal/products` |
 | [development.md](development.md) | Local setup, scripts, env vars, ports, icon generation |
 | [deployment.md](deployment.md) | Docker, GHCR, Azure Container Apps, CI/CD, secrets, troubleshooting |
+| [analytics.md](analytics.md) | Cookieless Application Insights, the no-cookie-banner rationale, event catalog, engagement workbook |
 
 ## At a glance
 

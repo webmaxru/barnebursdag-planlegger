@@ -112,6 +112,25 @@ The Kassal key is an ACA **secret** (`kassal-api-key`) referenced by the env var
 `KASSAL_API_KEY=secretref:kassal-api-key`. Update the secret with `az containerapp secret set` and the
 env var with `--set-env-vars` / `--env-vars`. Ingress target port is **8080** (matches `PORT`).
 
+### 13. GHCR is public → do NOT store registry creds on the Container App
+The image is a **public** GHCR package, so ACA should pull it **anonymously**. Do not configure
+`--registry-server/--registry-username/--registry-password` on the app: those store an **ephemeral
+`GITHUB_TOKEN`** that expires, and once a registry credential is present ACA stops pulling anonymously —
+so the next cold start / new revision fails with `Pending:ImagePullBackOff`. If you ever see that:
+`az containerapp registry remove -n barnebursdag -g rg-barnebursdag --server ghcr.io` (no `--yes` flag —
+it's not supported), then force a fresh revision (`az containerapp update --image …:latest
+--revision-suffix x`). The workflow deliberately does **not** set registry creds.
+
+Also: issuing several `az containerapp` writes back-to-back can hit
+`ConflictingConcurrentWriteNotAllowed` — the deploy serialises (secret set → sleep → retry update).
+
+### 14. Analytics is cookieless on purpose (no consent banner)
+Application Insights is configured cookieless (`disableCookiesUsage`, no session-storage buffer, no
+persistent id) so **no cookie banner is legally required** (EU ePrivacy / ekomloven §3-15). The
+connection string is delivered at runtime via `GET /api/config` (ACA secret
+`appinsights-connection-string`), never bundled, and the SDK is lazy-loaded as a separate chunk. With
+no connection string the app disables analytics gracefully. See `docs/analytics.md`.
+
 ---
 
 ## Where things live
