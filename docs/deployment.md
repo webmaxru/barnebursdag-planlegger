@@ -26,7 +26,14 @@ curl http://localhost:8080/api/health
 
 Trigger: push to `main` (docs/markdown-only changes are ignored via `paths-ignore`) or manual dispatch.
 
-Steps:
+Jobs:
+
+1. **`e2e` gate** — checks out the repo, sets up Node 22, runs `npm ci`, builds with
+   `npm run build`, installs Chromium (`npx playwright install --with-deps chromium`), and
+   runs `npm run test:e2e`.
+2. **`build-and-deploy`** — has `needs: e2e`, so it only starts after the Playwright suite passes.
+
+Deploy steps:
 1. **Log in to GHCR** with `GITHUB_TOKEN` (the workflow has `packages: write`).
 2. **Build & push** `ghcr.io/<owner>/barnebursdag-planlegger:latest` and `:<sha>`.
 3. **Make the GHCR package public** (best-effort `gh api PATCH …/visibility`).

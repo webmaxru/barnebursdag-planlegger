@@ -4,6 +4,7 @@
 
 - **Node.js ≥ 20** (built and tested on **Node 22**). The server uses native `fetch` and `--env-file`, both Node ≥ 20.
 - npm (comes with Node).
+- Optional for end-to-end tests: Playwright's Chromium browser (`npx playwright install chromium`).
 - Optional: Docker, Azure CLI and GitHub CLI for container/deploy work.
 
 ## Install
@@ -43,9 +44,34 @@ npm run start:local  # node --env-file=.env server/index.js  → serves dist/ + 
 | `npm run dev:client` | Vite only (:5173) |
 | `npm run dev:server` | Express only (:8080), watch + `.env` |
 | `npm run build` | production client build → `dist/` |
+| `npm run test:e2e` | Playwright end-to-end suite |
+| `npm run test:e2e:ui` | Playwright UI mode |
 | `npm start` | `node server/index.js` (no `.env`; used by Docker/ACA) |
 | `npm run start:local` | `node --env-file=.env server/index.js` |
 | `npm run icons` | regenerate PWA PNG icons from `public/icon.svg` |
+
+## End-to-end tests (Playwright)
+
+Playwright specs live in `e2e/` (`wizard.spec.ts`, `food-choices.spec.ts`,
+`allergies-adults.spec.ts`, `basics.spec.ts`) and are configured by `playwright.config.ts`.
+
+Run locally:
+
+```bash
+npm run build
+npm run test:e2e
+```
+
+On the first run, install Chromium with:
+
+```bash
+npx playwright install chromium
+```
+
+The suite runs against two projects: **desktop chromium** and **mobile (Pixel 5)**. Its
+`webServer` starts `node server/index.js` on **:8080** and serves the prebuilt `dist/`, so
+build before running the tests. The same suite also runs as a CI gate before deployment; see
+[deployment](deployment.md).
 
 ## Environment variables
 

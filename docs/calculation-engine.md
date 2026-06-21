@@ -7,11 +7,15 @@ goods catalog. Nothing here touches the network or the DOM, so it is easy to tes
 
 ```ts
 interface PartyConfig {
-  guests: number;        // 1–40
-  age: number;           // 1–12
+  age: number;        // 1..14
+  guests: number;     // 1..40   (kids)
+  adults: number;     // 0..20   (accompanying adults / "følge")
   type: 'hjemme' | 'barnehage';
-  duration: number;      // hours (advanced)
-  allergies: string[];   // e.g. ['nott','svin']
+  duration: number;   // 1..5
+  allergies: Record<string, number>;
+  mainDish: 'polser' | 'pizza';
+  sausageBread: 'lompe' | 'polsebrod';
+  treatBag: 'godteposer' | 'pinata';
 }
 ```
 
@@ -23,9 +27,25 @@ interface PartyConfig {
 |-----|------|
 | ≤ 4 | `3-4` |
 | 5–6 | `5-6` |
-| ≥ 7 | `7-9` |
+| ≥ 7, including 10–14 | `7-9` |
 
 Younger children eat and drink less, so `perChild` quantities are keyed by band.
+
+## Adults / accompanying guests
+
+`guests` means invited kids. `adults` is the number of accompanying adults / "følge" from the wizard
+or advanced controls. For a normal item, the engine counts both kids and adults:
+
+```ts
+kids = allergyScope ? cfg.allergies[scope] : cfg.guests
+adults = (allergyScope || audience === 'kids') ? 0 : cfg.adults
+```
+
+For `perChild`, adults eat at the `7-9` rate:
+
+```ts
+needed = kids * perChild[band] + adults * perChild['7-9']
+```
 
 ## Calculation modes
 
@@ -33,11 +53,11 @@ Each catalog item declares a `mode` that decides how its **needed** quantity is 
 
 | Mode | Formula | Example items |
 |------|---------|---------------|
-| `perChild` | `guests × perChild[band]` | pølser, kake, saft, smågodt |
-| `perGuest` | `guests × (factor ?? 1)` | tallerkener (1.2), servietter (2), godteposer (1) |
-| `perTable` | `ceil(guests / (divisor ?? 8)) × (factor ?? 1)` | bordduk (1 per 8 guests) |
+| `perChild` | `kids × perChild[band] + adults × perChild['7-9']` | pølser, kake, saft, smågodt |
+| `perGuest` | `(kids + adults) × (factor ?? 1)` | tallerkener (1.2), servietter (2), godteposer (1) |
+| `perTable` | `ceil((kids + adults) / (divisor ?? 8)) × (factor ?? 1)` | bordduk (1 per 8 guests), condiments |
 | `ageCount` | `age + (growOn ? 1 : 0)` | kakelys (age + 1) |
-| `fixed` | `fixedQty ?? 1` | bursdagskrone, flagg, vimpelrekke |
+| `fixed` | `fixedQty ?? 1` | bursdagskrone, vimpelrekke |
 
 ## Pack rounding (anti-waste, never under-buy)
 
@@ -57,7 +77,19 @@ never round down and run short.
 
 - **Kindergarten mode** (`type === 'barnehage'`) drops every item flagged `homeOnly: true` (cake, candy, brus, snacks) and shows a Helsedirektoratet note suggesting fruit + a birthday crown instead.
 - **Zero needs are skipped.** e.g. `brus` has `perChild { '3-4': 0, '5-6': 0, '7-9': 1 }`, so it only appears for ages 7+.
-- **Allergy notes.** If the selected allergies intersect an item's `allergyTags`, its `altNote` is shown (e.g. "Bytt til kyllingpølse for halal / uten svin"). Allergies annotate; they do not change the math.
+- **Allergy notes.** If the selected allergies intersect an item's `allergyTags`, its `altNote` is shown (e.g. "Bytt til kyllingpølse for halal / uten svin"). When an item is scoped to an allergy, its kids count comes from `allergies[scope]`; otherwise allergy counts annotate and do not change the math.
+
+## Food choices & gating (`showIf` / `audience`)
+
+The wizard and advanced controls set `mainDish`, `sausageBread`, and `treatBag`. Catalog items can use
+`showIf` to appear only when every listed config field matches, so pølser, minipizza, lomper,
+pølsebrød, condiments, godteposer, and pinata are all ordinary catalog rows rather than engine
+branches. If `showIf` does not match, `computeLineItem` returns `null` and the item is hidden.
+
+`audience` controls whether adults are included in population math:
+
+- `audience: 'all'` (default) means kids and adults consume the item.
+- `audience: 'kids'` excludes adults, used for godteposer, candy, balloons, and premier.
 
 ## Output
 

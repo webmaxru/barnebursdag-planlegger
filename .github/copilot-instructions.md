@@ -6,12 +6,14 @@ the next change ships smoothly.
 
 ## What this is
 
-A Norwegian kids' birthday party (*barnebursdag*) purchase planner. Two sliders (guests + child's age)
-→ an age-aware shopping list (food, drink, tableware, decorations) + a printable checklist. Mobile-first,
-no login, Norwegian (Bokmål) UI.
+A Norwegian kids' birthday party (*barnebursdag*) purchase planner. A **3-step mobile wizard**
+(`src/components/Wizard.tsx`) — age/guests/adults → allergies → food choices — produces an age-aware
+shopping list (food, drink, tableware, decorations) + a printable checklist. The slider screen
+(`Controls.tsx`) is the **advanced mode** (reached via "Hopp over"); after the wizard the app **leads
+with the result** (Handleliste). Mobile-first, no login, Norwegian (Bokmål) UI.
 
 - **Server:** Node.js + Express 4 (ESM), `server/index.js` — serves the built SPA + `/api/health` + a Kassal.app price proxy.
-- **Client:** Vite + React 18 + TypeScript in `src/`. All party math runs client-side (`src/lib/engine.ts`).
+- **Client:** Vite + React 18 + TypeScript in `src/`. Wizard-first (`Wizard.tsx`) + advanced `Controls.tsx`. All party math runs client-side (`src/lib/engine.ts`).
 - **Data, not code:** the goods catalog (`src/lib/catalog.ts`) is generic data; the engine evaluates each item's `mode`. Users edit it live (`ConfigEditor.tsx`), persisted in `localStorage`.
 - **Ship:** multi-stage `Dockerfile` → GHCR (public) → Azure Container Apps via `.github/workflows/deploy.yml`.
 
@@ -23,6 +25,8 @@ Full docs in [`/docs`](../docs/README.md).
 - **Mobile-first.** Big touch targets (≥40px), sticky bottom action bar, hand-written CSS in `src/styles.css` (no UI framework). Anything that must not print gets the `no-print` class; verify `@media print`.
 - **Keep the server stateless.** No DB. State = URL query (`?gjester=…&alder=…`) + optional custom catalog in `localStorage`.
 - **Catalog changes:** bump `CATALOG_VERSION` in `catalog.ts` if you change the default catalog's shape (it invalidates stale saved copies). Add new item fields to `ConfigEditor.tsx` so they stay editable.
+- **Two entry modes, one config:** the wizard (`Wizard.tsx`, default) and advanced (`Controls.tsx`) both write the same `PartyConfig` — which now includes `adults`, `mainDish`, `sausageBread`, `treatBag`. Keep them in sync. Catalog items are gated by `showIf` (food/treat choices) and `audience: 'all'|'kids'` decides whether accompanying adults are counted.
+- **E2E is a release gate.** Keep the Playwright specs in `e2e/` green and add tests for new flows — `build-and-deploy` `needs: e2e`, so a red suite blocks the deploy. Run locally with `npm run build && npm run test:e2e`. Stable selectors use `data-testid` (wizard steps, choice cards) + `.row-name` for result items.
 - **Secrets stay server-side / in platform secrets.** Never log secret values; never commit `.env`.
 
 ## Known-good commands
@@ -32,6 +36,7 @@ npm install
 npm run dev          # Vite :5173 + API :8080
 npm run build        # client → dist/
 npm run start:local  # serve dist/ + API with .env on :8080
+npm run build && npm run test:e2e   # Playwright e2e gate (desktop + Pixel 5 mobile)
 docker build -t barnebursdag:test .
 ```
 
@@ -140,9 +145,12 @@ no connection string the app disables analytics gracefully. See `docs/analytics.
 | Calculation logic / modes | `src/lib/engine.ts` |
 | Default goods + version | `src/lib/catalog.ts` |
 | Editable catalog UI | `src/components/ConfigEditor.tsx` |
-| Sliders / toggles | `src/components/Controls.tsx`, `Slider.tsx` |
+| Wizard (3-step onboarding) | `src/components/Wizard.tsx` |
+| Advanced mode (sliders, food/adults choices) | `src/components/Controls.tsx`, `Slider.tsx` |
 | Result list + checklist + price lookup | `src/components/Results.tsx` |
 | URL state + localStorage + import/export | `src/lib/store.ts` |
 | Server (static + health + Kassal proxy) | `server/index.js` |
-| CI/CD | `.github/workflows/deploy.yml` |
+| CI/CD (e2e gate → build → deploy) | `.github/workflows/deploy.yml` |
+| E2E tests | `e2e/`, `playwright.config.ts` |
+| Engagement workbook (IaC) | `infra/` |
 | Docs | `docs/` |

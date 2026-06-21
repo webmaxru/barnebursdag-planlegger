@@ -50,6 +50,10 @@ graph LR
 | Event | Fires when | Properties |
 |-------|-----------|------------|
 | *(pageView)* | App initialises | name `Kakeklar` |
+| `wizard_started` | Wizard starts | – |
+| `wizard_step` | Wizard step changes | `step` |
+| `wizard_completed` | Wizard completes | – |
+| `wizard_skipped` | Wizard is skipped | – |
 | `party_configured` | 1.2 s after guests/age/type/duration change (debounced) | `guests`, `age`, `partyType`, `durationHours` |
 | `party_type_changed` | Home ↔ kindergarten toggle | `type` |
 | `allergy_changed` | An allergy "antall barn" slider changes | `allergy`, `count` |
