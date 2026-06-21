@@ -73,6 +73,10 @@ The suite runs against two projects: **desktop chromium** and **mobile (Pixel 5)
 build before running the tests. The same suite also runs as a CI gate before deployment; see
 [deployment](deployment.md).
 
+Food-choice coverage now exercises the bread ratio slider (`data-testid="bread-ratio"`) and the
+optional pinata toggle (`data-testid="toggle-pinata"`). The old `choice-bread-*` and `choice-treat-*`
+cards/selectors are no longer part of the wizard flow.
+
 ## Environment variables
 
 | Var | Used by | Notes |

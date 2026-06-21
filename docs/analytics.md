@@ -56,7 +56,7 @@ graph LR
 | `wizard_skipped` | Wizard is skipped | – |
 | `party_configured` | 1.2 s after guests/age/type/duration change (debounced) | `guests`, `age`, `partyType`, `durationHours` |
 | `party_type_changed` | Home ↔ kindergarten toggle | `type` |
-| `allergy_changed` | An allergy "antall barn" slider changes | `allergy`, `count` |
+| `allergy_changed` | An allergy/restriction "antall personer" slider changes | `allergy`, `count` |
 | `plan_shared` | Del / share | `method` (`webshare`/`clipboard`), `guests`, `age` |
 | `plan_printed` | Skriv ut | `guests`, `age` |
 | `config_opened` | Tilpass opened | – |

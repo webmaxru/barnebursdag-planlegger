@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Slider from './Slider';
 import { suggestedGuests } from '../lib/engine';
-import type { MainDish, PartyConfig, SausageBread, TreatBag } from '../lib/types';
+import type { MainDish, PartyConfig } from '../lib/types';
 import { track } from '../lib/analytics';
 
 const ALLERGIES = [
@@ -79,27 +79,31 @@ export default function Controls({ cfg, onChange }: { cfg: PartyConfig; onChange
         />
         {cfg.mainDish === 'polser' && (
           <>
-            <ChoiceGroup
-              label="Brød"
-              options={[
-                { value: 'lompe', label: 'Lompe', testId: 'choice-bread-lompe' },
-                { value: 'polsebrod', label: 'Pølsebrød', testId: 'choice-bread-polsebrod' }
-              ]}
-              value={cfg.sausageBread}
-              onChange={(sausageBread) => set({ sausageBread })}
-            />
+            <div className="choice-group bread-ratio">
+              <p className="field-label">Brød: lompe og pølsebrød</p>
+              <input
+                type="range" min={0} max={100} step={5} value={cfg.breadRatio}
+                data-testid="bread-ratio" aria-label="Fordeling lompe og pølsebrød"
+                onChange={(e) => set({ breadRatio: Number(e.target.value) })}
+              />
+              <div className="ratio-ends"><span>🫓 Lompe</span><span>Pølsebrød 🥖</span></div>
+              <p className="hint" data-testid="bread-ratio-note">{cfg.breadRatio}% lompe · {100 - cfg.breadRatio}% pølsebrød. Vi kjøper begge deler etter fordelingen – og legger på litt ekstra margin på begge, så ingen går tom.</p>
+            </div>
             <p className="hint">Vi legger til ketchup, sennep og stekt løk automatisk.</p>
           </>
         )}
-        <ChoiceGroup
-          label="Godteri"
-          options={[
-            { value: 'godteposer', emoji: '🍬', label: 'Godteposer', testId: 'choice-treat-godteposer' },
-            { value: 'pinata', emoji: '🪅', label: 'Pinata', testId: 'choice-treat-pinata' }
-          ]}
-          value={cfg.treatBag}
-          onChange={(treatBag) => set({ treatBag })}
-        />
+        <div className="choice-group">
+          <p className="field-label">Godteri</p>
+          <p className="hint">Godteposer er med som standard. Pinata er valgfritt.</p>
+          <button
+            type="button" data-testid="toggle-pinata"
+            className={`choice-card toggle${cfg.pinata ? ' selected' : ''}`}
+            aria-pressed={cfg.pinata}
+            onClick={() => set({ pinata: !cfg.pinata })}
+          >
+            <span aria-hidden>🪅</span><strong>Legg til pinata</strong>
+          </button>
+        </div>
       </div>
 
       <button type="button" className="disclosure" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
@@ -108,16 +112,16 @@ export default function Controls({ cfg, onChange }: { cfg: PartyConfig; onChange
 
       {open && (
         <div className="advanced">
-          <p className="field-label">Allergier – antall barn</p>
+          <p className="field-label">Allergier og matrestriksjoner – antall gjester</p>
           {ALLERGIES.map((a) => (
             <Slider
               key={a.id}
               id={`al-${a.id}`}
               label={a.label}
-              value={Math.min(cfg.allergies[a.id] ?? 0, cfg.guests)}
+              value={Math.min(cfg.allergies[a.id] ?? 0, cfg.guests + cfg.adults)}
               min={0}
-              max={cfg.guests}
-              suffix=" barn"
+              max={cfg.guests + cfg.adults}
+              suffix=" personer"
               onChange={(n) => setAllergy(a.id, n)}
             />
           ))}
@@ -128,7 +132,7 @@ export default function Controls({ cfg, onChange }: { cfg: PartyConfig; onChange
   );
 }
 
-type ChoiceValue = MainDish | SausageBread | TreatBag;
+type ChoiceValue = MainDish;
 
 function ChoiceGroup<T extends ChoiceValue>({
   label,

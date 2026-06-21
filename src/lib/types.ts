@@ -2,8 +2,6 @@ export type Category = 'mat' | 'drikke' | 'servise' | 'pynt' | 'godteri';
 export type AgeBand = '3-4' | '5-6' | '7-9';
 export type CalcMode = 'perChild' | 'perGuest' | 'perTable' | 'ageCount' | 'fixed';
 export type MainDish = 'polser' | 'pizza';
-export type SausageBread = 'lompe' | 'polsebrod';
-export type TreatBag = 'godteposer' | 'pinata';
 
 /**
  * A purchasable item in the configurable goods catalog.
@@ -32,7 +30,8 @@ export interface GoodItem {
   altNote?: string;                      // shown when an allergy filter matches
   kassalSearch?: string;                 // search term for live Kassal.app prices
   audience?: 'all' | 'kids';             // 'all' = kids+adults eat it; 'kids' = kids only
-  showIf?: Partial<{ mainDish: MainDish; sausageBread: SausageBread; treatBag: TreatBag }>;
+  showIf?: Partial<{ mainDish: MainDish; pinata: boolean }>;
+  breadKind?: 'lompe' | 'polsebrod';     // scaled by breadRatio + margin when mainDish==='polser'
   enabled: boolean;
 }
 
@@ -44,8 +43,8 @@ export interface PartyConfig {
   duration: number;                      // 1..5 hours
   allergies: Record<string, number>;
   mainDish: MainDish;
-  sausageBread: SausageBread;
-  treatBag: TreatBag;
+  breadRatio: number;                    // 0..100 = percent that is LOMPE (rest is pølsebrød). Default 50.
+  pinata: boolean;                       // optional add-on; godteposer is always included. Default false.
 }
 
 export interface LineItem {

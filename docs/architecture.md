@@ -26,11 +26,12 @@ graph TD
 
 1. Browser requests `/` → Express returns `dist/index.html` (pre-built, Norwegian `lang="nb"`, OG tags, JSON-LD, PWA manifest link).
 2. The bundled JS boots React into one of three app view states: `'wizard'`, `'app'`, or `'config'`. It starts in `'app'` when the URL has query parameters or `localStorage['kk.wizardDone'] === '1'`; otherwise it starts in `'wizard'`.
-3. The wizard steps are **Hvem feirer?** (age, kids, accompanying adults), **Allergier** (per-allergy "antall barn" sliders), and **Maten** (big choice cards for food/treat options). Finishing or skipping sets `kk.wizardDone='1'`.
+3. The wizard steps are **Hvem feirer?** (age, kids, accompanying adults, plus a note that allergies/restrictions come next), **Allergier og matrestriksjoner** (per-restriction "antall personer" sliders capped at kids + accompanying adults), and **Maten** (pølser vs pizza, lompe/pølsebrød ratio slider, and a "Legg til pinata" toggle; godteposer are included by default for home parties). Finishing or skipping sets `kk.wizardDone='1'`.
 4. The app view leads with the **Handleliste** (`Results`), with advanced `Controls` tucked into the collapsible "Endre svar" section.
-5. Config changes recompute the plan in-memory and update the URL via `history.replaceState`.
-6. Optional "Sjekk pris" calls `/api/kassal/products?search=…`; Express adds the `Authorization: Bearer` header and returns a trimmed product list.
-7. The service worker caches the shell for offline / repeat use.
+5. A thin footer credits "Made in Norway by Maxim Salnikov" (LinkedIn) and links to the GitHub repo.
+6. Config changes recompute the plan in-memory and update the URL via `history.replaceState`.
+7. Optional "Sjekk pris" calls `/api/kassal/products?search=…`; Express adds the `Authorization: Bearer` header and returns a trimmed product list.
+8. The service worker caches the shell for offline / repeat use.
 
 ## Tech stack
 
@@ -89,6 +90,6 @@ infra/                     Workbook IaC
 - **Wizard-first onboarding.** The default mobile flow asks only the high-signal questions first; `Controls` remains available as advanced mode.
 - **Result-first app view.** After the wizard, the app leads with the Handleliste and keeps edits in "Endre svar" so shopping stays front-and-center.
 - **The goods catalog is data, not code paths.** Each item declares a calculation `mode`; the engine is generic, so users can add/edit items without touching the engine. See [configuration.md](configuration.md).
-- **Food choices and adults are catalog data.** `showIf` gates pølser/pizza/bread/treat variants, and `audience` decides whether adults are included in generic item math.
+- **Food choices and adults are catalog data.** `showIf` gates pølser/pizza and the optional pinata, `breadKind` + `breadRatio` split lomper vs pølsebrød, and `audience` decides whether adults are included in generic item math.
 - **Icons are pre-generated and committed.** `sharp` is used only by `scripts/gen-icons.mjs` locally and is intentionally **not** a dependency, so the Alpine Docker build never compiles native binaries.
 - **The Kassal key is server-only.** The browser calls `/api/kassal/...`; the key is read from `process.env` and injected as a Bearer header by Express.

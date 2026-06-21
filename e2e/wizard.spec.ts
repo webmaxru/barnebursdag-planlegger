@@ -28,7 +28,7 @@ test('can complete all wizard steps and see the shopping list', async ({ page })
 
   await page.getByTestId('wizard-next').click();
   await expect(page.getByTestId('wizard-step-2')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Allergier' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Allergier og matrestriksjoner' })).toBeVisible();
 
   await page.getByTestId('wizard-next').click();
   await expect(page.getByTestId('wizard-step-3')).toBeVisible();

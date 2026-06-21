@@ -14,8 +14,8 @@ interface PartyConfig {
   duration: number;   // 1..5
   allergies: Record<string, number>;
   mainDish: 'polser' | 'pizza';
-  sausageBread: 'lompe' | 'polsebrod';
-  treatBag: 'godteposer' | 'pinata';
+  breadRatio: number; // 0..100, percent lompe (default 50)
+  pinata: boolean;    // default false; godteposer are included by default
 }
 ```
 
@@ -34,11 +34,11 @@ Younger children eat and drink less, so `perChild` quantities are keyed by band.
 ## Adults / accompanying guests
 
 `guests` means invited kids. `adults` is the number of accompanying adults / "følge" from the wizard
-or advanced controls. For a normal item, the engine counts both kids and adults:
+or advanced controls. For normal items, the engine counts both kids and adults:
 
 ```ts
-kids = allergyScope ? cfg.allergies[scope] : cfg.guests
-adults = (allergyScope || audience === 'kids') ? 0 : cfg.adults
+kids = cfg.guests
+adults = audience === 'kids' ? 0 : cfg.adults
 ```
 
 For `perChild`, adults eat at the `7-9` rate:
@@ -46,6 +46,10 @@ For `perChild`, adults eat at the `7-9` rate:
 ```ts
 needed = kids * perChild[band] + adults * perChild['7-9']
 ```
+
+Restrictions/allergies are counted for **all participants**, not only children. The wizard labels these
+sliders as "personer" and caps each restriction at `guests + adults`; an `allergyScope` item uses that
+selected participant count for the matching allergy-safe quantity.
 
 ## Calculation modes
 
@@ -77,14 +81,24 @@ never round down and run short.
 
 - **Kindergarten mode** (`type === 'barnehage'`) drops every item flagged `homeOnly: true` (cake, candy, brus, snacks) and shows a Helsedirektoratet note suggesting fruit + a birthday crown instead.
 - **Zero needs are skipped.** e.g. `brus` has `perChild { '3-4': 0, '5-6': 0, '7-9': 1 }`, so it only appears for ages 7+.
-- **Allergy notes.** If the selected allergies intersect an item's `allergyTags`, its `altNote` is shown (e.g. "Bytt til kyllingpølse for halal / uten svin"). When an item is scoped to an allergy, its kids count comes from `allergies[scope]`; otherwise allergy counts annotate and do not change the math.
+- **Allergy notes.** If the selected allergies/restrictions intersect an item's `allergyTags`, its `altNote` is shown (e.g. "Bytt til kyllingpølse for halal / uten svin"). When an item is scoped to an allergy/restriction, its participant count comes from `allergies[scope]`; otherwise restriction counts annotate and do not change the math.
 
 ## Food choices & gating (`showIf` / `audience`)
 
-The wizard and advanced controls set `mainDish`, `sausageBread`, and `treatBag`. Catalog items can use
-`showIf` to appear only when every listed config field matches, so pølser, minipizza, lomper,
-pølsebrød, condiments, godteposer, and pinata are all ordinary catalog rows rather than engine
-branches. If `showIf` does not match, `computeLineItem` returns `null` and the item is hidden.
+The wizard and advanced controls set `mainDish`, `breadRatio`, and `pinata`. Catalog items can use
+`showIf` to appear only when every listed config field matches; `showIf` supports `{ mainDish, pinata }`.
+This keeps pølser, minipizza, condiments, godteposer, and the optional pinata as ordinary catalog rows
+rather than engine branches. If `showIf` does not match, `computeLineItem` returns `null` and the item
+is hidden.
+
+Bread is not an either/or choice. The pølse bread rows declare `breadKind?: 'lompe' | 'polsebrod'`, and
+`breadRatio` is the percent of bread demand assigned to lomper (default `50`). The other share goes to
+pølsebrød. A `BREAD_MARGIN = 0.15` (~15% extra) is added to **both** non-zero bread shares before pack
+rounding so neither bread type runs out. At `breadRatio = 0` only pølsebrød appears; at `100` only
+lomper appear. The URL stores this as `brod=<ratio>` (for example `brod=70`).
+
+Godteposer are included by default for home parties. Pinata is now a separate optional add-on controlled
+by `pinata: boolean` (`pinata=1` in the URL); the old `treatBag`/`pose` state is gone.
 
 `audience` controls whether adults are included in population math:
 

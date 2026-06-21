@@ -31,20 +31,31 @@ function item(page: Page, name: string | RegExp) {
   return page.locator('.row-name').filter({ hasText: name });
 }
 
+async function setRange(page: Page, testId: string, value: number) {
+  await page.getByTestId(testId).evaluate((el, v) => {
+    const input = el as HTMLInputElement;
+    const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')!.set!;
+    setter.call(input, String(v));
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  }, value);
+}
+
 test('default finish shows hot dogs with lomper and condiments', async ({ page }) => {
   await finishDefaultWizard(page);
 
   await expect(item(page, /Pølser$/)).toBeVisible();
   await expect(item(page, /Lomper$/)).toBeVisible();
+  await expect(item(page, /Pølsebrød$/)).toBeVisible();
   await expect(item(page, /Ketchup$/)).toBeVisible();
   await expect(item(page, /Sennep$/)).toBeVisible();
   await expect(item(page, /Stekt l/)).toBeVisible();
   await expect(item(page, /Minipizza/)).toHaveCount(0);
 });
 
-test('choosing pølsebrød replaces lomper', async ({ page }) => {
+test('setting bread ratio to pølsebrød hides lomper', async ({ page }) => {
   await goToWizardStep(page, 3);
-  await page.getByTestId('choice-bread-polsebrod').click();
+  await setRange(page, 'bread-ratio', 0);
 
   await finishWizardFromStep3(page);
 
@@ -63,17 +74,17 @@ test('choosing pizza replaces hot dogs and condiments', async ({ page }) => {
   await expect(item(page, /Ketchup$/)).toHaveCount(0);
 });
 
-test('pinata replaces godteposer while godteposer is the default treat', async ({ page }) => {
+test('pinata is an optional add-on alongside godteposer', async ({ page }) => {
   await finishDefaultWizard(page);
   await expect(item(page, /Godteposer$/)).toBeVisible();
   await expect(item(page, /Pinata/)).toHaveCount(0);
 
   await page.evaluate(() => localStorage.clear());
   await goToWizardStep(page, 3);
-  await page.getByTestId('choice-treat-pinata').click();
+  await page.getByTestId('toggle-pinata').click();
 
   await finishWizardFromStep3(page);
 
+  await expect(item(page, /Godteposer$/)).toBeVisible();
   await expect(item(page, /Pinata/)).toBeVisible();
-  await expect(item(page, /Godteposer$/)).toHaveCount(0);
 });

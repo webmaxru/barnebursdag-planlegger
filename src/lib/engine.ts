@@ -1,5 +1,7 @@
 import type { AgeBand, Category, GoodItem, LineItem, PartyConfig } from './types';
 
+const BREAD_MARGIN = 0.15; // extra buffer added to BOTH lompe and pølsebrød so neither runs out
+
 export const CATEGORY_ORDER: Category[] = ['mat', 'drikke', 'servise', 'pynt', 'godteri'];
 
 export const CATEGORY_LABEL: Record<Category, string> = {
@@ -64,6 +66,12 @@ export function computeLineItem(item: GoodItem, cfg: PartyConfig): LineItem | nu
       needed = item.fixedQty ?? 1;
       break;
   }
+  if (item.breadKind) {
+    if (cfg.mainDish !== 'polser') return null;
+    const lompeShare = cfg.breadRatio / 100;
+    const share = item.breadKind === 'lompe' ? lompeShare : 1 - lompeShare;
+    needed = needed * share * (1 + BREAD_MARGIN);
+  }
   if (needed <= 0) return null;
 
   const continuous = CONTINUOUS.has(item.unit.toLowerCase());
@@ -86,7 +94,7 @@ export function computeLineItem(item: GoodItem, cfg: PartyConfig): LineItem | nu
 
   const notes: string[] = [];
   if (item.allergyScope) {
-    notes.push(`Trygt for ${kids} barn (${ALLERGY_LABEL[item.allergyScope] ?? item.allergyScope})`);
+    notes.push(`Trygt for ${kids} gjester (${ALLERGY_LABEL[item.allergyScope] ?? item.allergyScope})`);
   }
   if (item.altNote && item.allergyTags?.some((tag) => (cfg.allergies[tag] ?? 0) > 0)) {
     notes.push(item.altNote);

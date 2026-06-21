@@ -7,10 +7,12 @@ the next change ships smoothly.
 ## What this is
 
 A Norwegian kids' birthday party (*barnebursdag*) purchase planner. A **3-step mobile wizard**
-(`src/components/Wizard.tsx`) — age/guests/adults → allergies → food choices — produces an age-aware
-shopping list (food, drink, tableware, decorations) + a printable checklist. The slider screen
+(`src/components/Wizard.tsx`) — age/guests/adults (with a note that restrictions come next) →
+allergies and food restrictions → food choices —
+produces an age-aware shopping list (food, drink, tableware, decorations) + a printable checklist. The slider screen
 (`Controls.tsx`) is the **advanced mode** (reached via "Hopp over"); after the wizard the app **leads
-with the result** (Handleliste). Mobile-first, no login, Norwegian (Bokmål) UI.
+with the result** (Handleliste). Mobile-first, no login, Norwegian (Bokmål) UI, with a thin footer
+crediting Maxim Salnikov and linking to the GitHub repo.
 
 - **Server:** Node.js + Express 4 (ESM), `server/index.js` — serves the built SPA + `/api/health` + a Kassal.app price proxy.
 - **Client:** Vite + React 18 + TypeScript in `src/`. Wizard-first (`Wizard.tsx`) + advanced `Controls.tsx`. All party math runs client-side (`src/lib/engine.ts`).
@@ -23,10 +25,10 @@ Full docs in [`/docs`](../docs/README.md).
 
 - **UI text is Norwegian Bokmål.** Keep new strings in nb. Numbers via `Intl.NumberFormat('nb-NO')` (`src/lib/format.ts`).
 - **Mobile-first.** Big touch targets (≥40px), sticky bottom action bar, hand-written CSS in `src/styles.css` (no UI framework). Anything that must not print gets the `no-print` class; verify `@media print`.
-- **Keep the server stateless.** No DB. State = URL query (`?gjester=…&alder=…`) + optional custom catalog in `localStorage`.
+- **Keep the server stateless.** No DB. State = URL query (`?gjester=…&alder=…&brod=70&pinata=1`) + optional custom catalog in `localStorage`.
 - **Catalog changes:** bump `CATALOG_VERSION` in `catalog.ts` if you change the default catalog's shape (it invalidates stale saved copies). Add new item fields to `ConfigEditor.tsx` so they stay editable.
-- **Two entry modes, one config:** the wizard (`Wizard.tsx`, default) and advanced (`Controls.tsx`) both write the same `PartyConfig` — which now includes `adults`, `mainDish`, `sausageBread`, `treatBag`. Keep them in sync. Catalog items are gated by `showIf` (food/treat choices) and `audience: 'all'|'kids'` decides whether accompanying adults are counted.
-- **E2E is a release gate.** Keep the Playwright specs in `e2e/` green and add tests for new flows — `build-and-deploy` `needs: e2e`, so a red suite blocks the deploy. Run locally with `npm run build && npm run test:e2e`. Stable selectors use `data-testid` (wizard steps, choice cards) + `.row-name` for result items.
+- **Two entry modes, one config:** the wizard (`Wizard.tsx`, default) and advanced (`Controls.tsx`) both write the same `PartyConfig` — which now includes `adults`, `mainDish`, `breadRatio` (0–100 percent lompe), and `pinata` (optional add-on; godteposer default). Keep them in sync. Catalog items are gated by `showIf` (`mainDish`, `pinata`), `breadKind` splits lomper/pølsebrød, and `audience: 'all'|'kids'` decides whether accompanying adults are counted.
+- **E2E is a release gate.** Keep the Playwright specs in `e2e/` green and add tests for new flows — `build-and-deploy` `needs: e2e`, so a red suite blocks the deploy. Run locally with `npm run build && npm run test:e2e`. Stable selectors use `data-testid` (wizard steps, `bread-ratio`, `toggle-pinata`) + `.row-name` for result items.
 - **Secrets stay server-side / in platform secrets.** Never log secret values; never commit `.env`.
 
 ## Known-good commands

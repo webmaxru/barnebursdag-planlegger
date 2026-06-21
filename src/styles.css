@@ -390,3 +390,8 @@ input[type='range']::-moz-range-thumb {
 .edit-block { margin: 10px 0 4px; }
 .edit-toggle { width: 100%; text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; font-weight: 700; color: var(--ink); cursor: pointer; }
 .edit-toggle:active { background: var(--pink-l); }
+.foot-credit { margin-top: 6px; font-size: 0.78rem; }
+.foot-credit a { color: inherit; text-decoration: underline; }
+.bread-ratio .ratio-ends { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+.bread-ratio input[type='range'] { width: 100%; }
+.choice-card.toggle { width: 100%; justify-content: flex-start; }

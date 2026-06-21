@@ -1,7 +1,7 @@
 import type { GoodItem } from './types';
 
 /** Bump when the default catalog shape/content changes (invalidates saved copies). */
-export const CATALOG_VERSION = 4;
+export const CATALOG_VERSION = 5;
 
 /**
  * Default Norwegian barnebursdag goods catalog.
@@ -21,13 +21,13 @@ export const DEFAULT_CATALOG: GoodItem[] = [
     id: 'lomper', name: 'Lomper', emoji: '🫓', category: 'mat', unit: 'stk',
     mode: 'perChild', perChild: { '3-4': 1.5, '5-6': 2, '7-9': 2.5 },
     packSize: 8, packUnit: 'pakke (8 stk)', priceMinNok: 20, priceMaxNok: 30,
-    kassalSearch: 'lomper', showIf: { mainDish: 'polser', sausageBread: 'lompe' }, enabled: true
+    kassalSearch: 'lomper', showIf: { mainDish: 'polser' }, breadKind: 'lompe', enabled: true
   },
   {
     id: 'polsebrod', name: 'Pølsebrød', emoji: '🥖', category: 'mat', unit: 'stk',
     mode: 'perChild', perChild: { '3-4': 1.5, '5-6': 2, '7-9': 2.5 },
     packSize: 8, packUnit: 'pakke (8 stk)', priceMinNok: 25, priceMaxNok: 35,
-    kassalSearch: 'pølsebrød', showIf: { mainDish: 'polser', sausageBread: 'polsebrod' }, enabled: true
+    kassalSearch: 'pølsebrød', showIf: { mainDish: 'polser' }, breadKind: 'polsebrod', enabled: true
   },
   {
     id: 'pizza', name: 'Minipizza', emoji: '🍕', category: 'mat', unit: 'stk',
@@ -176,7 +176,7 @@ export const DEFAULT_CATALOG: GoodItem[] = [
     id: 'godtepose', name: 'Godteposer', emoji: '🍬', category: 'godteri', unit: 'stk',
     mode: 'perGuest', factor: 1, packSize: 6, packUnit: 'pakke (6 stk)',
     priceMinNok: 29, priceMaxNok: 59, homeOnly: true, kassalSearch: 'godteposer',
-    audience: 'kids', showIf: { treatBag: 'godteposer' }, enabled: true
+    audience: 'kids', enabled: true
   },
   {
     id: 'smagodt', name: 'Smågodt (til poser)', emoji: '🍭', category: 'godteri', unit: 'g',
@@ -200,6 +200,6 @@ export const DEFAULT_CATALOG: GoodItem[] = [
     id: 'pinata', name: 'Pinata med godteri', emoji: '🪅', category: 'godteri', unit: 'stk',
     mode: 'fixed', fixedQty: 1, packUnit: 'til festen',
     priceMinNok: 99, priceMaxNok: 199, kassalSearch: 'pinata',
-    showIf: { treatBag: 'pinata' }, audience: 'kids', enabled: true
+    showIf: { pinata: true }, audience: 'kids', enabled: true
   }
 ];

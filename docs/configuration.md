@@ -20,10 +20,10 @@ interface GoodItem {
   growOn?: boolean;           // mode 'ageCount' adds +1
   fixedQty?: number;          // mode 'fixed' (default 1)
   audience?: 'all' | 'kids';  // default 'all'; 'kids' excludes accompanying adults
+  breadKind?: 'lompe' | 'polsebrod'; // pølse bread rows split by PartyConfig.breadRatio
   showIf?: Partial<{
     mainDish: 'polser' | 'pizza';
-    sausageBread: 'lompe' | 'polsebrod';
-    treatBag: 'godteposer' | 'pinata';
+    pinata: boolean;
   }>;                         // item is shown only when every listed config value matches
   packSize?: number;          // round up to whole packs
   packUnit?: string;          // label, e.g. 'pakke (8 stk)'
@@ -31,7 +31,7 @@ interface GoodItem {
   priceMaxNok?: number;
   homeOnly?: boolean;         // hidden in barnehage mode
   allergyTags?: string[];     // e.g. ['svin','gluten','melk']
-  allergyScope?: string;      // allergy-safe item scoped to affected kids
+  allergyScope?: string;      // allergy-safe item scoped to affected people
   altNote?: string;           // shown when an allergy filter matches
   kassalSearch?: string;      // search term for live prices
   enabled: boolean;
@@ -40,7 +40,9 @@ interface GoodItem {
 
 See [calculation-engine.md](calculation-engine.md) for how each `mode` is evaluated.
 
-The wizard sets `mainDish`, `sausageBread`, and `treatBag`; advanced mode (`Controls`) can change them too.
+The wizard sets `mainDish`, `breadRatio` (0–100 percent lompe, default 50), and `pinata` (default
+false); advanced mode (`Controls`) can change them too. Godteposer are included by default for home
+parties, while pinata is a separate optional add-on.
 
 ## Editing in the app (Tilpass)
 
@@ -67,13 +69,13 @@ Changes apply live to the result list and are saved automatically.
 On load, a saved catalog is used **only if** its stored version matches the current `CATALOG_VERSION`;
 otherwise the defaults are returned. This prevents stale custom catalogs from breaking after a schema
 change. **Bump `CATALOG_VERSION` in `catalog.ts` whenever you change the default catalog's shape.**
-The current shipped `CATALOG_VERSION` is **4**.
+The current shipped `CATALOG_VERSION` is **5**.
 
 ## Import / export format
 
 ```json
 {
-  "version": 4,
+  "version": 5,
   "items": [ { "id": "polser", "name": "Pølser", "...": "..." } ]
 }
 ```
@@ -90,7 +92,7 @@ The current shipped `CATALOG_VERSION` is **4**.
 
 | Category | Items |
 |----------|-------|
-| Mat | Pølser, Minipizza, Lomper, Pølsebrød*, Ketchup, Sennep, Stekt løk, Bursdagskake, Frukt, Snacks |
+| Mat | Pølser, Minipizza, Lomper, Pølsebrød, Ketchup, Sennep, Stekt løk, Bursdagskake, Frukt, Snacks |
 | Drikke | Saft, Brus (7+) |
 | Servise | Tallerkener, Kopper, Servietter, Bestikk, Bordduk, Sugerør* |
 | Pynt | Ballonger, Bursdagskrone, Kakelys, Vimpelrekke* |
@@ -98,4 +100,16 @@ The current shipped `CATALOG_VERSION` is **4**.
 
 \* shipped disabled by default (`enabled: false`).
 
-Pølser/minipizza, lomper/pølsebrød, condiments, godteposer, and pinata are gated by the wizard's food choices via `showIf`.
+Pølser/minipizza, condiments, and pinata are gated by the wizard's food choices via `showIf`. Lomper
+and pølsebrød are selected together by `breadRatio`; both appear according to the ratio, with a ~15%
+extra margin applied to each non-zero bread share before pack rounding.
+
+## URL state for food choices
+
+`PartyConfig.sausageBread` and `PartyConfig.treatBag` were replaced by:
+
+- `breadRatio: number` — stored as `brod=<ratio>` (for example `brod=70`). The old `brod=polsebrod`
+  form is gone.
+- `pinata: boolean` — stored as `pinata=1` when enabled.
+
+The old `pose` URL parameter is no longer emitted or read.
