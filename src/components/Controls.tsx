@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Slider from './Slider';
 import { suggestedGuests } from '../lib/engine';
 import type { PartyConfig } from '../lib/types';
+import { track } from '../lib/analytics';
 
 const ALLERGIES = [
   { id: 'nott', label: 'Nøttefri' },
@@ -14,8 +15,11 @@ const ALLERGIES = [
 export default function Controls({ cfg, onChange }: { cfg: PartyConfig; onChange: (c: PartyConfig) => void }) {
   const [open, setOpen] = useState(false);
   const set = (patch: Partial<PartyConfig>) => onChange({ ...cfg, ...patch });
-  const toggleAllergy = (id: string) =>
-    set({ allergies: cfg.allergies.includes(id) ? cfg.allergies.filter((a) => a !== id) : [...cfg.allergies, id] });
+  const toggleAllergy = (id: string) => {
+    const on = !cfg.allergies.includes(id);
+    set({ allergies: on ? [...cfg.allergies, id] : cfg.allergies.filter((a) => a !== id) });
+    track('allergy_toggled', { allergy: id, on });
+  };
   const suggested = suggestedGuests(cfg.age);
 
   return (
@@ -31,7 +35,7 @@ export default function Controls({ cfg, onChange }: { cfg: PartyConfig; onChange
         hint={`Vanlig regel: «alder + 1» = ${suggested} gjester`}
       />
       {cfg.guests !== suggested && (
-        <button type="button" className="link-btn" onClick={() => set({ guests: suggested })}>
+        <button type="button" className="link-btn" onClick={() => { set({ guests: suggested }); track('suggested_guests_used', { age: cfg.age, guests: suggested }); }}>
           Bruk foreslått antall ({suggested})
         </button>
       )}
@@ -48,10 +52,10 @@ export default function Controls({ cfg, onChange }: { cfg: PartyConfig; onChange
       />
 
       <div className="segmented" role="tablist" aria-label="Type feiring">
-        <button role="tab" aria-selected={cfg.type === 'hjemme'} className={cfg.type === 'hjemme' ? 'active' : ''} onClick={() => set({ type: 'hjemme' })}>
+        <button role="tab" aria-selected={cfg.type === 'hjemme'} className={cfg.type === 'hjemme' ? 'active' : ''} onClick={() => { set({ type: 'hjemme' }); track('party_type_changed', { type: 'hjemme' }); }}>
           🏠 Hjemmefest
         </button>
-        <button role="tab" aria-selected={cfg.type === 'barnehage'} className={cfg.type === 'barnehage' ? 'active' : ''} onClick={() => set({ type: 'barnehage' })}>
+        <button role="tab" aria-selected={cfg.type === 'barnehage'} className={cfg.type === 'barnehage' ? 'active' : ''} onClick={() => { set({ type: 'barnehage' }); track('party_type_changed', { type: 'barnehage' }); }}>
           🧸 Barnehage
         </button>
       </div>

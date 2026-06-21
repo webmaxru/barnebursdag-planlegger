@@ -5,6 +5,7 @@ import ConfigEditor from './components/ConfigEditor';
 import { computePlan } from './lib/engine';
 import { loadCatalog, saveCatalog, parseConfig, writeConfig, shareUrl } from './lib/store';
 import type { GoodItem, PartyConfig } from './lib/types';
+import { track } from './lib/analytics';
 
 export default function App() {
   const [catalog, setCatalog] = useState<GoodItem[]>(() => loadCatalog());
@@ -24,6 +25,19 @@ export default function App() {
     return () => window.removeEventListener('beforeprint', open);
   }, []);
 
+  // Debounced engagement event when the party is (re)configured.
+  useEffect(() => {
+    const t = window.setTimeout(() => {
+      track('party_configured', {
+        guests: cfg.guests,
+        age: cfg.age,
+        partyType: cfg.type,
+        durationHours: cfg.duration
+      });
+    }, 1200);
+    return () => window.clearTimeout(t);
+  }, [cfg]);
+
   const showToast = (m: string) => {
     setToast(m);
     window.setTimeout(() => setToast(''), 2200);
@@ -37,14 +51,27 @@ export default function App() {
       url
     };
     try {
-      if (navigator.share) await navigator.share(data);
-      else {
+      if (navigator.share) {
+        await navigator.share(data);
+        track('plan_shared', { method: 'webshare', guests: cfg.guests, age: cfg.age });
+      } else {
         await navigator.clipboard.writeText(url);
         showToast('Lenke kopiert ✓');
+        track('plan_shared', { method: 'clipboard', guests: cfg.guests, age: cfg.age });
       }
     } catch {
       /* user cancelled share */
     }
+  };
+
+  const printPlan = () => {
+    track('plan_printed', { guests: cfg.guests, age: cfg.age });
+    window.print();
+  };
+
+  const openConfig = () => {
+    track('config_opened');
+    setView('config');
   };
 
   return (
@@ -57,7 +84,7 @@ export default function App() {
       {view === 'plan' ? (
         <>
           <Controls cfg={cfg} onChange={setCfg} />
-          <Results plan={plan} cfg={cfg} onOpenConfig={() => setView('config')} />
+          <Results plan={plan} cfg={cfg} onOpenConfig={openConfig} />
         </>
       ) : (
         <ConfigEditor catalog={catalog} onChange={setCatalog} onClose={() => setView('plan')} />
@@ -70,8 +97,8 @@ export default function App() {
       {view === 'plan' && (
         <nav className="actionbar no-print" aria-label="Handlinger">
           <button onClick={share} className="primary">📤 Del</button>
-          <button onClick={() => window.print()} className="ghost">🖨️ Skriv ut</button>
-          <button onClick={() => setView('config')} className="ghost">⚙️ Tilpass</button>
+          <button onClick={printPlan} className="ghost">🖨️ Skriv ut</button>
+          <button onClick={openConfig} className="ghost">⚙️ Tilpass</button>
         </nav>
       )}
 

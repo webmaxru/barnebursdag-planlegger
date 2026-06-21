@@ -7,6 +7,7 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 const KASSAL_API_KEY = process.env.KASSAL_API_KEY || '';
+const APPINSIGHTS_CONNECTION_STRING = process.env.APPLICATIONINSIGHTS_CONNECTION_STRING || '';
 const DIST = path.join(__dirname, '..', 'dist');
 
 app.disable('x-powered-by');
@@ -14,7 +15,15 @@ app.use(express.json({ limit: '256kb' }));
 
 // --- Health probe (used by Azure Container Apps) ---
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', kassal: Boolean(KASSAL_API_KEY), time: new Date().toISOString() });
+  res.json({ status: 'ok', kassal: Boolean(KASSAL_API_KEY), analytics: Boolean(APPINSIGHTS_CONNECTION_STRING), time: new Date().toISOString() });
+});
+
+// --- Runtime client config (cookieless Application Insights connection string) ---
+app.get('/api/config', (_req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.json({
+    appInsights: APPINSIGHTS_CONNECTION_STRING ? { connectionString: APPINSIGHTS_CONNECTION_STRING } : null
+  });
 });
 
 // --- Kassal.app price proxy (keeps the API key server-side) ---

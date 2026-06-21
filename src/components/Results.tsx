@@ -5,6 +5,7 @@ import type { PartyConfig, LineItem } from '../lib/types';
 import { krRange, n1, plural } from '../lib/format';
 import { fetchPrices, type KassalProduct } from '../lib/kassal';
 import { CHECKLIST, TIMELINE, BARNEHAGE_NOTE } from '../lib/checklist';
+import { track } from '../lib/analytics';
 
 function PriceLookup({ search }: { search: string }) {
   const [state, setState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
@@ -13,6 +14,7 @@ function PriceLookup({ search }: { search: string }) {
 
   const run = async () => {
     setState('loading');
+    track('price_lookup', { item: search });
     try {
       const r = await fetchPrices(search, 3);
       setProducts(r.products);

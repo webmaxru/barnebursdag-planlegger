@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import type { GoodItem, Category, AgeBand, CalcMode } from '../lib/types';
 import { CATEGORY_ORDER, CATEGORY_LABEL } from '../lib/engine';
 import { resetCatalog, exportCatalog, importCatalog } from '../lib/store';
+import { track } from '../lib/analytics';
 
 const MODES: { id: CalcMode; label: string }[] = [
   { id: 'perChild', label: 'Per barn (etter alder)' },
@@ -36,7 +37,10 @@ export default function ConfigEditor({
         it.id === id ? { ...it, perChild: { ...(it.perChild ?? { '3-4': 0, '5-6': 0, '7-9': 0 }), [band]: val } } : it
       )
     );
-  const remove = (id: string) => onChange(catalog.filter((it) => it.id !== id));
+  const remove = (id: string) => {
+    onChange(catalog.filter((it) => it.id !== id));
+    track('config_changed', { action: 'remove' });
+  };
   const addItem = () => {
     const id = 'ny-' + Date.now().toString(36);
     onChange([
@@ -44,6 +48,7 @@ export default function ConfigEditor({
       { id, name: 'Ny vare', emoji: '🛒', category: 'mat', unit: 'stk', mode: 'perGuest', factor: 1, enabled: true }
     ]);
     setMsg('La til en ny vare nederst.');
+    track('config_changed', { action: 'add' });
   };
 
   const doExport = () => {
@@ -53,11 +58,13 @@ export default function ConfigEditor({
     a.download = 'barnebursdag-varer.json';
     a.click();
     URL.revokeObjectURL(a.href);
+    track('config_changed', { action: 'export' });
   };
   const doImport = async (f: File) => {
     try {
       onChange(importCatalog(await f.text()));
       setMsg('Importert ✓');
+      track('config_changed', { action: 'import' });
     } catch (e) {
       setMsg('Feil: ' + (e instanceof Error ? e.message : 'kunne ikke lese fil'));
     }
@@ -83,6 +90,7 @@ export default function ConfigEditor({
             if (confirm('Tilbakestille alle varer til standard?')) {
               onChange(resetCatalog());
               setMsg('Tilbakestilt til standardliste.');
+              track('config_changed', { action: 'reset' });
             }
           }}
         >

@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
+import { initAnalytics, track } from './lib/analytics';
 import './styles.css';
 
 createRoot(document.getElementById('root')!).render(
@@ -8,6 +9,10 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </React.StrictMode>
 );
+
+// Cookieless analytics — see src/lib/analytics.ts (no consent banner required).
+initAnalytics();
+window.addEventListener('appinstalled', () => track('pwa_installed'));
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
