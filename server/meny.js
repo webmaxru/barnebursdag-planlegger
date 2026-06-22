@@ -137,11 +137,11 @@ async function mapPool(items, concurrency, mapper) {
 }
 
 /**
- * Resolve a list of shopping items to MENY products and create a shared cart.
+ * Resolve a list of shopping items to MENY products (no cart creation).
  * @param {{query:string, quantity:number, name?:string}[]} items
- * @returns {Promise<{url:string,id:string,count:number,matched:object[],unmatched:object[]}>}
+ * @returns {Promise<{cartItems:{ean:string,quantity:number}[],count:number,matched:object[],unmatched:object[]}>}
  */
-export async function buildSharedCart(items) {
+export async function resolveItems(items) {
   const resolved = await mapPool(items, 3, async (item) => {
     try {
       const products = await searchProducts(item.query, 6);
@@ -186,7 +186,23 @@ export async function buildSharedCart(items) {
   }
 
   const cartItems = [...byEan.entries()].map(([ean, quantity]) => ({ ean, quantity }));
-  const id = await createSharedCart(cartItems);
+  return { cartItems, count: matched.length, matched, unmatched };
+}
 
-  return { url: `${SHARE_LINK_BASE}${id}`, id, count: matched.length, matched, unmatched };
+/**
+ * Full server-side mimic: resolve items AND create the shared cart in one call.
+ *
+ * NOTE: the create endpoint rate-limits **per source IP** (~1/min), so when many
+ * users share one server egress IP this throttles quickly. The production route
+ * therefore only resolves here and lets the browser create the cart from the
+ * user's own IP (see src/lib/meny.ts). This function is kept as the complete,
+ * self-contained protocol reference (e.g. for a CLI / low-volume use).
+ *
+ * @param {{query:string, quantity:number, name?:string}[]} items
+ * @returns {Promise<{url:string,id:string,count:number,matched:object[],unmatched:object[]}>}
+ */
+export async function buildSharedCart(items) {
+  const { cartItems, count, matched, unmatched } = await resolveItems(items);
+  const id = await createSharedCart(cartItems);
+  return { url: `${SHARE_LINK_BASE}${id}`, id, count, matched, unmatched };
 }

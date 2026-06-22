@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildSharedCart } from './meny.js';
+import { resolveItems } from './meny.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -64,8 +64,9 @@ app.get('/api/kassal/products', async (req, res) => {
 });
 
 // --- MENY shared-cart builder (EXPERIMENTAL, see server/meny.js) ---
-// Resolves a shopping list to real MENY products and creates an anonymous
-// shared cart, returning a https://meny.no/delt-handlevogn/<id> link.
+// Resolves a shopping list to real MENY products and returns the cart items.
+// The browser then creates the shared cart from the user's own IP (the create
+// endpoint rate-limits per IP, so it must NOT be funnelled through the server).
 app.post('/api/meny/cart', async (req, res) => {
   const raw = Array.isArray(req.body?.items) ? req.body.items : [];
   const items = raw
@@ -80,7 +81,7 @@ app.post('/api/meny/cart', async (req, res) => {
   if (!items.length) return res.status(400).json({ error: 'Ingen varer å legge i handlevognen.' });
 
   try {
-    const result = await buildSharedCart(items);
+    const result = await resolveItems(items);
     res.set('Cache-Control', 'no-store');
     res.json(result);
   } catch (e) {
@@ -88,7 +89,7 @@ app.post('/api/meny/cart', async (req, res) => {
       return res.status(422).json({ error: 'Fant ingen av varene på MENY.', unmatched: e.unmatched || [] });
     }
     console.error('[meny] /api/meny/cart failed:', e?.status || '', e?.message || e);
-    res.status(502).json({ error: 'Kunne ikke lage MENY-handlevogn akkurat nå.' });
+    res.status(502).json({ error: 'Kunne ikke finne varene på MENY akkurat nå.' });
   }
 });
 

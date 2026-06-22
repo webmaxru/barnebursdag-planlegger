@@ -82,9 +82,10 @@ Verified working before the client was written; the key length is 40 characters.
 
 ## `POST /api/meny/cart`  (experimental)
 
-Builds a shareable **meny.no** shopping cart from the computed list. Gated by `FEATURE_MENY_CART` in
-the UI, but the route itself is always available (it only proxies meny.no's anonymous endpoints — no
-secrets). See [meny-cart.md](meny-cart.md) for the full reverse-engineered protocol.
+Resolves the computed list to real **meny.no** products and returns the cart items. The browser then
+creates the shared cart directly against meny.no's anonymous endpoint (see why below). Gated by
+`FEATURE_MENY_CART` in the UI, but the route itself is always available (it only proxies meny.no's
+anonymous product search — no secrets). See [meny-cart.md](meny-cart.md) for the full protocol.
 
 **Request body**
 ```json
@@ -103,8 +104,7 @@ secrets). See [meny-cart.md](meny-cart.md) for the full reverse-engineered proto
 **200 OK**
 ```json
 {
-  "url": "https://meny.no/delt-handlevogn/b7ead0c8-a378-4f54-9839-5fb6df9a6b25",
-  "id": "b7ead0c8-a378-4f54-9839-5fb6df9a6b25",
+  "cartItems": [ { "ean": "7039610025205", "quantity": 3 }, { "ean": "7311041043356", "quantity": 3 } ],
   "count": 2,
   "matched": [
     { "name": "Pølser", "query": "grillpølse", "ean": "7039610025205", "title": "Grillpølser",
@@ -113,22 +113,26 @@ secrets). See [meny-cart.md](meny-cart.md) for the full reverse-engineered proto
   "unmatched": [ { "name": "Bursdagskrone", "query": "krone" } ]
 }
 ```
+The client POSTs `cartItems` to meny.no and builds `https://meny.no/delt-handlevogn/<id>`.
 
 **Error responses**
 | Status | When |
 |--------|------|
 | `400` | no usable items in the body |
 | `422` | none of the items matched a MENY product (`{ error, unmatched }`) |
-| `502` | meny.no/NGData unreachable or the shared-cart create failed |
+| `502` | meny.no/NGData product search unreachable |
 
 ### Upstream contract (for reference)
 
 ```
-GET  https://platform-rest-prod.ngdata.no/api/products/1300/<gln>/?search=<term>&page=1&page_size=<n>&fieldset=maximal
-POST https://api.sylinder.no/handlevogn/delehandlevogn/v1/api/      body: [{ "ean": "…", "quantity": 2 }]  -> { "id": "…" }
+GET  https://platform-rest-prod.ngdata.no/api/products/1300/<gln>/?search=<term>&page=1&page_size=<n>&fieldset=maximal   (server-side)
+POST https://api.sylinder.no/handlevogn/delehandlevogn/v1/api/   body: [{ "ean": "…", "quantity": 2 }]  -> { "id": "…" }   (browser-side)
 ```
-Both are reachable anonymously (no Trumf login). `1300` is the MENY chain id; `gln` is a MENY store
-(`MENY_STORE_GLN`, default `7080001150488`). The share link is `https://meny.no/delt-handlevogn/<id>`.
+Both are anonymous (no Trumf login). `1300` is the MENY chain id; `gln` is a MENY store
+(`MENY_STORE_GLN`, default `7080001150488`). The shared link is `https://meny.no/delt-handlevogn/<id>`.
+**The create call is made from the browser** because that endpoint rate-limits **per source IP** (~1/min)
+— routing every user through one server egress IP would throttle it; the browser uses each user's own IP
+(`Access-Control-Allow-Origin: *`, so the cross-origin POST is allowed).
 
 ## Static hosting / SPA fallback
 

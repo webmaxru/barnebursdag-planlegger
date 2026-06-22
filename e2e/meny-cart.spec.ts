@@ -26,13 +26,16 @@ test('MENY cart button appears in preview mode (?meny=1)', async ({ page }) => {
 });
 
 test('MENY cart flow shows a shareable link', async ({ page }) => {
+  // 1) our server resolves the list to MENY products
   await page.route('**/api/meny/cart', (route) =>
     route.fulfill({
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify({
-        url: 'https://meny.no/delt-handlevogn/test-123',
-        id: 'test-123',
+        cartItems: [
+          { ean: '1', quantity: 3 },
+          { ean: '2', quantity: 3 }
+        ],
         count: 2,
         matched: [
           { name: 'Pølser', query: 'grillpølse', ean: '1', title: 'Grillpølser', subtitle: '600g', brand: 'Prior', price: 56.9, quantity: 3 },
@@ -40,6 +43,14 @@ test('MENY cart flow shows a shareable link', async ({ page }) => {
         ],
         unmatched: [{ name: 'Bursdagskrone', query: 'krone' }]
       })
+    })
+  );
+  // 2) the browser creates the shared cart directly against meny.no's endpoint
+  await page.route('**/handlevogn/delehandlevogn/**', (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ id: 'test-123', cart: [] })
     })
   );
 

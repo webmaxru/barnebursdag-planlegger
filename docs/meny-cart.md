@@ -35,15 +35,25 @@ The product search returns rich hits — `ean`, `title`, `subtitle`, `brand`, `p
    otherwise `1` for weight/volume units (`g`, `dl`, …) or `ceil(neededQty)` for countable units,
    clamped to 1–50. Items without `kassalSearch` (e.g. Bursdagskrone) are skipped.
 2. It POSTs `{ items: [{ query, quantity, name }] }` to our own server (`POST /api/meny/cart`).
-3. The server (`server/meny.js`) searches MENY for each term (concurrency 5, one 429 retry), picks the
-   best in-stock hit with an `ean`, **merges duplicate EANs**, creates the shared cart, and returns the
-   link plus `matched` / `unmatched` lists.
-4. `MenyCart.tsx` shows a modal with the shareable link (copy / open / native share) and the matched
+3. The server (`server/meny.js`) searches MENY for each term (concurrency 3, retries with backoff),
+   picks the best in-stock hit with an `ean`, **merges duplicate EANs**, and returns the resolved
+   `cartItems` plus `matched` / `unmatched` lists. **It does not create the cart.**
+4. The **browser** POSTs `cartItems` straight to `https://api.sylinder.no/handlevogn/delehandlevogn/v1/api/`
+   (CORS-open, anonymous) → `{ id }`, and builds `https://meny.no/delt-handlevogn/<id>`.
+5. `MenyCart.tsx` shows a modal with the shareable link (copy / open / native share) and the matched
    products with images and prices.
 
-We proxy through our own server (not the browser) to avoid CORS and to keep item-resolution server-side.
-No secrets are involved — the upstream endpoints are anonymous — so the route is always available even
-though the **UI** is flag-gated.
+### Why the cart is created in the browser, not on the server
+
+The create endpoint **rate-limits per source IP** (~1 cart/minute — it replies
+`429 "Rate limit is exceeded. Try again in N seconds."`). If every user were funnelled through our one
+Azure egress IP, the whole feature would throttle after a single cart. Creating the cart from the
+browser uses **each user's own IP** — exactly how meny.no's own frontend works — and the endpoint sends
+`Access-Control-Allow-Origin: *`, so the cross-origin POST is allowed. Product **search** stays
+server-side (one round-trip, parallelised) because that endpoint tolerates server traffic.
+
+`server/meny.js` also exports `buildSharedCart` (resolve **and** create in one server-side call) as a
+complete protocol reference, but the production route uses `resolveItems` only.
 
 ## Enabling it
 
