@@ -87,6 +87,7 @@ app.post('/api/meny/cart', async (req, res) => {
     if (e?.code === 'NO_MATCHES') {
       return res.status(422).json({ error: 'Fant ingen av varene på MENY.', unmatched: e.unmatched || [] });
     }
+    console.error('[meny] /api/meny/cart failed:', e?.status || '', e?.message || e);
     res.status(502).json({ error: 'Kunne ikke lage MENY-handlevogn akkurat nå.' });
   }
 });

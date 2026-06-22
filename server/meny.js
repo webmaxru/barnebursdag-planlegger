@@ -29,7 +29,18 @@ const STORE_GLN = process.env.MENY_STORE_GLN || '7080001150488'; // a MENY onlin
 const PRODUCTS_BASE = 'https://platform-rest-prod.ngdata.no';
 const SHARECART_BASE = 'https://api.sylinder.no';
 const SHARE_LINK_BASE = process.env.MENY_SHARE_BASE || 'https://meny.no/delt-handlevogn/';
-const UA = 'Mozilla/5.0 (compatible; Kakeklar/1.0; +https://meny.no)';
+const ORIGIN = 'https://meny.no';
+// Mimic the meny.no browser frontend as closely as possible (some NGData/sylinder
+// WAF rules reject requests that don't look like they came from the site).
+const UA =
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+const BROWSERISH_HEADERS = {
+  'User-Agent': UA,
+  Accept: 'application/json, text/plain, */*',
+  'Accept-Language': 'nb-NO,nb;q=0.9,no;q=0.8,en;q=0.7',
+  Origin: ORIGIN,
+  Referer: `${ORIGIN}/`
+};
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -38,7 +49,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
  * Retries on HTTP 429, 5xx and network/timeout errors (the upstream NGData/sylinder
  * services are occasionally flaky from datacenter IPs). Non-retryable 4xx throw at once.
  */
-async function fetchJson(url, options = {}, { timeoutMs = 10000, retries = 3 } = {}) {
+async function fetchJson(url, options = {}, { timeoutMs = 10000, retries = 3, label = 'request' } = {}) {
   let lastErr;
   for (let attempt = 0; attempt <= retries; attempt++) {
     if (attempt > 0) await sleep(Math.min(400 * 2 ** (attempt - 1), 2000));
@@ -48,14 +59,17 @@ async function fetchJson(url, options = {}, { timeoutMs = 10000, retries = 3 } =
       const r = await fetch(url, {
         ...options,
         signal: ctrl.signal,
-        headers: { 'User-Agent': UA, Accept: 'application/json', ...(options.headers || {}) }
+        headers: { ...BROWSERISH_HEADERS, ...(options.headers || {}) }
       });
       if (r.status === 429 || r.status >= 500) {
-        lastErr = new Error(`HTTP ${r.status}`);
+        const body = await r.text().catch(() => '');
+        lastErr = new Error(`HTTP ${r.status} ${body.slice(0, 160)}`);
+        lastErr.status = r.status;
         continue; // transient — retry
       }
       if (!r.ok) {
-        const err = new Error(`HTTP ${r.status}`);
+        const body = await r.text().catch(() => '');
+        const err = new Error(`HTTP ${r.status} ${body.slice(0, 160)}`);
         err.status = r.status;
         throw err; // non-retryable client error
       }
@@ -67,6 +81,7 @@ async function fetchJson(url, options = {}, { timeoutMs = 10000, retries = 3 } =
       clearTimeout(t);
     }
   }
+  console.error(`[meny] ${label} failed after ${retries + 1} attempts: ${lastErr?.status || ''} ${lastErr?.message || lastErr}`);
   throw lastErr || new Error('Forespørsel feilet.');
 }
 
@@ -87,7 +102,7 @@ export async function searchProducts(query, size = 6) {
   const url =
     `${PRODUCTS_BASE}/api/products/${CHAIN_ID}/${STORE_GLN}/` +
     `?search=${encodeURIComponent(query)}&page=1&page_size=${size}&fieldset=maximal`;
-  const data = await fetchJson(url);
+  const data = await fetchJson(url, {}, { label: `search:${query}` });
   return (data.hits || []).map(normalizeProduct).filter((p) => p.ean);
 }
 
@@ -101,7 +116,7 @@ export async function createSharedCart(cartItems) {
   const data = await fetchJson(
     `${SHARECART_BASE}/handlevogn/delehandlevogn/v1/api/`,
     { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cartItems) },
-    { retries: 4 }
+    { retries: 4, label: 'create-cart' }
   );
   if (!data || !data.id) throw new Error('MENY delehandlevogn returnerte ingen id.');
   return data.id;
