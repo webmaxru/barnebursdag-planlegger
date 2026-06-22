@@ -4,6 +4,7 @@ import Results from './components/Results';
 import ConfigEditor from './components/ConfigEditor';
 import Wizard from './components/Wizard';
 import Footer from './components/Footer';
+import Garland from './components/Garland';
 import { computePlan } from './lib/engine';
 import { loadCatalog, saveCatalog, parseConfig, writeConfig, shareUrl } from './lib/store';
 import type { GoodItem, PartyConfig } from './lib/types';
@@ -99,9 +100,11 @@ export default function App() {
   return (
     <div className="app" data-testid="app">
       <header className="hero">
-        <h1><span aria-hidden>🎂</span> Kakeklar</h1>
-        <p>Riktig mengde til barnebursdagen – på to glidere.</p>
-        <button type="button" data-testid="open-wizard" className="mini-btn hero-wizard" onClick={() => setView('wizard')}>
+        <Garland count={16} />
+        <p className="hero-eyebrow">Barnebursdag · uten stress</p>
+        <h1>Kakeklar</h1>
+        <p className="hero-sub">Riktig mengde til barnebursdagen – på to glidere.</p>
+        <button type="button" data-testid="open-wizard" className="hero-wizard" onClick={() => setView('wizard')}>
           ✨ Veiviser
         </button>
       </header>

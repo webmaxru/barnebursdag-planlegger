@@ -41,7 +41,7 @@ await sharp({
     width: 512,
     height: 512,
     channels: 4,
-    background: '#FF6B9D',
+    background: '#D7264A',
   },
 })
   .composite([{ input: maskableIcon, gravity: 'center' }])

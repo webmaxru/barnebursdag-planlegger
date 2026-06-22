@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Slider from './Slider';
 import Footer from './Footer';
+import Garland from './Garland';
 import type { MainDish, PartyConfig } from '../lib/types';
 import { track } from '../lib/analytics';
 
@@ -51,6 +52,7 @@ export default function Wizard({ cfg, onChange, onFinish, onSkip }: Props) {
 
   return (
     <section className="wizard" data-testid="wizard">
+      <Garland count={16} />
       <header className="wizard-head">
         <div className="wizard-title">
           <p className="wizard-eyebrow">Kakeklar</p>
