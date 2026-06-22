@@ -89,7 +89,7 @@ export default function MenyCart({
     <>
       <button
         type="button"
-        className="hero-meny no-print"
+        className="btn btn--accent btn--lg no-print"
         data-testid="meny-cart-button"
         onClick={run}
         disabled={disabled}
@@ -127,7 +127,7 @@ export default function MenyCart({
             {phase === 'error' && (
               <div className="meny-status">
                 <p className="meny-error">⚠️ {error}</p>
-                <button type="button" className="secondary-btn" onClick={run}>
+                <button type="button" className="btn btn--secondary" onClick={run}>
                   Prøv igjen
                 </button>
               </div>
@@ -154,10 +154,10 @@ export default function MenyCart({
                 </div>
 
                 <div className="meny-actions">
-                  <a className="meny-open" href={result.url} target="_blank" rel="noopener noreferrer">
+                  <a className="btn btn--primary" href={result.url} target="_blank" rel="noopener noreferrer">
                     Åpne på MENY ↗
                   </a>
-                  <button type="button" className="secondary-btn" onClick={share}>
+                  <button type="button" className="btn btn--secondary" onClick={share}>
                     📤 Del
                   </button>
                 </div>

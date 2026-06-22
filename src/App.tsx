@@ -112,17 +112,19 @@ export default function App() {
         <p className="hero-eyebrow">Barnebursdag · uten stress</p>
         <h1>Kakeklar</h1>
         <p className="hero-sub">Riktig mengde til barnebursdagen – på to glidere.</p>
-        <button type="button" data-testid="open-wizard" className="hero-wizard" onClick={() => setView('wizard')}>
-          ✨ Veiviser
-        </button>
-        {menyEnabled && view === 'app' && (
-          <MenyCart plan={plan} cfg={cfg} onToast={showToast} />
-        )}
+        <div className="hero-actions">
+          <button type="button" data-testid="open-wizard" className="btn btn--primary btn--lg" onClick={() => setView('wizard')}>
+            ✨ Veiviser
+          </button>
+          {menyEnabled && view === 'app' && (
+            <MenyCart plan={plan} cfg={cfg} onToast={showToast} />
+          )}
+        </div>
       </header>
 
       {view === 'app' ? (
         <>
-          <Results plan={plan} cfg={cfg} onChange={setCfg} onOpenConfig={openConfig} />
+          <Results plan={plan} cfg={cfg} onChange={setCfg} onOpenConfig={openConfig} onShare={share} onPrint={printPlan} />
           <section className="edit-block no-print">
             <button
               type="button"
@@ -141,14 +143,6 @@ export default function App() {
       )}
 
       <Footer />
-
-      {view === 'app' && (
-        <nav className="actionbar no-print" aria-label="Handlinger">
-          <button onClick={share} className="primary">📤 Del</button>
-          <button onClick={printPlan} className="ghost">🖨️ Skriv ut</button>
-          <button onClick={openConfig} className="ghost">⚙️ Tilpass</button>
-        </nav>
-      )}
 
       {toast && <div className="toast" role="status">{toast}</div>}
     </div>

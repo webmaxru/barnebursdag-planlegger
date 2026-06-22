@@ -6,6 +6,7 @@ import { krRange, n1, plural } from '../lib/format';
 import { fetchPrices, type KassalProduct } from '../lib/kassal';
 import { CHECKLIST, TIMELINE, BARNEHAGE_NOTE } from '../lib/checklist';
 import { track } from '../lib/analytics';
+import ActionToolbar from './ActionToolbar';
 
 function PriceLookup({ search }: { search: string }) {
   const [state, setState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
@@ -103,12 +104,16 @@ export default function Results({
   plan,
   cfg,
   onChange,
-  onOpenConfig
+  onOpenConfig,
+  onShare,
+  onPrint
 }: {
   plan: PlanResult;
   cfg: PartyConfig;
   onChange: (cfg: PartyConfig) => void;
   onOpenConfig: () => void;
+  onShare: () => void;
+  onPrint: () => void;
 }) {
   return (
     <section className="results">
@@ -126,6 +131,8 @@ export default function Results({
         )}
       </div>
 
+      <ActionToolbar position="over" onShare={onShare} onPrint={onPrint} onCustomize={onOpenConfig} />
+
       {cfg.type === 'barnehage' && <p className="note-box">{BARNEHAGE_NOTE}</p>}
 
       {plan.groups.map((g) => (
@@ -139,7 +146,7 @@ export default function Results({
         </div>
       ))}
 
-      <button className="secondary-btn no-print" onClick={onOpenConfig}>⚙️ Tilpass varelisten</button>
+      <ActionToolbar position="under" onShare={onShare} onPrint={onPrint} onCustomize={onOpenConfig} />
 
       <div className="block checklist">
         <h2>Sjekkliste</h2>
