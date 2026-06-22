@@ -6,6 +6,10 @@ import { track } from '../lib/analytics';
 
 type Phase = 'idle' | 'loading' | 'done' | 'error';
 
+// Fire the "feature was shown" event once per page load (in-memory only, no device
+// storage) so we can measure reach vs. actual use.
+let exposureTracked = false;
+
 export default function MenyCart({
   plan,
   cfg,
@@ -23,6 +27,15 @@ export default function MenyCart({
   const items = planToMenyItems(plan);
   const disabled = items.length === 0;
 
+  // Exposure: how many people see the "Handle på MENY" button.
+  useEffect(() => {
+    if (!exposureTracked) {
+      exposureTracked = true;
+      track('meny_cart_available', { items: items.length });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const run = async () => {
     setOpen(true);
     setPhase('loading');
@@ -35,9 +48,10 @@ export default function MenyCart({
       setPhase('done');
       track('meny_cart_created', { matched: r.matched.length, unmatched: r.unmatched.length });
     } catch (e) {
+      const reason = (e instanceof Error ? e.message : 'unknown').slice(0, 100);
       setError(e instanceof Error ? e.message : 'Noe gikk galt.');
       setPhase('error');
-      track('meny_cart_error');
+      track('meny_cart_error', { reason });
     }
   };
 
@@ -154,7 +168,13 @@ export default function MenyCart({
                 </div>
 
                 <div className="meny-actions">
-                  <a className="btn btn--primary" href={result.url} target="_blank" rel="noopener noreferrer">
+                  <a
+                    className="btn btn--primary"
+                    href={result.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => track('meny_cart_opened', { matched: result.matched.length })}
+                  >
                     Åpne på MENY ↗
                   </a>
                   <button type="button" className="btn btn--secondary" onClick={share}>

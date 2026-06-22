@@ -241,6 +241,10 @@ try {
         @{
             Title = 'Share method'
             Kql = "customEvents | where name=='plan_shared' | summarize Count=count() by method=tostring(customDimensions.method)"
+        },
+        @{
+            Title = 'MENY shopping cart (feature funnel)'
+            Kql = "customEvents | where name startswith 'meny_cart_' | summarize Count=count() by name | order by Count desc"
         }
     )
 

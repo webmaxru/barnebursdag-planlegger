@@ -62,6 +62,12 @@ graph LR
 | `config_opened` | Tilpass opened | – |
 | `config_changed` | Catalog edited | `action` (`add`/`remove`/`reset`/`import`/`export`) |
 | `price_lookup` | "Sjekk pris" (Kassal) | `item` |
+| `meny_cart_available` | "Handle på MENY" button is shown (once per load) | `items` |
+| `meny_cart_started` | "Handle på MENY" clicked | `items`, `guests`, `age` |
+| `meny_cart_created` | A MENY shared cart was built | `matched`, `unmatched` |
+| `meny_cart_opened` | "Åpne på MENY" clicked (went to meny.no) | `matched` |
+| `meny_cart_shared` | MENY cart link shared / copied | `method` (`webshare`/`clipboard`) |
+| `meny_cart_error` | MENY cart build failed | `reason` |
 | `pwa_installed` | App installed to home screen | – |
 
 Numeric properties are also sent as App Insights *measurements* for aggregation.
@@ -120,6 +126,13 @@ customEvents
 customEvents
 | where name in ('plan_shared','plan_printed','config_opened','price_lookup')
 | summarize count() by name
+
+// MENY shopping-cart feature funnel (how many people use it)
+customEvents
+| where name startswith 'meny_cart_'
+| summarize Count=count(), People=dcount(user_Id) by name
+| order by Count desc
+// available → started → created → opened/shared (user_Id is ephemeral per load → ~visits)
 ```
 
 ## Pull metrics from the terminal
