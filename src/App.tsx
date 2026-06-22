@@ -5,10 +5,12 @@ import ConfigEditor from './components/ConfigEditor';
 import Wizard from './components/Wizard';
 import Footer from './components/Footer';
 import Garland from './components/Garland';
+import MenyCart from './components/MenyCart';
 import { computePlan } from './lib/engine';
 import { loadCatalog, saveCatalog, parseConfig, writeConfig, shareUrl } from './lib/store';
 import type { GoodItem, PartyConfig } from './lib/types';
 import { track } from './lib/analytics';
+import { isMenyEnabled } from './lib/meny';
 
 export default function App() {
   const [catalog, setCatalog] = useState<GoodItem[]>(() => loadCatalog());
@@ -19,11 +21,17 @@ export default function App() {
   });
   const [toast, setToast] = useState('');
   const [editOpen, setEditOpen] = useState(false);
+  const [menyEnabled, setMenyEnabled] = useState(false);
 
   const plan = useMemo(() => computePlan(catalog, cfg), [catalog, cfg]);
 
   useEffect(() => writeConfig(cfg), [cfg]);
   useEffect(() => saveCatalog(catalog), [catalog]);
+
+  // Resolve the experimental "Handle på MENY" feature flag once on mount.
+  useEffect(() => {
+    isMenyEnabled().then(setMenyEnabled).catch(() => setMenyEnabled(false));
+  }, []);
 
   // Expand all <details> when printing so the checklist is fully visible.
   useEffect(() => {
@@ -107,6 +115,9 @@ export default function App() {
         <button type="button" data-testid="open-wizard" className="hero-wizard" onClick={() => setView('wizard')}>
           ✨ Veiviser
         </button>
+        {menyEnabled && view === 'app' && (
+          <MenyCart plan={plan} cfg={cfg} onToast={showToast} />
+        )}
       </header>
 
       {view === 'app' ? (

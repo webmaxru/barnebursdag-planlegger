@@ -7,7 +7,8 @@ Detailed documentation for the Norwegian kids' birthday party purchase planner.
 | [architecture.md](architecture.md) | System design, request flow, components, directory map, design decisions |
 | [calculation-engine.md](calculation-engine.md) | How quantities are computed: modes, age bands, pack rounding, worked examples |
 | [configuration.md](configuration.md) | The fully-configurable goods list: `GoodItem` schema, editor, import/export, persistence |
-| [api.md](api.md) | Server API reference: `/api/health`, `/api/kassal/products` |
+| [api.md](api.md) | Server API reference: `/api/health`, `/api/config`, `/api/kassal/products`, `/api/meny/cart` |
+| [meny-cart.md](meny-cart.md) | **Handle på MENY** (experimental): shareable meny.no cart, the reverse-engineered NGData protocol, the feature flag |
 | [development.md](development.md) | Local setup, scripts, env vars, ports, icon generation, **e2e tests** |
 | [deployment.md](deployment.md) | Docker, GHCR, Azure Container Apps, CI/CD (**e2e gate**), secrets, troubleshooting |
 | [analytics.md](analytics.md) | Cookieless Application Insights, the no-cookie-banner rationale, event catalog, engagement workbook |

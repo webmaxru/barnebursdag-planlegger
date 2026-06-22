@@ -92,7 +92,7 @@ jobs:
               n=0
               until az containerapp update -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
                 --image "$IMAGE" \
-                --set-env-vars KASSAL_API_KEY=secretref:kassal-api-key APPLICATIONINSIGHTS_CONNECTION_STRING=secretref:appinsights-connection-string PORT=8080; do
+                --set-env-vars KASSAL_API_KEY=secretref:kassal-api-key APPLICATIONINSIGHTS_CONNECTION_STRING=secretref:appinsights-connection-string FEATURE_MENY_CART=1 PORT=8080; do
                 n=$((n+1)); if [ "$n" -ge 5 ]; then echo "update failed after $n retries"; exit 1; fi
                 echo "Transient conflict — retry $n in 15s..."; sleep 15
               done
@@ -103,7 +103,7 @@ jobs:
                 --image "$IMAGE" \
                 --target-port 8080 --ingress external \
                 --secrets kassal-api-key="${{ secrets.KASSAL_API_KEY }}" appinsights-connection-string="${{ secrets.APPINSIGHTS_CONNECTION_STRING }}" \
-                --env-vars KASSAL_API_KEY=secretref:kassal-api-key APPLICATIONINSIGHTS_CONNECTION_STRING=secretref:appinsights-connection-string PORT=8080 \
+                --env-vars KASSAL_API_KEY=secretref:kassal-api-key APPLICATIONINSIGHTS_CONNECTION_STRING=secretref:appinsights-connection-string FEATURE_MENY_CART=1 PORT=8080 \
                 --min-replicas 1 --max-replicas 3 \
                 --cpu 0.5 --memory 1.0Gi
             fi

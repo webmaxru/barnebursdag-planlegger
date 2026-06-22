@@ -1,4 +1,5 @@
 import type { ApplicationInsights, IEventTelemetry } from '@microsoft/applicationinsights-web';
+import { getAppConfig } from './config';
 
 /**
  * Privacy-first (cookieless) Azure Application Insights wrapper.
@@ -39,8 +40,7 @@ function splitProps(properties?: Props) {
 /** Initialise analytics. Fetches the connection string from the server at runtime. */
 export async function initAnalytics(): Promise<void> {
   try {
-    const res = await fetch('/api/config', { cache: 'no-store' });
-    const cfg = await res.json().catch(() => null);
+    const cfg = await getAppConfig();
     const connectionString: string | undefined = cfg?.appInsights?.connectionString;
 
     if (!connectionString) {

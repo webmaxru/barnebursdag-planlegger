@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildSharedCart } from './meny.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -8,6 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const KASSAL_API_KEY = process.env.KASSAL_API_KEY || '';
 const APPINSIGHTS_CONNECTION_STRING = process.env.APPLICATIONINSIGHTS_CONNECTION_STRING || '';
+// Experimental "Handle på MENY" (shared cart) feature — hidden unless enabled.
+const FEATURE_MENY_CART = /^(1|true|on|yes)$/i.test(process.env.FEATURE_MENY_CART || '');
 const DIST = path.join(__dirname, '..', 'dist');
 
 app.disable('x-powered-by');
@@ -15,14 +18,15 @@ app.use(express.json({ limit: '256kb' }));
 
 // --- Health probe (used by Azure Container Apps) ---
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', kassal: Boolean(KASSAL_API_KEY), analytics: Boolean(APPINSIGHTS_CONNECTION_STRING), time: new Date().toISOString() });
+  res.json({ status: 'ok', kassal: Boolean(KASSAL_API_KEY), analytics: Boolean(APPINSIGHTS_CONNECTION_STRING), menyCart: FEATURE_MENY_CART, time: new Date().toISOString() });
 });
 
-// --- Runtime client config (cookieless Application Insights connection string) ---
+// --- Runtime client config (cookieless Application Insights connection string + feature flags) ---
 app.get('/api/config', (_req, res) => {
   res.set('Cache-Control', 'no-store');
   res.json({
-    appInsights: APPINSIGHTS_CONNECTION_STRING ? { connectionString: APPINSIGHTS_CONNECTION_STRING } : null
+    appInsights: APPINSIGHTS_CONNECTION_STRING ? { connectionString: APPINSIGHTS_CONNECTION_STRING } : null,
+    features: { menyCart: FEATURE_MENY_CART }
   });
 });
 
@@ -56,6 +60,34 @@ app.get('/api/kassal/products', async (req, res) => {
     res.json({ search, count: products.length, products });
   } catch {
     res.status(502).json({ error: 'Kunne ikke nå Kassal.app.' });
+  }
+});
+
+// --- MENY shared-cart builder (EXPERIMENTAL, see server/meny.js) ---
+// Resolves a shopping list to real MENY products and creates an anonymous
+// shared cart, returning a https://meny.no/delt-handlevogn/<id> link.
+app.post('/api/meny/cart', async (req, res) => {
+  const raw = Array.isArray(req.body?.items) ? req.body.items : [];
+  const items = raw
+    .map((it) => ({
+      query: String(it?.query || '').trim().slice(0, 100),
+      quantity: Math.min(Math.max(parseInt(it?.quantity, 10) || 1, 1), 50),
+      name: String(it?.name || '').trim().slice(0, 80)
+    }))
+    .filter((it) => it.query)
+    .slice(0, 40);
+
+  if (!items.length) return res.status(400).json({ error: 'Ingen varer å legge i handlevognen.' });
+
+  try {
+    const result = await buildSharedCart(items);
+    res.set('Cache-Control', 'no-store');
+    res.json(result);
+  } catch (e) {
+    if (e?.code === 'NO_MATCHES') {
+      return res.status(422).json({ error: 'Fant ingen av varene på MENY.', unmatched: e.unmatched || [] });
+    }
+    res.status(502).json({ error: 'Kunne ikke lage MENY-handlevogn akkurat nå.' });
   }
 });
 
