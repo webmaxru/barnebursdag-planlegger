@@ -104,7 +104,9 @@ anonymous product search — no secrets). See [meny-cart.md](meny-cart.md) for t
 **200 OK**
 ```json
 {
-  "cartItems": [ { "ean": "7039610025205", "quantity": 3 }, { "ean": "7311041043356", "quantity": 3 } ],
+  "cartItems": [
+    { "ean": "7039610025205", "quantity": 3, "product": { "title": "Grillpølser", "ean": "7039610025205", "...": "…full MENY product…" }, "pricePerUnit": 56.9, "linePrice": 170.7, "comparePricePerUnit": null }
+  ],
   "count": 2,
   "matched": [
     { "name": "Pølser", "query": "grillpølse", "ean": "7039610025205", "title": "Grillpølser",
@@ -113,7 +115,9 @@ anonymous product search — no secrets). See [meny-cart.md](meny-cart.md) for t
   "unmatched": [ { "name": "Bursdagskrone", "query": "krone" } ]
 }
 ```
-The client POSTs `cartItems` to meny.no and builds `https://meny.no/delt-handlevogn/<id>`.
+The client POSTs `cartItems` to meny.no and builds `https://meny.no/delt-handlevogn/<id>`. Each cart
+item carries the **full MENY `product` object** — the shared-cart page reads `product.title` etc., so a
+`product: null` item makes meny.no's page throw `Cannot read properties of null (reading 'title')`.
 
 **Error responses**
 | Status | When |
@@ -126,7 +130,8 @@ The client POSTs `cartItems` to meny.no and builds `https://meny.no/delt-handlev
 
 ```
 GET  https://platform-rest-prod.ngdata.no/api/products/1300/<gln>/?search=<term>&page=1&page_size=<n>&fieldset=maximal   (server-side)
-POST https://api.sylinder.no/handlevogn/delehandlevogn/v1/api/   body: [{ "ean": "…", "quantity": 2 }]  -> { "id": "…" }   (browser-side)
+POST https://api.sylinder.no/handlevogn/delehandlevogn/v1/api/   (browser-side)
+     body: [{ "ean": "…", "quantity": 2, "product": { …full MENY product… }, "pricePerUnit": 56.9, "linePrice": 113.8, "comparePricePerUnit": null }]  -> { "id": "…" }
 ```
 Both are anonymous (no Trumf login). `1300` is the MENY chain id; `gln` is a MENY store
 (`MENY_STORE_GLN`, default `7080001150488`). The shared link is `https://meny.no/delt-handlevogn/<id>`.

@@ -36,9 +36,12 @@ The product search returns rich hits — `ean`, `title`, `subtitle`, `brand`, `p
    clamped to 1–50. Items without `kassalSearch` (e.g. Bursdagskrone) are skipped.
 2. It POSTs `{ items: [{ query, quantity, name }] }` to our own server (`POST /api/meny/cart`).
 3. The server (`server/meny.js`) searches MENY for each term (concurrency 3, retries with backoff),
-   picks the best in-stock hit with an `ean`, **merges duplicate EANs**, and returns the resolved
-   `cartItems` plus `matched` / `unmatched` lists. **It does not create the cart.**
-4. The **browser** POSTs `cartItems` straight to `https://api.sylinder.no/handlevogn/delehandlevogn/v1/api/`
+   picks the best in-stock hit with an `ean`, **merges duplicate EANs**, and returns full MENY
+   **cart items** (`{ ean, quantity, product, pricePerUnit, linePrice, comparePricePerUnit }`) plus
+   `matched` / `unmatched` lists. **It does not create the cart.** The full `product` object is required:
+   the shared-cart page reads `product.title`/`product.ean`/…, so a `product: null` item makes meny.no
+   throw `Cannot read properties of null (reading 'title')`.
+4. The **browser** POSTs the `cartItems` straight to `https://api.sylinder.no/handlevogn/delehandlevogn/v1/api/`
    (CORS-open, anonymous) → `{ id }`, and builds `https://meny.no/delt-handlevogn/<id>`.
 5. `MenyCart.tsx` shows a modal with the shareable link (copy / open / native share) and the matched
    products with images and prices.

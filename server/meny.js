@@ -93,7 +93,26 @@ function normalizeProduct(h) {
     brand: h.brand || '',
     price: typeof h.pricePerUnit === 'number' ? h.pricePerUnit : null,
     image: h.imagePath ? `https://bilder.ngdata.no/${h.imagePath}/medium.jpg` : undefined,
-    forSale: h.isForSale !== false && !h.isRevoked && !h.isOutOfStock
+    forSale: h.isForSale !== false && !h.isRevoked && !h.isOutOfStock,
+    raw: h // the full MENY product object — required in the shared-cart payload
+  };
+}
+
+/**
+ * Build a MENY shared-cart line item in the exact shape meny.no's own frontend
+ * sends. The shared-cart page reads item.product.{title,ean,categoryName,unit,…},
+ * so the full `product` object must be included or the page crashes
+ * ("Cannot read properties of null (reading 'title')").
+ */
+function toCartItem(product, quantity) {
+  const pricePerUnit = typeof product.pricePerUnit === 'number' ? product.pricePerUnit : 0;
+  return {
+    ean: product.ean,
+    quantity,
+    product,
+    pricePerUnit,
+    linePrice: Math.round(pricePerUnit * quantity * 100) / 100,
+    comparePricePerUnit: product.comparePricePerUnit ?? null
   };
 }
 
@@ -139,7 +158,7 @@ async function mapPool(items, concurrency, mapper) {
 /**
  * Resolve a list of shopping items to MENY products (no cart creation).
  * @param {{query:string, quantity:number, name?:string}[]} items
- * @returns {Promise<{cartItems:{ean:string,quantity:number}[],count:number,matched:object[],unmatched:object[]}>}
+ * @returns {Promise<{cartItems:object[],count:number,matched:object[],unmatched:object[]}>}
  */
 export async function resolveItems(items) {
   const resolved = await mapPool(items, 3, async (item) => {
@@ -155,7 +174,7 @@ export async function resolveItems(items) {
 
   const matched = [];
   const unmatched = [];
-  const byEan = new Map(); // ean -> quantity (merge duplicates)
+  const byEan = new Map(); // ean -> { product (raw), quantity } (merge duplicates)
 
   for (const { item, product } of resolved) {
     const name = item.name || item.query;
@@ -164,7 +183,9 @@ export async function resolveItems(items) {
       continue;
     }
     const quantity = Math.min(Math.max(parseInt(item.quantity, 10) || 1, 1), 50);
-    byEan.set(product.ean, (byEan.get(product.ean) || 0) + quantity);
+    const existing = byEan.get(product.ean);
+    if (existing) existing.quantity = Math.min(existing.quantity + quantity, 50);
+    else byEan.set(product.ean, { product: product.raw, quantity });
     matched.push({
       name,
       query: item.query,
@@ -185,7 +206,8 @@ export async function resolveItems(items) {
     throw err;
   }
 
-  const cartItems = [...byEan.entries()].map(([ean, quantity]) => ({ ean, quantity }));
+  // Full MENY cart-item objects (with the product), ready for the create endpoint.
+  const cartItems = [...byEan.values()].map(({ product, quantity }) => toCartItem(product, quantity));
   return { cartItems, count: matched.length, matched, unmatched };
 }
 
