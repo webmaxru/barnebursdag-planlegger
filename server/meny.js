@@ -33,9 +33,15 @@ const UA = 'Mozilla/5.0 (compatible; Kakeklar/1.0; +https://meny.no)';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-/** Fetch JSON with a timeout and one retry on HTTP 429 (rate limit). */
-async function fetchJson(url, options = {}, { timeoutMs = 12000, retries = 1 } = {}) {
-  for (let attempt = 0; ; attempt++) {
+/**
+ * Fetch JSON with a per-attempt timeout and retries with exponential backoff.
+ * Retries on HTTP 429, 5xx and network/timeout errors (the upstream NGData/sylinder
+ * services are occasionally flaky from datacenter IPs). Non-retryable 4xx throw at once.
+ */
+async function fetchJson(url, options = {}, { timeoutMs = 10000, retries = 3 } = {}) {
+  let lastErr;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    if (attempt > 0) await sleep(Math.min(400 * 2 ** (attempt - 1), 2000));
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), timeoutMs);
     try {
@@ -44,21 +50,24 @@ async function fetchJson(url, options = {}, { timeoutMs = 12000, retries = 1 } =
         signal: ctrl.signal,
         headers: { 'User-Agent': UA, Accept: 'application/json', ...(options.headers || {}) }
       });
-      if (r.status === 429 && attempt < retries) {
-        clearTimeout(t);
-        await sleep(700 * (attempt + 1));
-        continue;
+      if (r.status === 429 || r.status >= 500) {
+        lastErr = new Error(`HTTP ${r.status}`);
+        continue; // transient — retry
       }
       if (!r.ok) {
         const err = new Error(`HTTP ${r.status}`);
         err.status = r.status;
-        throw err;
+        throw err; // non-retryable client error
       }
       return await r.json();
+    } catch (e) {
+      if (e?.status && e.status < 500 && e.status !== 429) throw e; // non-retryable
+      lastErr = e; // network error / timeout (AbortError) — retry
     } finally {
       clearTimeout(t);
     }
   }
+  throw lastErr || new Error('Forespørsel feilet.');
 }
 
 function normalizeProduct(h) {
@@ -92,7 +101,7 @@ export async function createSharedCart(cartItems) {
   const data = await fetchJson(
     `${SHARECART_BASE}/handlevogn/delehandlevogn/v1/api/`,
     { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cartItems) },
-    { retries: 2 }
+    { retries: 4 }
   );
   if (!data || !data.id) throw new Error('MENY delehandlevogn returnerte ingen id.');
   return data.id;
@@ -118,7 +127,7 @@ async function mapPool(items, concurrency, mapper) {
  * @returns {Promise<{url:string,id:string,count:number,matched:object[],unmatched:object[]}>}
  */
 export async function buildSharedCart(items) {
-  const resolved = await mapPool(items, 5, async (item) => {
+  const resolved = await mapPool(items, 3, async (item) => {
     try {
       const products = await searchProducts(item.query, 6);
       const best = pickBest(products);
