@@ -1,0 +1,38 @@
+lockfile_version: '1'
+generated_at: '2026-06-22T13:49:13.317125+00:00'
+apm_version: 0.21.0
+dependencies:
+- repo_url: anthropics/skills
+  host: github.com
+  resolved_commit: 57546260929473d4e0d1c1bb75297be2fdfa1949
+  virtual_path: skills/frontend-design
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/frontend-design
+  - .agents/skills/frontend-design/LICENSE.txt
+  - .agents/skills/frontend-design/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/frontend-design/LICENSE.txt: sha256:0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594
+    .agents/skills/frontend-design/SKILL.md: sha256:1608ea77fbb6fc30d13a97d12cfa8ebf31358d40f0dd97beed24829d6b3f45dd
+  content_hash: sha256:4eabc66183767153e404b39d1b839b1c37f2d82d86f0a0d7e880a579d8d62336
+- repo_url: webmaxru/ai-native-dev
+  host: github.com
+  resolved_commit: 0bd0c242e6cd84f4e2fc93841bdefece3155fd4d
+  virtual_path: skills/agent-package-manager
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/agent-package-manager
+  - .agents/skills/agent-package-manager/SKILL.md
+  - .agents/skills/agent-package-manager/assets/apm.yml.template
+  - .agents/skills/agent-package-manager/references/command-workflows.md
+  - .agents/skills/agent-package-manager/references/manifest-and-lockfile.md
+  - .agents/skills/agent-package-manager/references/troubleshooting.md
+  deployed_file_hashes:
+    .agents/skills/agent-package-manager/SKILL.md: sha256:e105604e35ba3c91e163074435a0b707867e2787dab6c8f2c9b32c32c0239af5
+    .agents/skills/agent-package-manager/assets/apm.yml.template: sha256:bdb996550d9bb66228d642ab7d8acc30f671605a911f8360356c8816cec96b8c
+    .agents/skills/agent-package-manager/references/command-workflows.md: sha256:1786ff6e657c5c163313b3f5e4367209c44eb3e4a601245e38169e88364c256d
+    .agents/skills/agent-package-manager/references/manifest-and-lockfile.md: sha256:751ba3102a04626d96cdfd0400308704e344fc7d30f9817aefc1308e0be986c8
+    .agents/skills/agent-package-manager/references/troubleshooting.md: sha256:f57abc15c6c6bca5cf6f3fee02690aa68f2859fa4c58e5c8241c4e33b35e8f5f
+  content_hash: sha256:128fba8072e2e12db5e911d0f37d9676ffbf5e7e09607e65b139be7338ce6ff3

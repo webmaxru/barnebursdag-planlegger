@@ -1,0 +1,11 @@
+name: bb
+version: 1.0.0
+description: APM project for bb
+author: webmaxru
+dependencies:
+  apm:
+  - webmaxru/ai-native-dev/skills/agent-package-manager
+  - anthropics/skills/skills/frontend-design
+  mcp: []
+includes: auto
+scripts: {}

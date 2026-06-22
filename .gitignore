@@ -35,3 +35,6 @@ test-results/
 playwright-report/
 playwright/.cache/
 blob-report/
+
+# APM dependencies
+apm_modules/
