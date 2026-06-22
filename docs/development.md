@@ -96,12 +96,13 @@ and `choice-treat-*` cards/selectors are no longer part of the wizard flow.
 
 ## Regenerating PWA icons
 
-The PNG icons in `public/` are generated from `public/icon.svg` and **committed**. `sharp` is **not**
-a project dependency (so the Docker build never compiles native binaries). To regenerate locally:
+The PNG/ICO/OG images in `public/` are generated from `public/icon.svg` and `public/og-image.svg`
+and **committed**. `sharp`/`png-to-ico` are **not** project dependencies (so the Docker build never
+compiles native binaries). After changing either SVG (e.g. brand colors), regenerate locally:
 
 ```bash
-npm i sharp --no-save
-npm run icons        # writes icon-192/512/180.png + icon-maskable-512.png
+npm i sharp png-to-ico --no-save
+npm run icons   # favicons, icon-192/512/180.png, icon-maskable-512.png, favicon.ico, og-image.png
 ```
 
 ## Notes on the build
@@ -109,4 +110,8 @@ npm run icons        # writes icon-192/512/180.png + icon-maskable-512.png
 - `npm run build` uses Vite (esbuild) which **transpiles but does not type-check**. TypeScript errors
   will not fail the build. Use your editor / `tsc --noEmit` if you want strict type checks; keep code
   correct because mistakes surface at runtime, not build time.
-- The client bundle is ~166 kB raw / ~54 kB gzip.
+- The main client chunk is ~181 kB raw / ~57 kB gzip; Application Insights is a separate lazy-loaded
+  chunk, and the self-hosted display/body fonts ship as woff2 files in `dist/assets/`.
+- Fonts are **self-hosted** via `@fontsource-variable/bricolage-grotesque` and
+  `@fontsource-variable/hanken-grotesk` (devDependencies), imported in `main.tsx` and bundled by Vite —
+  no third-party font CDN, consistent with the cookieless / no-tracking posture.

@@ -60,9 +60,10 @@ index.html                 SPA entry (meta, OG, JSON-LD, PWA, lang=nb)
 src/
   main.tsx                 React bootstrap + service-worker registration
   App.tsx                  State, URL/localStorage sync, share/print, view switch
-  styles.css               Mobile-first design system + print rules
+  styles.css               Tokenised design system (warm-paper/berry palette, self-hosted fonts) + print/reduced-motion
   components/
     Wizard.tsx             3-step mobile wizard for default onboarding
+    Garland.tsx            Festfane signature garland (decorative, aria-hidden)
     Footer.tsx             Shared footer shown on every page; inside .wizard above fixed nav on wizard
     Slider.tsx             Range input + stepper buttons
     Controls.tsx           Advanced mode: full editable party answers
@@ -90,6 +91,7 @@ infra/                     Workbook IaC
 - **No state on the server.** Everything reproducible from `?gjester=…&alder=…` + the (optional) custom catalog in `localStorage`.
 - **Wizard-first onboarding.** The default mobile flow asks only the high-signal questions first; `Controls` remains available as advanced mode.
 - **Result-first app view.** After the wizard, the app leads with the Handleliste, keeps full edits in "Endre svar", and lets the summary's guest/age `.inline-num` inputs open the mobile numeric keypad and recompute the table immediately.
+- **Visual identity — "Festfane".** A calm Scandinavian-celebration look for parents (deliberately **not** a pink/candy kids theme): a warm-paper canvas with one **berry** accent (`--berry #D7264A`; `--gold` reserved for the signature), **Bricolage Grotesque** display + **Hanken Grotesk** body self-hosted via Fontsource (`@fontsource-variable/*`, bundled by Vite), tabular figures on quantities/prices, and a decorative **festfane garland** (`Garland.tsx`, `aria-hidden`) in the hero/wizard header. All tokens live in `:root` in `styles.css`; `:focus-visible` and `prefers-reduced-motion` are honored. Brand assets (`theme-color`, `manifest.webmanifest`, `icon.svg`, `og-image.svg`) share the palette, and the committed PNG/ICO/OG are regenerated via `npm run icons`.
 - **The goods catalog is data, not code paths.** Each item declares a calculation `mode`; the engine is generic, so users can add/edit items without touching the engine. See [configuration.md](configuration.md).
 - **Food choices and adults are catalog data.** `showIf` gates pølser/pizza, `breadKind` + `breadRatio` split lomper vs pølsebrød, and `audience` decides whether adults are included in generic item math. Pinata is a disabled-by-default catalog item that users enable in **Tilpass varelisten**.
 - **Bread ratio uses a solid range track.** The lompe/pølsebrød slider is an inline range input with a solid background; do not add a static value-split gradient there because `--pct` fill is only maintained by the shared `Slider` component.

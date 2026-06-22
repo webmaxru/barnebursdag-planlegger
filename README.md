@@ -19,6 +19,7 @@ decorations) plus a printable checklist and timeline. Everything else is optiona
 - **Live prices (optional)** — "Sjekk pris" looks up real Norwegian grocery prices via the [Kassal.app](https://kassal.app) API (server-side proxy).
 - **Built to share** — state lives in the URL (`?gjester=14&alder=7`), native Web Share, print/PDF, installable PWA.
 - **Norwegian-first, GDPR-clean** — no cookies, no tracking, no account.
+- **Refined, accessible UI** — a calm Scandinavian look (self-hosted type, warm-paper + berry palette) rather than a generic kids theme; keyboard-focusable, `prefers-reduced-motion`-aware, and print-friendly.
 
 ## 🧱 Stack
 

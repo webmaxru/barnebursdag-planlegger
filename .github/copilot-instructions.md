@@ -24,7 +24,8 @@ Full docs in [`/docs`](../docs/README.md).
 ## Conventions
 
 - **UI text is Norwegian Bokmål.** Keep new strings in nb. Numbers via `Intl.NumberFormat('nb-NO')` (`src/lib/format.ts`).
-- **Mobile-first.** Big touch targets (≥40px), sticky bottom action bar, hand-written CSS in `src/styles.css` (no UI framework). The result view's "✨ Veiviser" button is intentionally larger, and the summary guest/age values are inline `.inline-num` number inputs (`inputMode="numeric"`) that recompute immediately. Anything that must not print gets the `no-print` class; verify `@media print`.
+- **Mobile-first.** Big touch targets (≥40px), sticky bottom action bar, hand-written CSS in `src/styles.css` — a **tokenised design system** (CSS custom properties in `:root`): a warm-paper canvas with a single **berry** accent (`--berry #D7264A`), **not** a pink/candy kids theme. Display type is **Bricolage Grotesque**, body is **Hanken Grotesk**, both **self-hosted via `@fontsource-variable/*`** (devDependencies, imported in `main.tsx`) with tabular figures on quantities/prices. The result view's "✨ Veiviser" button is intentionally larger, and the summary guest/age values are inline `.inline-num` number inputs (`inputMode="numeric"`) that recompute immediately. `:focus-visible` and `prefers-reduced-motion` are wired up — keep them. Anything that must not print gets the `no-print` class; verify `@media print`.
+- **Brand & signature.** The signature is a **festfane garland** (`Garland.tsx`) — decorative only, `aria-hidden`, rendered in the hero and wizard header; never attach state or test hooks to it. Keep the palette consistent across brand assets: `index.html` `theme-color`, `manifest.webmanifest`, `public/icon.svg` and `public/og-image.svg` all use `#D7264A`. After editing an SVG, regenerate the committed PNG/ICO/OG with `npm i sharp png-to-ico --no-save && npm run icons` (sharp stays out of `package.json`).
 - **Keep the server stateless.** No DB. State = URL query (`?gjester=…&alder=…&brod=70`) + optional custom catalog in `localStorage`.
 - **Catalog changes:** bump `CATALOG_VERSION` in `catalog.ts` if you change the default catalog's shape or content (it invalidates stale saved copies). Add new item fields to `ConfigEditor.tsx` so they stay editable. Default `kassalSearch` terms are validated against Kassal.app so **Sjekk pris** returns the right popular Norwegian product; omit `kassalSearch` when there is no useful grocery match.
 - **Two entry modes, one config:** the wizard (`Wizard.tsx`, default) and advanced (`Controls.tsx`) both write the same `PartyConfig` — which now includes `adults`, `mainDish`, and `breadRatio` (0–100 percent lompe). Keep them in sync. Catalog items are gated by `showIf` (`mainDish` only), `breadKind` splits lomper/pølsebrød, and `audience: 'all'|'kids'` decides whether accompanying adults are counted. Iskake is an enabled, home-only mat item; Pinata is a catalog item with `enabled: false` (no `showIf`), enabled in **Tilpass varelisten**; `PartyConfig.pinata` and `pinata=1` are gone. Keep `CATALOG_VERSION` at **7** for this catalog shape/content.
@@ -151,6 +152,8 @@ no connection string the app disables analytics gracefully. See `docs/analytics.
 | Editable catalog UI | `src/components/ConfigEditor.tsx` |
 | Wizard (3-step onboarding) | `src/components/Wizard.tsx` |
 | Shared footer | `src/components/Footer.tsx` |
+| Design system + tokens + print/reduced-motion | `src/styles.css` |
+| Festfane signature garland (decorative) | `src/components/Garland.tsx` |
 | Advanced mode (sliders, food/adults choices) | `src/components/Controls.tsx`, `Slider.tsx` |
 | Result list + checklist + price lookup | `src/components/Results.tsx` |
 | URL state + localStorage + import/export | `src/lib/store.ts` |
