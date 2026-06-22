@@ -93,12 +93,7 @@ export default function App() {
   };
 
   if (view === 'wizard') {
-    return (
-      <>
-        <Wizard cfg={cfg} onChange={setCfg} onFinish={finishWizard} onSkip={skipWizard} />
-        <Footer />
-      </>
-    );
+    return <Wizard cfg={cfg} onChange={setCfg} onFinish={finishWizard} onSkip={skipWizard} />;
   }
 
   return (
@@ -113,7 +108,7 @@ export default function App() {
 
       {view === 'app' ? (
         <>
-          <Results plan={plan} cfg={cfg} onOpenConfig={openConfig} />
+          <Results plan={plan} cfg={cfg} onChange={setCfg} onOpenConfig={openConfig} />
           <section className="edit-block no-print">
             <button
               type="button"

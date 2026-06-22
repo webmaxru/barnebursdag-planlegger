@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Slider from './Slider';
+import Footer from './Footer';
 import type { MainDish, PartyConfig } from '../lib/types';
 import { track } from '../lib/analytics';
 
@@ -151,6 +152,7 @@ export default function Wizard({ cfg, onChange, onFinish, onSkip }: Props) {
           </button>
         )}
       </nav>
+      <Footer />
     </section>
   );
 }

@@ -69,13 +69,45 @@ function Row({ it }: { it: LineItem }) {
   );
 }
 
+function InlineNumber({
+  value,
+  min,
+  max,
+  onChange,
+  label
+}: {
+  value: number;
+  min: number;
+  max: number;
+  onChange: (v: number) => void;
+  label: string;
+}) {
+  return (
+    <input
+      type="number"
+      inputMode="numeric"
+      className="inline-num"
+      aria-label={label}
+      value={value}
+      min={min}
+      max={max}
+      onChange={(e) => {
+        const n = parseInt(e.target.value, 10);
+        if (Number.isFinite(n)) onChange(Math.min(max, Math.max(min, n)));
+      }}
+    />
+  );
+}
+
 export default function Results({
   plan,
   cfg,
+  onChange,
   onOpenConfig
 }: {
   plan: PlanResult;
   cfg: PartyConfig;
+  onChange: (cfg: PartyConfig) => void;
   onOpenConfig: () => void;
 }) {
   return (
@@ -83,8 +115,11 @@ export default function Results({
       <div className="result-head">
         <h2>Handleliste</h2>
         <p className="summary">
-          For {plural(cfg.guests, 'gjest', 'gjester')} på {cfg.age} år
-          {cfg.type === 'barnehage' ? ' (barnehage)' : ''} trenger du:
+          For{' '}
+          <InlineNumber value={cfg.guests} min={1} max={40} label="Antall gjester" onChange={(guests) => onChange({ ...cfg, guests })} />{' '}
+          {plural(cfg.guests, 'gjest', 'gjester')} på{' '}
+          <InlineNumber value={cfg.age} min={1} max={14} label="Barnets alder" onChange={(age) => onChange({ ...cfg, age })} />{' '}
+          år{cfg.type === 'barnehage' ? ' (barnehage)' : ''} trenger du:
         </p>
         {plan.hasPrice && (
           <p className="total">Estimert kostnad: <strong>{krRange(plan.priceMin, plan.priceMax)}</strong></p>

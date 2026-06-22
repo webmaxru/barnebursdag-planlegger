@@ -27,8 +27,8 @@ graph TD
 1. Browser requests `/` → Express returns `dist/index.html` (pre-built, Norwegian `lang="nb"`, OG tags, JSON-LD, PWA manifest link).
 2. The bundled JS boots React into one of three app view states: `'wizard'`, `'app'`, or `'config'`. It starts in `'app'` when the URL has query parameters or `localStorage['kk.wizardDone'] === '1'`; otherwise it starts in `'wizard'`.
 3. The wizard steps are **Hvem feirer?** (age, kids, accompanying adults, plus a note that allergies/restrictions come next), **Allergier og matrestriksjoner** (per-restriction "antall personer" sliders capped at kids + accompanying adults), and **Maten** (pølser vs pizza and a lompe/pølsebrød ratio slider; godteposer are included by default for home parties). Finishing or skipping sets `kk.wizardDone='1'`.
-4. The app view leads with the **Handleliste** (`Results`), with advanced `Controls` tucked into the collapsible "Endre svar" section.
-5. The shared `Footer` component renders on every page, including the wizard, with "Kakeklar er gratis…" plus "Made in Norway by Maxim Salnikov" (LinkedIn) and the GitHub repo link.
+4. The app view leads with the **Handleliste** (`Results`), with inline-editable `.inline-num` guest/age inputs in the summary for instant recompute, a larger **Veiviser** button, and advanced `Controls` tucked into the collapsible "Endre svar" section.
+5. The shared `Footer` component renders on every page; on the wizard it lives inside `.wizard` above the fixed bottom nav, with "Kakeklar er gratis…" plus "Made in Norway by Maxim Salnikov" (LinkedIn) and the GitHub repo link.
 6. Config changes recompute the plan in-memory and update the URL via `history.replaceState`.
 7. Optional "Sjekk pris" calls `/api/kassal/products?search=…`; Express adds the `Authorization: Bearer` header and returns a trimmed product list.
 8. The service worker caches the shell for offline / repeat use.
@@ -63,7 +63,7 @@ src/
   styles.css               Mobile-first design system + print rules
   components/
     Wizard.tsx             3-step mobile wizard for default onboarding
-    Footer.tsx             Shared footer shown on every page, including the wizard
+    Footer.tsx             Shared footer shown on every page; inside .wizard above fixed nav on wizard
     Slider.tsx             Range input + stepper buttons
     Controls.tsx           Advanced mode: full editable party answers
     Results.tsx            Grouped shopping list, price lookup, checklist, timeline
@@ -89,7 +89,7 @@ infra/                     Workbook IaC
 
 - **No state on the server.** Everything reproducible from `?gjester=…&alder=…` + the (optional) custom catalog in `localStorage`.
 - **Wizard-first onboarding.** The default mobile flow asks only the high-signal questions first; `Controls` remains available as advanced mode.
-- **Result-first app view.** After the wizard, the app leads with the Handleliste and keeps edits in "Endre svar" so shopping stays front-and-center.
+- **Result-first app view.** After the wizard, the app leads with the Handleliste, keeps full edits in "Endre svar", and lets the summary's guest/age `.inline-num` inputs open the mobile numeric keypad and recompute the table immediately.
 - **The goods catalog is data, not code paths.** Each item declares a calculation `mode`; the engine is generic, so users can add/edit items without touching the engine. See [configuration.md](configuration.md).
 - **Food choices and adults are catalog data.** `showIf` gates pølser/pizza, `breadKind` + `breadRatio` split lomper vs pølsebrød, and `audience` decides whether adults are included in generic item math. Pinata is a disabled-by-default catalog item that users enable in **Tilpass varelisten**.
 - **Bread ratio uses a solid range track.** The lompe/pølsebrød slider is an inline range input with a solid background; do not add a static value-split gradient there because `--pct` fill is only maintained by the shared `Slider` component.

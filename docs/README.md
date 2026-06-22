@@ -28,9 +28,11 @@ number of kids, and accompanying **adults**) → allergies and dietary restricti
 taps **"Hopp over"** into **advanced mode** (the full controls). Either way they
 instantly get an age-aware shopping list (food, drink, tableware, decorations) with quantities rounded
 up to real Norwegian pack sizes, plus a printable checklist and timeline. After the wizard the app
-**leads with the Handleliste**. A **home vs. kindergarten** toggle adjusts for Helsedirektoratet sugar
-guidance, allergy/restriction **quantity** sliders count both kids and accompanying adults, and the
-entire goods catalog is **user-editable**; Iskake is included by default for home parties, piñata is a
+**leads with the Handleliste**; its summary has inline-editable guest/age number inputs for instant
+recompute, and the **Veiviser** button is sized as a primary touch target. A **home vs. kindergarten**
+toggle adjusts for Helsedirektoratet sugar guidance, allergy/restriction **quantity** sliders count
+both kids and accompanying adults, and the entire goods catalog is **user-editable**; Iskake is
+included by default for home parties, piñata is a
 disabled-by-default catalog item enabled in **Tilpass varelisten**, and **Sjekk pris** uses
 Kassal-validated search terms for the default items. State lives in the URL so a plan can be shared
 with a co-parent or the class chat. No login, no cookies, Norwegian-first, with the shared footer shown on every page:

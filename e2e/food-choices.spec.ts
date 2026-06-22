@@ -31,6 +31,15 @@ function item(page: Page, name: string | RegExp) {
   return page.locator('.row-name').filter({ hasText: name });
 }
 
+async function buyQuantityFor(page: Page, name: string | RegExp) {
+  const row = page.locator('.row').filter({ has: item(page, name) });
+  await expect(row).toBeVisible();
+  const badge = await row.locator('.badge').first().innerText();
+  const match = badge.match(/=\s*(\d+(?:[,.]\d+)?)/);
+  expect(match, `Expected buy quantity in badge: ${badge}`).not.toBeNull();
+  return Number(match![1].replace(',', '.'));
+}
+
 async function setRange(page: Page, testId: string, value: number) {
   await page.getByTestId(testId).evaluate((el, v) => {
     const input = el as HTMLInputElement;
@@ -79,4 +88,22 @@ test('godteposer is included by default and pinata is not in the wizard', async 
 
   await expect(item(page, /Godteposer$/)).toBeVisible();
   await expect(item(page, /Pinata/)).toHaveCount(0);
+});
+
+test('inline guest edit immediately updates the shopping list', async ({ page }) => {
+  await finishDefaultWizard(page);
+
+  const guestsInput = page.getByLabel('Antall gjester');
+  const ageInput = page.getByLabel('Barnets alder');
+  await expect(guestsInput).toBeVisible();
+  await expect(ageInput).toBeVisible();
+  await expect(guestsInput).toHaveClass(/inline-num/);
+  await expect(ageInput).toHaveClass(/inline-num/);
+
+  const baselinePlates = await buyQuantityFor(page, /Tallerkener \(papp\)$/);
+  await guestsInput.fill('30');
+
+  await expect
+    .poll(() => buyQuantityFor(page, /Tallerkener \(papp\)$/))
+    .toBeGreaterThan(baselinePlates);
 });
