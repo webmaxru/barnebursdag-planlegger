@@ -32,7 +32,7 @@ interface GoodItem {
   allergyTags?: string[];     // e.g. ['svin','gluten','melk']
   allergyScope?: string;      // allergy-safe item scoped to affected people
   altNote?: string;           // shown when an allergy filter matches
-  kassalSearch?: string;      // search term for live prices
+  kassalSearch?: string;      // validated Kassal search term for live prices
   enabled: boolean;
 }
 ```
@@ -68,14 +68,14 @@ Changes apply live to the result list and are saved automatically.
 
 On load, a saved catalog is used **only if** its stored version matches the current `CATALOG_VERSION`;
 otherwise the defaults are returned. This prevents stale custom catalogs from breaking after a schema
-change. **Bump `CATALOG_VERSION` in `catalog.ts` whenever you change the default catalog's shape.**
-The current shipped `CATALOG_VERSION` is **6**.
+change. **Bump `CATALOG_VERSION` in `catalog.ts` whenever you change the default catalog's shape or
+content.** The current shipped `CATALOG_VERSION` is **7**.
 
 ## Import / export format
 
 ```json
 {
-  "version": 6,
+  "version": 7,
   "items": [ { "id": "polser", "name": "Pølser", "...": "..." } ]
 }
 ```
@@ -92,7 +92,7 @@ The current shipped `CATALOG_VERSION` is **6**.
 
 | Category | Items |
 |----------|-------|
-| Mat | Pølser, Minipizza, Lomper, Pølsebrød, Ketchup, Sennep, Stekt løk, Bursdagskake, Frukt, Snacks |
+| Mat | Pølser, Minipizza, Lomper, Pølsebrød, Ketchup, Sennep, Stekt løk, Bursdagskake, Iskake, Frukt, Snacks |
 | Drikke | Saft, Brus (7+) |
 | Servise | Tallerkener, Kopper, Servietter, Bestikk, Bordduk, Sugerør* |
 | Pynt | Ballonger, Bursdagskrone, Kakelys, Vimpelrekke* |
@@ -104,6 +104,12 @@ Pølser/minipizza and condiments are gated by the wizard's food choices via `sho
 pølsebrød are selected together by `breadRatio`; both appear according to the ratio, with a ~15% extra
 margin applied to each non-zero bread share before pack rounding. Pinata ships as `enabled: false` and
 has no `showIf`.
+
+Version 7 refreshed the default catalog after a product-catalog review. `kassalSearch` defaults are
+validated against the live Kassal.app API so **Sjekk pris** opens the right popular Norwegian product;
+items without a useful grocery match omit `kassalSearch`, so the price button is hidden. It also adds
+`iskake` (Iskake 🍦) as an enabled, home-only mat item because Norwegian birthdays commonly serve
+ice-cream cake.
 
 ## URL state for food choices
 
