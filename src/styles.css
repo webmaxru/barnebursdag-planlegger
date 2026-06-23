@@ -299,6 +299,14 @@ h1, h2, h3 {
 .meny-item-price { color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .meny-unmatched { margin: 14px 0 0; font-size: 0.82rem; color: var(--ink-soft); }
 .meny-note { margin: 14px 0 0; font-size: 0.78rem; color: var(--ink-faint); }
+.meny-disclaimer {
+  margin: 16px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--ink-faint);
+}
 
 @keyframes meny-spin { to { transform: rotate(360deg); } }
 @keyframes meny-fade { from { opacity: 0; } to { opacity: 1; } }

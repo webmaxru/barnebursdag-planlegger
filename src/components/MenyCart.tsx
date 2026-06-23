@@ -208,6 +208,12 @@ export default function MenyCart({
                 </p>
               </div>
             )}
+
+            <p className="meny-disclaimer">
+              Kakeklar er en uavhengig tjeneste og er ikke tilknyttet, godkjent av eller sponset av
+              MENY eller NorgesGruppen. «MENY» og tilhørende navn er varemerker som tilhører sine
+              respektive eiere.
+            </p>
           </div>
         </div>
       )}
