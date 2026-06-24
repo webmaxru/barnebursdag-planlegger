@@ -16,6 +16,30 @@ dependencies:
     .agents/skills/frontend-design/LICENSE.txt: sha256:0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594
     .agents/skills/frontend-design/SKILL.md: sha256:1608ea77fbb6fc30d13a97d12cfa8ebf31358d40f0dd97beed24829d6b3f45dd
   content_hash: sha256:4eabc66183767153e404b39d1b839b1c37f2d82d86f0a0d7e880a579d8d62336
+- repo_url: rysweet/amplihack-rs
+  host: github.com
+  resolved_commit: b123c107c7ab2e3d436926747c135e78a90545b6
+  virtual_path: amplifier-bundle/skills/storytelling-synthesizer
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/storytelling-synthesizer
+  - .agents/skills/storytelling-synthesizer/QUICK_REFERENCE.md
+  - .agents/skills/storytelling-synthesizer/README.md
+  - .agents/skills/storytelling-synthesizer/SKILL.md
+  - .agents/skills/storytelling-synthesizer/examples/blog-post-example.md
+  - .agents/skills/storytelling-synthesizer/examples/demo-script-example.md
+  - .agents/skills/storytelling-synthesizer/examples/marketing-example.md
+  - .agents/skills/storytelling-synthesizer/examples/presentation-example.md
+  deployed_file_hashes:
+    .agents/skills/storytelling-synthesizer/QUICK_REFERENCE.md: sha256:b22d197d10f2b86264fe452b322373058a7fa56dd3e20857c8adbf0a8edf0e7c
+    .agents/skills/storytelling-synthesizer/README.md: sha256:558060720953bc7612f427bf922657cf249926ed9a1a3ea78255139d0c40d3a2
+    .agents/skills/storytelling-synthesizer/SKILL.md: sha256:d3132f42f3f6884c93cada728c98382f3a82262cb97a3c535821031b1a628640
+    .agents/skills/storytelling-synthesizer/examples/blog-post-example.md: sha256:61dbdf4780bd51f6e68af0ad5221960166b6443fd90f2a1f7a04d1faa936c6a3
+    .agents/skills/storytelling-synthesizer/examples/demo-script-example.md: sha256:57092c3aa21d445fd2258ed3cd85968461d68dda157c38d9357e177c9f996f8b
+    .agents/skills/storytelling-synthesizer/examples/marketing-example.md: sha256:325a2a9bd07a6935c393685d2a86b9fd67b78fec5ff18ed6c1a483562b3d4b24
+    .agents/skills/storytelling-synthesizer/examples/presentation-example.md: sha256:878b1a7aa3bf15816a0de2d2b18ef4c036747682b5286e84e92b7d20c8e662a5
+  content_hash: sha256:4c56c009df2a462fb0f7697c6e0369434f2d605ab57b79d6587b01020dfceef6
 - repo_url: webmaxru/ai-native-dev
   host: github.com
   resolved_commit: 0bd0c242e6cd84f4e2fc93841bdefece3155fd4d

@@ -6,6 +6,7 @@ dependencies:
   apm:
   - webmaxru/ai-native-dev/skills/agent-package-manager
   - anthropics/skills/skills/frontend-design
+  - rysweet/amplihack-rs/amplifier-bundle/skills/storytelling-synthesizer
   mcp: []
 includes: auto
 scripts: {}
