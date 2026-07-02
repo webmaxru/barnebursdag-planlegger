@@ -38,3 +38,6 @@ blob-report/
 
 # APM dependencies
 apm_modules/
+
+# --- Tooling caches ---
+.impeccable/
