@@ -1,10 +1,12 @@
 lockfile_version: '1'
-generated_at: '2026-06-22T13:49:13.317125+00:00'
-apm_version: 0.21.0
+generated_at: '2026-07-02T19:56:17.957217+00:00'
+apm_version: 0.23.1
 dependencies:
 - repo_url: anthropics/skills
+  name: skills
   host: github.com
   resolved_commit: 57546260929473d4e0d1c1bb75297be2fdfa1949
+  version: unknown
   virtual_path: skills/frontend-design
   is_virtual: true
   package_type: claude_skill
@@ -17,8 +19,11 @@ dependencies:
     .agents/skills/frontend-design/SKILL.md: sha256:1608ea77fbb6fc30d13a97d12cfa8ebf31358d40f0dd97beed24829d6b3f45dd
   content_hash: sha256:4eabc66183767153e404b39d1b839b1c37f2d82d86f0a0d7e880a579d8d62336
 - repo_url: rysweet/amplihack-rs
+  name: storytelling-synthesizer
   host: github.com
   resolved_commit: b123c107c7ab2e3d436926747c135e78a90545b6
+  resolved_ref: b123c107c7ab2e3d436926747c135e78a90545b6
+  version: 1.0.0
   virtual_path: amplifier-bundle/skills/storytelling-synthesizer
   is_virtual: true
   package_type: claude_skill
@@ -41,8 +46,10 @@ dependencies:
     .agents/skills/storytelling-synthesizer/examples/presentation-example.md: sha256:878b1a7aa3bf15816a0de2d2b18ef4c036747682b5286e84e92b7d20c8e662a5
   content_hash: sha256:4c56c009df2a462fb0f7697c6e0369434f2d605ab57b79d6587b01020dfceef6
 - repo_url: webmaxru/ai-native-dev
+  name: ai-native-dev
   host: github.com
   resolved_commit: 0bd0c242e6cd84f4e2fc93841bdefece3155fd4d
+  version: unknown
   virtual_path: skills/agent-package-manager
   is_virtual: true
   package_type: claude_skill

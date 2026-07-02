@@ -14,7 +14,7 @@ produces an age-aware shopping list (food, drink, tableware, decorations) + a pr
 with the result** (Handleliste). Mobile-first, no login, Norwegian (Bokmål) UI, with a shared footer on
 every page (including the wizard) saying "Kakeklar er gratis…" plus crediting Maxim Salnikov and linking to LinkedIn + GitHub.
 
-- **Server:** Node.js + Express 4 (ESM), `server/index.js` — serves the built SPA + `/api/health` + a Kassal.app price proxy.
+- **Server:** Node.js + Express 4 (ESM), `server/index.js` — serves the built SPA + `/api/health`, `/api/config` (runtime feature flags + cookieless App Insights string), a Kassal.app price proxy, and an experimental MENY shared-cart resolver (`server/meny.js`). API reference: [`docs/api.md`](../docs/api.md).
 - **Client:** Vite + React 18 + TypeScript in `src/`. Wizard-first (`Wizard.tsx`) + advanced `Controls.tsx`. All party math runs client-side (`src/lib/engine.ts`).
 - **Data, not code:** the goods catalog (`src/lib/catalog.ts`) is generic data; the engine evaluates each item's `mode`. Users edit it live (`ConfigEditor.tsx`), persisted in `localStorage`.
 - **Ship:** multi-stage `Dockerfile` → GHCR (public) → Azure Container Apps via `.github/workflows/deploy.yml`.
@@ -31,7 +31,8 @@ Full docs in [`/docs`](../docs/README.md).
 - **Two entry modes, one config:** the wizard (`Wizard.tsx`, default) and advanced (`Controls.tsx`) both write the same `PartyConfig` — which now includes `adults`, `mainDish`, and `breadRatio` (0–100 percent lompe). Keep them in sync. Catalog items are gated by `showIf` (`mainDish` only), `breadKind` splits lomper/pølsebrød, and `audience: 'all'|'kids'` decides whether accompanying adults are counted. Iskake is an enabled, home-only mat item; Pinata is a catalog item with `enabled: false` (no `showIf`), enabled in **Tilpass varelisten**; `PartyConfig.pinata` and `pinata=1` are gone. Keep `CATALOG_VERSION` at **7** for this catalog shape/content.
 - **Bread-ratio styling:** the wizard's "Brød: lompe og pølsebrød" inline range input uses a solid track background. Do not add a static value-split gradient there; the `--pct` fill variable is only set by the shared `Slider` component.
 - **Wizard footer placement:** the shared `Footer` renders on the wizard too, inside `.wizard` above the fixed bottom nav so it stays visible on first load.
-- **E2E is a release gate.** Keep the Playwright specs in `e2e/` green and add tests for new flows — `build-and-deploy` `needs: e2e`, so a red suite blocks the deploy. Run locally with `npm run build && npm run test:e2e`. Stable selectors use `data-testid` (wizard steps, `bread-ratio`) + `.row-name` for result items; inline summary inputs use labels "Antall gjester" and "Barnets alder". There is no `toggle-pinata` test.
+- **Experimental MENY cart (opt-in).** "Handle på MENY" turns the list into a shareable [meny.no](https://meny.no) cart. It's hidden unless `FEATURE_MENY_CART` is enabled (server exposes it via `/api/config` → `features.menyCart`, read once by the memoized `getAppConfig()` in `src/lib/config.ts`) **or** the page is opened with `?meny=1`. The flag is **on in production** (`deploy.yml` sets `FEATURE_MENY_CART=1`). Division of labour: the server **only resolves** list items to real products (`POST /api/meny/cart` → `resolveItems` in `server/meny.js`); the **browser creates** the shared cart directly (see lesson 15). UI lives in `src/components/MenyCart.tsx` + `src/lib/meny.ts`. Details in [`docs/meny-cart.md`](../docs/meny-cart.md).
+- **E2E is a release gate.** Keep the Playwright specs in `e2e/` green and add tests for new flows — `build-and-deploy` `needs: e2e`, so a red suite blocks the deploy. Run locally with `npm run build && npm run test:e2e`. Stable selectors use `data-testid` (wizard steps, `bread-ratio`, `meny-cart-button|modal|link|loading|result`) + `.row-name` for result items; inline summary inputs use labels "Antall gjester" and "Barnets alder". The MENY specs drive the UI with `?meny=1` and **mock** the `/api/meny/cart` + meny.no endpoints (no live network). There is no `toggle-pinata` test.
 - **Secrets stay server-side / in platform secrets.** Never log secret values; never commit `.env`.
 
 ## Known-good commands
@@ -141,6 +142,18 @@ connection string is delivered at runtime via `GET /api/config` (ACA secret
 `appinsights-connection-string`), never bundled, and the SDK is lazy-loaded as a separate chunk. With
 no connection string the app disables analytics gracefully. See `docs/analytics.md`.
 
+### 15. MENY shared-cart: the browser creates the cart, the server only resolves
+The "Handle på MENY" feature (experimental, flag `FEATURE_MENY_CART`, **on in prod**) splits work on
+purpose. `POST /api/meny/cart` (server, `server/meny.js`) resolves each list item to a real MENY
+product via **anonymous** NGData search (`platform-rest-prod.ngdata.no`, chain `1300`, store GLN
+`7080001150488` — overridable via `MENY_CHAIN_ID` / `MENY_STORE_GLN` / `MENY_SHARE_BASE`, **no API
+key needed**). The actual shared cart is then created **from the browser** against `api.sylinder.no`,
+because that endpoint **rate-limits per source IP** (~1/min) — funnelling it through the server would
+throttle every user to one shared IP. Do **not** "simplify" this by moving cart creation server-side.
+The resolved cart items **must** keep their full `product` object or meny.no's shared-cart page
+crashes. Toggle locally with `?meny=1` or `FEATURE_MENY_CART=1` in `.env` (see `.env.example`). Full
+protocol notes in [`docs/meny-cart.md`](../docs/meny-cart.md).
+
 ---
 
 ## Where things live
@@ -157,7 +170,13 @@ no connection string the app disables analytics gracefully. See `docs/analytics.
 | Advanced mode (sliders, food/adults choices) | `src/components/Controls.tsx`, `Slider.tsx` |
 | Result list + checklist + price lookup | `src/components/Results.tsx` |
 | URL state + localStorage + import/export | `src/lib/store.ts` |
-| Server (static + health + Kassal proxy) | `server/index.js` |
+| Runtime config + feature flags (client) | `src/lib/config.ts` |
+| Cookieless analytics (App Insights) | `src/lib/analytics.ts` |
+| Timeline + checklist data | `src/lib/checklist.ts` |
+| Action toolbar (share / print / customise) | `src/components/ActionToolbar.tsx` |
+| MENY shared-cart UI + client | `src/components/MenyCart.tsx`, `src/lib/meny.ts` |
+| MENY resolver (anonymous, server-side) | `server/meny.js` |
+| Server (static + health + config + Kassal + MENY) | `server/index.js` |
 | CI/CD (e2e gate → build → deploy) | `.github/workflows/deploy.yml` |
 | E2E tests | `e2e/`, `playwright.config.ts` |
 | Engagement workbook (IaC) | `infra/` |
