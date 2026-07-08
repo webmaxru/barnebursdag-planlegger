@@ -4,6 +4,7 @@ import Footer from './Footer';
 import Garland from './Garland';
 import type { MainDish, PartyConfig } from '../lib/types';
 import { track } from '../lib/analytics';
+import { BARNEHAGE_INFO, HJEMME_INFO } from '../lib/checklist';
 
 const ALLERGIES = [
   { id: 'gluten', label: 'Glutenfri' },
@@ -105,6 +106,29 @@ export default function Wizard({ cfg, onChange, onFinish, onSkip }: Props) {
                 onChange={(n) => setAllergy(a.id, n)}
               />
             ))}
+
+            <div className="wizard-party-type" data-testid="wizard-party-type">
+              <p className="field-label">Hvor feires bursdagen?</p>
+              <div className="segmented" role="tablist" aria-label="Type feiring">
+                <button
+                  type="button" role="tab" data-testid="party-type-hjemme"
+                  aria-selected={cfg.type === 'hjemme'} className={cfg.type === 'hjemme' ? 'active' : ''}
+                  onClick={() => { set({ type: 'hjemme' }); track('party_type_changed', { type: 'hjemme' }); }}
+                >
+                  🏠 Hjemmefest
+                </button>
+                <button
+                  type="button" role="tab" data-testid="party-type-barnehage"
+                  aria-selected={cfg.type === 'barnehage'} className={cfg.type === 'barnehage' ? 'active' : ''}
+                  onClick={() => { set({ type: 'barnehage' }); track('party_type_changed', { type: 'barnehage' }); }}
+                >
+                  🧸 Barnehage
+                </button>
+              </div>
+              {cfg.type === 'barnehage'
+                ? <p className="note-box" data-testid="barnehage-info">{BARNEHAGE_INFO}</p>
+                : <p className="hint" data-testid="hjemme-info">{HJEMME_INFO}</p>}
+            </div>
           </div>
         )}
 

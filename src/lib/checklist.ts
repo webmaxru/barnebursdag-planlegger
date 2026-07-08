@@ -99,3 +99,11 @@ export const CHECKLIST: ChecklistSection[] = [
 export const BARNEHAGE_NOTE =
   'Barnehagefeiring: Helsedirektoratet anbefaler å begrense kake, godteri og saft. ' +
   'Vi viser frukt, bursdagskrone og sang i stedet for søtsaker.';
+
+export const BARNEHAGE_INFO =
+  'Barnehage-modus følger Helsedirektoratets råd om mindre sukker: vi tar bort ' +
+  'kake, godteri, snacks og brus fra listen, og planlegger frukt, saft, servise ' +
+  'og bursdagskrone i stedet.';
+
+export const HJEMME_INFO =
+  'Full feiring hjemme eller i leid lokale – med kake, godteri og snacks på listen.';
