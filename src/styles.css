@@ -559,6 +559,10 @@ input[type='range']::-moz-range-thumb {
 }
 .segmented button.active { background: var(--surface); color: var(--berry-deep); box-shadow: var(--shadow); }
 
+.wizard-party-type { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+.wizard-party-type .field-label { margin-top: 0; }
+.wizard-party-type .segmented { margin-top: 8px; }
+
 /* ---------- Disclosure / advanced ---------- */
 .disclosure {
   background: none; border: none; color: var(--ink-soft); font-weight: 700;

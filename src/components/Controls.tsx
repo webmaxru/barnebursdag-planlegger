@@ -3,6 +3,7 @@ import Slider from './Slider';
 import { suggestedGuests } from '../lib/engine';
 import type { MainDish, PartyConfig } from '../lib/types';
 import { track } from '../lib/analytics';
+import { BARNEHAGE_INFO, HJEMME_INFO } from '../lib/checklist';
 
 const ALLERGIES = [
   { id: 'gluten', label: 'Glutenfri' },
@@ -65,6 +66,9 @@ export default function Controls({ cfg, onChange }: { cfg: PartyConfig; onChange
           🧸 Barnehage
         </button>
       </div>
+      {cfg.type === 'barnehage'
+        ? <p className="note-box" data-testid="barnehage-info">{BARNEHAGE_INFO}</p>
+        : <p className="hint" data-testid="hjemme-info">{HJEMME_INFO}</p>}
 
       <div className="food-controls">
         <h2>Maten</h2>
