@@ -9,6 +9,7 @@ Detailed documentation for the Norwegian kids' birthday party purchase planner.
 | [configuration.md](configuration.md) | The fully-configurable goods list: `GoodItem` schema, editor, import/export, persistence |
 | [api.md](api.md) | Server API reference: `/api/health`, `/api/config`, `/api/kassal/products`, `/api/meny/cart` |
 | [meny-cart.md](meny-cart.md) | **Handle på MENY** (experimental): shareable meny.no cart, the reverse-engineered NGData protocol, the feature flag |
+| [webmcp.md](webmcp.md) | **WebMCP tools**: exposing the planner to in-browser AI agents (`document.modelContext`), the two imperative tools, input/result schemas |
 | [development.md](development.md) | Local setup, scripts, env vars, ports, icon generation, **e2e tests** |
 | [deployment.md](deployment.md) | Docker, GHCR, Azure Container Apps, CI/CD (**e2e gate**), secrets, troubleshooting |
 | [analytics.md](analytics.md) | Cookieless Application Insights, the no-cookie-banner rationale, event catalog, engagement workbook |
