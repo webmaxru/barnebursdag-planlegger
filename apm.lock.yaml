@@ -67,3 +67,29 @@ dependencies:
     .agents/skills/agent-package-manager/references/manifest-and-lockfile.md: sha256:751ba3102a04626d96cdfd0400308704e344fc7d30f9817aefc1308e0be986c8
     .agents/skills/agent-package-manager/references/troubleshooting.md: sha256:f57abc15c6c6bca5cf6f3fee02690aa68f2859fa4c58e5c8241c4e33b35e8f5f
   content_hash: sha256:128fba8072e2e12db5e911d0f37d9676ffbf5e7e09607e65b139be7338ce6ff3
+- repo_url: webmaxru/web-ai-agent-skills
+  name: web-ai-agent-skills
+  host: github.com
+  resolved_commit: 5b07cef30f84fc94dc6918a2e55ae3e2c7cbc9b8
+  version: unknown
+  virtual_path: skills/webmcp
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/webmcp
+  - .agents/skills/webmcp/SKILL.md
+  - .agents/skills/webmcp/assets/model-context-registry.template.ts
+  - .agents/skills/webmcp/references/compatibility.md
+  - .agents/skills/webmcp/references/declarative-api.md
+  - .agents/skills/webmcp/references/troubleshooting.md
+  - .agents/skills/webmcp/references/webmcp-reference.md
+  - .agents/skills/webmcp/scripts/find-webmcp-targets.mjs
+  deployed_file_hashes:
+    .agents/skills/webmcp/SKILL.md: sha256:ccdff568b0316f65f81369f1991af14abf8587e197251b26556c9a8f5f9bcf0d
+    .agents/skills/webmcp/assets/model-context-registry.template.ts: sha256:736efb7dec93f89875d7df1f90b4fc96c72354f5114d052b8b3ea1aaeacfab6b
+    .agents/skills/webmcp/references/compatibility.md: sha256:76d4f38f17cd83faf66e675f02843a300ee39ec6948a1f0ea8ddc11fb9cedc93
+    .agents/skills/webmcp/references/declarative-api.md: sha256:9d2937b284ce47e5ea61ce2a2a9beae6a649a8e91a8f9d1b85c99a53d1cae8e1
+    .agents/skills/webmcp/references/troubleshooting.md: sha256:41a5483d797105b0070f0c8fac40b52a4863af6ac1d4bca88e8164197176ada7
+    .agents/skills/webmcp/references/webmcp-reference.md: sha256:f16965aca0bb679255daf88969ca11db5923e384fc9b238e4fb49502cd758fce
+    .agents/skills/webmcp/scripts/find-webmcp-targets.mjs: sha256:59075b57aee5f7408831e1a7b3647d3050f7bc83d0af7e268119e683d8385d4f
+  content_hash: sha256:50bb4a700d38207e91072198d8180f2b877febaf6b400fc483b945eb00e61d4b
