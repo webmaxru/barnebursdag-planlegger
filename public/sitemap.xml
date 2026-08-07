@@ -2,8 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://kakeklar.no/</loc>
-    <lastmod>2026-06-21</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url><loc>https://kakeklar.no/om-kakeklar</loc><lastmod>2026-08-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://kakeklar.no/guider</loc><lastmod>2026-08-07</lastmod><priority>0.8</priority></url>
+  <url><loc>https://kakeklar.no/slik-beregner-kakeklar</loc><lastmod>2026-08-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://kakeklar.no/barnehagebursdag</loc><lastmod>2026-08-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://kakeklar.no/allergier-i-barnebursdag</loc><lastmod>2026-08-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://kakeklar.no/personvern</loc><lastmod>2026-08-07</lastmod><priority>0.5</priority></url>
+  <url><loc>https://kakeklar.no/kontakt</loc><lastmod>2026-08-07</lastmod><priority>0.5</priority></url>
 </urlset>
