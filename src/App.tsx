@@ -11,6 +11,7 @@ import { loadCatalog, saveCatalog, parseConfig, writeConfig, shareUrl } from './
 import type { GoodItem, PartyConfig } from './lib/types';
 import { track } from './lib/analytics';
 import { isMenyEnabled } from './lib/meny';
+import { useWebMcpTools } from './lib/webmcp';
 
 export default function App() {
   const [catalog, setCatalog] = useState<GoodItem[]>(() => loadCatalog());
@@ -24,6 +25,19 @@ export default function App() {
   const [menyEnabled, setMenyEnabled] = useState(false);
 
   const plan = useMemo(() => computePlan(catalog, cfg), [catalog, cfg]);
+
+  // Expose the planner to in-browser AI agents via WebMCP (see src/lib/webmcp.ts).
+  // Registered unconditionally (before the wizard early-return) so agents can plan
+  // from any screen; `onPlanned` reveals the result view so the effect is visible.
+  useWebMcpTools({
+    cfg,
+    catalog,
+    onChange: setCfg,
+    onPlanned: () => {
+      localStorage.setItem('kk.wizardDone', '1');
+      setView('app');
+    }
+  });
 
   useEffect(() => writeConfig(cfg), [cfg]);
   useEffect(() => saveCatalog(catalog), [catalog]);

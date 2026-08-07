@@ -171,6 +171,7 @@ protocol notes in [`docs/meny-cart.md`](../docs/meny-cart.md).
 | Result list + checklist + price lookup | `src/components/Results.tsx` |
 | URL state + localStorage + import/export | `src/lib/store.ts` |
 | Runtime config + feature flags (client) | `src/lib/config.ts` |
+| WebMCP tools (browser AI-agent integration) | `src/lib/webmcp.ts`, `src/webmcp.d.ts` |
 | Cookieless analytics (App Insights) | `src/lib/analytics.ts` |
 | Timeline + checklist data | `src/lib/checklist.ts` |
 | Action toolbar (share / print / customise) | `src/components/ActionToolbar.tsx` |
