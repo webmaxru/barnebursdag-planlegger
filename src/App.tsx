@@ -12,8 +12,12 @@ import type { GoodItem, PartyConfig } from './lib/types';
 import { track } from './lib/analytics';
 import { isMenyEnabled } from './lib/meny';
 import { useWebMcpTools } from './lib/webmcp';
+import ContentPage, { isContentPath } from './components/ContentPage';
 
 export default function App() {
+  const pathname = window.location.pathname.replace(/\/$/, '') || '/';
+  if (isContentPath(pathname)) return <ContentPage path={pathname} />;
+
   const [catalog, setCatalog] = useState<GoodItem[]>(() => loadCatalog());
   const [cfg, setCfg] = useState<PartyConfig>(() => parseConfig());
   const [view, setView] = useState<'wizard' | 'app' | 'config'>(() => {
