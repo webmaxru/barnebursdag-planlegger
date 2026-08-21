@@ -9,7 +9,6 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const DIST = path.join(__dirname, '..', 'dist');
 const {
-  getConfigResponse,
   getHealthResponse,
   getKassalProductsResponse,
   getMenyCartResponse
@@ -28,16 +27,16 @@ app.get('/api/health', (_req, res) => {
   sendApiResponse(res, getHealthResponse());
 });
 
-app.get('/api/config', (_req, res) => {
-  sendApiResponse(res, getConfigResponse());
-});
-
 app.get('/api/kassal/products', async (req, res) => {
   sendApiResponse(res, await getKassalProductsResponse(req.query));
 });
 
 app.post('/api/meny/cart', async (req, res) => {
   sendApiResponse(res, await getMenyCartResponse(req.body));
+});
+
+app.use('/api', (_req, res) => {
+  res.status(404).json({ error: 'Fant ikke API-endepunktet.' });
 });
 
 // --- Static SPA ---

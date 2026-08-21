@@ -1,40 +1,21 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 const {
-  getConfigResponse,
   getHealthResponse,
   getKassalProductsResponse,
   getMenyCartResponse
 } = require('../shared/handlers.cjs');
 const { resolveItems } = require('../shared/meny.cjs');
 
-test('runtime config exposes flags without caching', () => {
-  const result = getConfigResponse({
-    env: {
-      APPLICATIONINSIGHTS_CONNECTION_STRING: 'InstrumentationKey=test',
-      FEATURE_MENY_CART: 'true'
-    }
-  });
-
-  assert.equal(result.status, 200);
-  assert.equal(result.headers['Cache-Control'], 'no-store');
-  assert.deepEqual(result.body, {
-    appInsights: { connectionString: 'InstrumentationKey=test' },
-    features: { menyCart: true }
-  });
-});
-
 test('health reports configured integrations', () => {
   const result = getHealthResponse({
-    env: { KASSAL_API_KEY: 'key', FEATURE_MENY_CART: '1' },
+    env: { KASSAL_API_KEY: 'key' },
     now: () => new Date('2026-08-21T12:00:00.000Z')
   });
 
   assert.deepEqual(result.body, {
     status: 'ok',
     kassal: true,
-    analytics: false,
-    menyCart: true,
     time: '2026-08-21T12:00:00.000Z'
   });
 });

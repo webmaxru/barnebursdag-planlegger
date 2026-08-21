@@ -38,6 +38,27 @@ jobs:
 
       - run: npm run test:e2e
 
+      - name: Build production artifact
+        run: npm run build:production
+        env:
+          VITE_ANALYTICS_ENABLED: ${{ vars.ANALYTICS_ENABLED }}
+          VITE_APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ vars.ANALYTICS_ENABLED == '1' && secrets.APPINSIGHTS_CONNECTION_STRING || '' }}
+          VITE_FEATURE_MENY_CART: ${{ vars.FEATURE_MENY_CART }}
+
+      - name: Verify production artifact
+        run: npm run verify:production-build
+        env:
+          VITE_ANALYTICS_ENABLED: ${{ vars.ANALYTICS_ENABLED }}
+          VITE_APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ vars.ANALYTICS_ENABLED == '1' && secrets.APPINSIGHTS_CONNECTION_STRING || '' }}
+          VITE_FEATURE_MENY_CART: ${{ vars.FEATURE_MENY_CART }}
+
+      - name: Smoke-test production build configuration
+        run: npx playwright test e2e/build-config.spec.ts --project="desktop chromium"
+        env:
+          EXPECT_PRODUCTION_CONFIG: 1
+          EXPECT_ANALYTICS_ENABLED: ${{ vars.ANALYTICS_ENABLED }}
+          EXPECT_MENY_ENABLED: ${{ vars.FEATURE_MENY_CART }}
+
       - uses: actions/upload-artifact@v4
         with:
           name: static-site

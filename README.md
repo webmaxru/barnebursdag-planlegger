@@ -68,17 +68,19 @@ the production deployment.
 Pushing to `main` runs `.github/workflows/deploy.yml`, which:
 
 1. Runs API unit tests and TypeScript checking.
-2. Builds the Vite client and runs the desktop/mobile Playwright release gate.
-3. Deploys `dist/` plus the managed Functions in `api/` to Azure Static Web Apps.
+2. Builds the default Vite client and runs the desktop/mobile Playwright release gate.
+3. Rebuilds with production analytics/MENY configuration injected by Vite.
+4. Deploys `dist/` plus the managed Functions in `api/` to Azure Static Web Apps.
 
 **Required GitHub repository secret:**
 
 | Secret | What |
 |--------|------|
 | `AZURE_STATIC_WEB_APPS_API_TOKEN` | Deployment token from the `kakeklar` Static Web App. |
+| `APPINSIGHTS_CONNECTION_STRING` | Build-time value embedded for the browser telemetry SDK. |
 
-`KASSAL_API_KEY`, `APPLICATIONINSIGHTS_CONNECTION_STRING`, and `FEATURE_MENY_CART=1` are configured as
-Static Web Apps environment variables for the managed API. The Free resource is defined in
+Repository variables `ANALYTICS_ENABLED` and `FEATURE_MENY_CART` control the production frontend
+build. `KASSAL_API_KEY` remains a Static Web Apps API environment variable. The Free resource is defined in
 [`infra/static-web-app.bicep`](infra/static-web-app.bicep). See [deployment.md](docs/deployment.md) for
 provisioning, custom-domain cutover, and rollback instructions.
 
@@ -86,8 +88,7 @@ provisioning, custom-domain cutover, and rollback instructions.
 
 | Endpoint | Description |
 |----------|-------------|
-| `GET /api/health` | Integration status and timestamp. |
-| `GET /api/config` | Runtime feature flags and cookieless analytics config. |
+| `GET /api/health` | Backend status, Kassal configuration, and timestamp. |
 | `GET /api/kassal/products?search=pølser&size=5` | Proxied Kassal.app price lookup (key stays server-side). |
 | `POST /api/meny/cart` | Resolve shopping-list items to MENY products. |
 

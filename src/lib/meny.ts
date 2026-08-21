@@ -1,5 +1,5 @@
 import type { PlanResult } from './engine';
-import { getAppConfig } from './config';
+import { BUILD_CONFIG } from './buildConfig';
 
 export interface MenyMatchedItem {
   name: string;
@@ -53,11 +53,9 @@ const CONTINUOUS = new Set(['g', 'dl', 'ml', 'l', 'kg']);
 // URL with config params (which would otherwise drop it).
 const PREVIEW = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('meny');
 
-/** Whether the experimental "Handle på MENY" feature is enabled (server flag or ?meny preview). */
-export async function isMenyEnabled(): Promise<boolean> {
-  if (PREVIEW) return true;
-  const cfg = await getAppConfig();
-  return Boolean(cfg?.features?.menyCart);
+/** Whether the experimental "Handle på MENY" feature is enabled at build time or via preview. */
+export function isMenyEnabled(): boolean {
+  return PREVIEW || BUILD_CONFIG.menyCart;
 }
 
 /** Turn the computed plan into MENY search requests (only items with a grocery search term). */

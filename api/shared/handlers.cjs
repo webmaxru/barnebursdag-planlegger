@@ -10,30 +10,12 @@ function response(status, body, headers = {}) {
   };
 }
 
-function enabled(value) {
-  return /^(1|true|on|yes)$/i.test(value || '');
-}
-
 function getHealthResponse({ env = process.env, now = () => new Date() } = {}) {
   return response(200, {
     status: 'ok',
     kassal: Boolean(env.KASSAL_API_KEY),
-    analytics: Boolean(env.APPLICATIONINSIGHTS_CONNECTION_STRING),
-    menyCart: enabled(env.FEATURE_MENY_CART),
     time: now().toISOString()
   });
-}
-
-function getConfigResponse({ env = process.env } = {}) {
-  const connectionString = env.APPLICATIONINSIGHTS_CONNECTION_STRING || '';
-  return response(
-    200,
-    {
-      appInsights: connectionString ? { connectionString } : null,
-      features: { menyCart: enabled(env.FEATURE_MENY_CART) }
-    },
-    { 'Cache-Control': 'no-store' }
-  );
 }
 
 async function getKassalProductsResponse(
@@ -133,7 +115,6 @@ async function getMenyCartResponse(
 }
 
 module.exports = {
-  getConfigResponse,
   getHealthResponse,
   getKassalProductsResponse,
   getMenyCartResponse,

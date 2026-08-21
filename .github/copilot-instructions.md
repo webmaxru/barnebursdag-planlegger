@@ -11,6 +11,7 @@ then produces an age-aware shopping list and printable checklist. `Controls.tsx`
 
 - **Client:** Vite + React 18 + TypeScript. All party math runs in `src/lib/engine.ts`.
 - **Production API:** dependency-free Node.js 22 managed Functions under `api/`.
+- **Frontend config:** Vite embeds analytics/MENY values from GitHub Actions during production builds.
 - **Shared API core:** `api/shared/handlers.cjs` and `api/shared/meny.cjs`.
 - **Local/E2E adapter:** Express 4 in `server/index.js` serves `dist/` and calls the shared handlers.
 - **State:** query string plus optional custom catalog in `localStorage`; no database.
@@ -41,11 +42,11 @@ Full docs live in [`/docs`](../docs/README.md).
 - **Bread ratio styling:** the wizard's inline bread range uses a solid track. Only the shared
   `Slider` sets `--pct`; do not add a static split gradient.
 - **Wizard footer:** render the shared footer inside `.wizard`, above the fixed bottom navigation.
-- **MENY cart:** hidden unless `FEATURE_MENY_CART` is enabled by `/api/config` or `?meny=1` is present.
+- **MENY cart:** hidden unless `VITE_FEATURE_MENY_CART` is enabled at build time or `?meny=1` is present.
   The managed API resolves products; the browser creates the shared cart. Never move cart creation to
   the server.
-- **E2E is a release gate.** CI runs API tests, type checking, Vite build, then Playwright on desktop
-  Chromium and Pixel 5. MENY tests mock both our resolver route and the meny.no endpoint.
+- **E2E is a release gate.** CI runs API tests, type checking, a default Vite build, then Playwright on
+  desktop Chromium and Pixel 5. It rebuilds with production config only after tests pass.
 - **Secrets stay in platform settings.** Never log values or commit `.env` /
   `api/local.settings.json`.
 
@@ -57,6 +58,7 @@ npm run dev
 npm run test:api
 npm run typecheck
 npm run build
+npm run build:production
 npm run test:e2e
 docker build -t barnebursdag:test .   # optional compatibility check
 ```
@@ -127,11 +129,12 @@ returns 503 and leaves the rest of the app usable.
 The account/repository is `webmaxru/barnebursdag-planlegger`. Always target it explicitly in `gh`
 commands when repository context is ambiguous.
 
-### 12. Runtime settings belong to the managed API
+### 12. Keep server secrets separate from build-time browser config
 
-Configure `KASSAL_API_KEY`, `APPLICATIONINSIGHTS_CONNECTION_STRING`, `FEATURE_MENY_CART`, and optional
-MENY overrides as Static Web Apps environment variables. They are available to Functions, not the
-static Vite bundle.
+`KASSAL_API_KEY` and optional MENY resolver overrides are Static Web Apps API settings.
+`ANALYTICS_ENABLED` / `FEATURE_MENY_CART` repository variables and the App Insights GitHub secret are
+injected by Vite. Every `VITE_*` value is public in the generated JavaScript; never put server secrets
+there.
 
 ### 13. Free-plan boundaries affect architecture
 
@@ -141,9 +144,9 @@ reintroduce that dependency into the Free design.
 
 ### 14. Analytics stays cookieless
 
-`/api/config` returns the Application Insights connection string at runtime. The browser SDK disables
-cookies, persistent identifiers, session storage buffering, and automatic fetch tracking. With no
-setting, analytics disables itself.
+The production build embeds the Application Insights connection string. The browser SDK disables
+cookies, persistent identifiers, session storage buffering, and automatic fetch tracking. Set
+`ANALYTICS_ENABLED=0` and rebuild to disable it.
 
 ### 15. MENY shared-cart split is intentional
 
@@ -156,7 +159,8 @@ because cart creation is rate-limited per source IP. Completed matches can be re
 
 Keep `https://kakeklar.no` as the custom domain so localStorage, shared links, canonical URLs, and PWA
 scope survive. The service-worker cache version must change during hosting migrations, and `/sw.js`
-must be served with `Cache-Control: no-cache`.
+must be served with `Cache-Control: no-cache`. Keep HTML navigations network-first so build-time flag
+changes reach existing PWA clients even when the worker itself is unchanged.
 
 ---
 
@@ -174,13 +178,13 @@ must be served with `Cache-Control: no-cache`.
 | Advanced mode | `src/components/Controls.tsx`, `Slider.tsx` |
 | Result list + price lookup | `src/components/Results.tsx` |
 | URL/localStorage state | `src/lib/store.ts` |
-| Runtime config client | `src/lib/config.ts` |
+| Build-time frontend config | `src/lib/buildConfig.ts` |
 | WebMCP tools | `src/lib/webmcp.ts`, `src/webmcp.d.ts` |
 | Cookieless analytics | `src/lib/analytics.ts` |
 | MENY UI/client | `src/components/MenyCart.tsx`, `src/lib/meny.ts` |
 | Shared HTTP behavior | `api/shared/handlers.cjs` |
 | MENY resolver | `api/shared/meny.cjs` |
-| Managed Function routes | `api/config/`, `api/health/`, `api/kassal-products/`, `api/meny-cart/` |
+| Managed Function routes | `api/health/`, `api/kassal-products/`, `api/meny-cart/` |
 | Local/E2E server | `server/index.js` |
 | Static Web Apps config | `public/staticwebapp.config.json` |
 | Static Web App IaC | `infra/static-web-app.bicep` |

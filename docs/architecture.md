@@ -2,21 +2,21 @@
 
 ## Overview
 
-**Azure Static Web Apps Free** serves the React SPA, while four managed Node.js HTTP Functions provide
+**Azure Static Web Apps Free** serves the React SPA, while three managed Node.js HTTP Functions provide
 the small JSON API. The app is **wizard-first**: most parents start in a 3-step mobile wizard, while the
 advanced controls remain available behind "Hopp over" / "Endre svar".
 
 All party-planning math runs **client-side** from the party config and catalog. There is no database or
-server-side state. The managed API exists only for runtime configuration, the secret-bearing
-Kassal.app price proxy, health diagnostics, and MENY product resolution.
+server-side state. The managed API exists only for the secret-bearing Kassal.app price proxy, health diagnostics, and MENY
+product resolution. Browser analytics and feature flags are embedded by Vite during deployment.
 
 ```mermaid
 graph TD
     U["📱 Parent on mobile"] -->|HTTPS| SWA["Azure Static Web Apps edge"]
     SWA -->|"static dist/"| SPA["React SPA"]
     SWA -->|"/api/*"| FN["Managed Node.js Functions"]
+    GHA["GitHub secret + variables"] -->|"Vite production build"| SPA
     FN -->|"GET /api/health"| H["health JSON"]
-    FN -->|"GET /api/config"| C["runtime flags + analytics config"]
     FN -->|"GET /api/kassal/products"| K["Kassal.app"]
     FN -->|"POST /api/meny/cart"| M["NGData product search"]
     SPA -->|"browser creates shared cart"| SYL["api.sylinder.no"]
@@ -27,7 +27,8 @@ graph TD
 
 1. Static Web Apps returns the pre-built `dist/index.html`. `staticwebapp.config.json` rewrites deep
    content URLs to that file.
-2. React starts in the wizard, result, configuration, or content view based on the URL and local state.
+2. React reads analytics and MENY configuration embedded in the bundle, then starts the appropriate
+   wizard, result, configuration, or content view based on URL and local state.
 3. Config changes recompute the plan in memory and update the query string with
    `history.replaceState`.
 4. Optional price lookup calls `/api/kassal/products`; the managed Function authenticates to
@@ -40,7 +41,7 @@ graph TD
 
 | Layer | Choice | Why |
 |-------|--------|-----|
-| API | **Static Web Apps managed Functions** (Node.js 22) | Same-origin `/api`, encrypted runtime settings, and no always-on server. |
+| API | **Static Web Apps managed Functions** (Node.js 22) | Same-origin secret-bearing proxies with no always-on server. |
 | Local adapter | **Express 4** (ESM) | Serves `dist/` and the shared handlers for development, Playwright, and optional Docker fallback. |
 | Client | **Vite + React 18 + TypeScript** | Fast builds, small bundle, and a fully client-side calculation engine. |
 | Styling | Hand-written CSS (`src/styles.css`) | Mobile-first design, custom controls, and print styles without a UI framework. |
@@ -61,6 +62,9 @@ shopping-list calculation needs a backend round-trip.
 production, while `server/index.js` adapts them to Express for local development and E2E. This keeps
 validation, cache headers, errors, secret handling, and upstream response mapping identical.
 
+`src/lib/buildConfig.ts` reads Vite variables that are compiled into the deploy artifact. There is no
+runtime configuration endpoint or page-load configuration request.
+
 The MENY resolver in `api/shared/meny.cjs` has a 30-second global deadline, below Static Web Apps'
 45-second request limit. It keeps successful matches and marks a response as partial when the deadline
 prevents all items from completing.
@@ -71,9 +75,8 @@ prevents all items from completing.
 api/
   host.json                Azure Functions host configuration
   shared/
-    handlers.cjs           Runtime config, health, Kassal, and MENY HTTP behavior
+    handlers.cjs           Health, Kassal, and MENY HTTP behavior
     meny.cjs               Bounded-concurrency MENY resolver
-  config/                  GET /api/config
   health/                  GET /api/health
   kassal-products/         GET /api/kassal/products
   meny-cart/               POST /api/meny/cart

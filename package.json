@@ -12,6 +12,8 @@
     "dev:client": "vite",
     "dev:server": "node --watch --env-file=.env server/index.js",
     "build": "vite build",
+    "build:production": "node scripts/validate-build-env.mjs && vite build",
+    "verify:production-build": "node scripts/verify-production-build.mjs",
     "icons": "node scripts/gen-icons.mjs",
     "insights": "pwsh -NoProfile -File scripts/insights.ps1",
     "start": "node server/index.js",

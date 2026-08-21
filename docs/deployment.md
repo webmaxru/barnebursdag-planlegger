@@ -30,21 +30,27 @@ Trigger: push to `main` (docs/markdown-only changes are ignored) or manual dispa
    - `npm run build`
    - verify `dist/staticwebapp.config.json`
    - run Playwright on desktop Chromium and Pixel 5
-   - upload the verified `dist/` artifact
+   - rebuild with production Vite configuration
+   - verify the production bundle contains no `/api/config` reference
+   - upload the production `dist/` artifact
 2. **`deploy`**
-   - downloads the exact artifact tested by the gate
+   - downloads the production artifact produced after the test gate
    - deploys `dist/` with `skip_app_build: true`
    - deploys the dependency-free managed Functions in `api/`
 
-The workflow needs one GitHub repository secret:
+The workflow uses these GitHub repository settings:
 
-| Secret | Purpose |
-|--------|---------|
-| `AZURE_STATIC_WEB_APPS_API_TOKEN` | Authorizes `Azure/static-web-apps-deploy` to upload the site and managed API. |
+| Type | Name | Purpose |
+|------|------|---------|
+| Secret | `AZURE_STATIC_WEB_APPS_API_TOKEN` | Authorizes deployment of the site and managed API. |
+| Secret | `APPINSIGHTS_CONNECTION_STRING` | Embedded by Vite for the browser telemetry SDK. |
+| Variable | `ANALYTICS_ENABLED` | Explicitly enables/disables analytics at build time. |
+| Variable | `FEATURE_MENY_CART` | Enables/disables the MENY UI at build time. |
 
 ## Provision the Free resource
 
-The resource and managed-API settings are declared in `infra/static-web-app.bicep`.
+The Static Web Apps resource is declared in `infra/static-web-app.bicep`. API secrets are managed
+separately so applying the template cannot overwrite a live secret with an empty/default value.
 
 ```powershell
 az provider register --namespace Microsoft.Web --wait
@@ -63,13 +69,8 @@ Configure these values under **Static Web App → Environment variables → Prod
 | Setting | Required | Notes |
 |---------|----------|-------|
 | `KASSAL_API_KEY` | No | Server-side Kassal.app key; price lookup returns 503 when omitted. |
-| `APPLICATIONINSIGHTS_CONNECTION_STRING` | No | Returned by `/api/config` to the cookieless browser SDK. |
-| `FEATURE_MENY_CART` | Yes in production | Set to `1` to show the MENY action. |
 | `MENY_CHAIN_ID` | No | Defaults to `1300`. |
 | `MENY_STORE_GLN` | No | Defaults to `7080001150488`. |
-
-The Bicep template also accepts the first three values as parameters. They are marked secure, but do
-not put their values in a committed parameter file.
 
 Copy the deployment token to GitHub without printing it:
 
@@ -82,6 +83,14 @@ az staticwebapp secrets list `
   gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN -R webmaxru/barnebursdag-planlegger
 ```
 
+Set build-time frontend configuration:
+
+```powershell
+gh secret set APPINSIGHTS_CONNECTION_STRING -R webmaxru/barnebursdag-planlegger
+gh variable set ANALYTICS_ENABLED --body 1 -R webmaxru/barnebursdag-planlegger
+gh variable set FEATURE_MENY_CART --body 1 -R webmaxru/barnebursdag-planlegger
+```
+
 Run the workflow manually once and verify the generated `*.azurestaticapps.net` hostname before
 changing public DNS.
 
@@ -91,33 +100,25 @@ Keep the browser origin as `https://kakeklar.no`. This preserves saved catalog e
 PWA scope, canonical URLs, and existing shared links.
 
 1. Add and validate `kakeklar.no` on the Static Web App.
-2. Verify `/`, all content routes, `/api/config`, price lookup, MENY cart creation, analytics, and PWA
+2. Verify `/`, all content routes, price lookup, MENY cart creation, analytics, and PWA
    installation on the Azure hostname.
 3. Lower DNS TTL before cutover.
 4. Point the domain to Static Web Apps and wait for its managed certificate.
 5. Re-test on `https://kakeklar.no`.
-6. Keep the Container App available during the observation window.
+6. Configure and verify `www.kakeklar.no` as the second custom domain.
 
 `public/sw.js` uses a new cache version for this migration, while the Static Web Apps route explicitly
-serves `/sw.js` with `Cache-Control: no-cache`.
+serves `/sw.js` with `Cache-Control: no-cache`. HTML navigations are network-first so future
+build-time configuration changes reach existing PWA clients.
 
 ## Retiring the old hosting
 
-Only after the custom-domain deployment is stable:
-
-- stop the old Container App or set its minimum replica count to zero;
-- remove the obsolete Container Apps environment and Log Analytics workspace only after confirming
-  nothing else uses them;
-- archive or remove the old GHCR package if it is no longer needed.
-
-These are intentionally manual, destructive steps and are not performed by the deployment workflow.
-Application Insights remains independent and can continue receiving cookieless browser telemetry.
+The old Container App and Container Apps environment have been deleted. Application Insights and its
+linked Log Analytics workspace remain because they provide browser telemetry and dashboards.
 
 ## Rollback
 
-If validation fails, point `kakeklar.no` back to the existing Container App. The local Express adapter
-and optional Docker image preserve the same `/api` responses, so rollback does not require a client
-build.
+If validation fails, redeploy a prior Git commit through the same Static Web Apps workflow.
 
 ## Troubleshooting
 
@@ -126,7 +127,9 @@ build.
 | Deploy action reports an invalid token | Refresh `AZURE_STATIC_WEB_APPS_API_TOKEN` from `az staticwebapp secrets list`. |
 | A content URL returns 404 | Confirm `dist/staticwebapp.config.json` exists and contains the `/index.html` navigation fallback. |
 | `/api/*` returns 404 | Confirm the workflow uploads `api/` and `apiRuntime` is `node:22`. |
+| Applying Bicep changes API settings | It should not: API settings are intentionally outside the template to protect live secrets. |
 | Price lookup returns 503 | Add `KASSAL_API_KEY` to the Production environment variables. |
 | MENY returns 504 | The resolver exhausted its 30-second budget; retry. Successful partial results are still usable. |
-| Feature flag is off | Set `FEATURE_MENY_CART=1`; environment variables are runtime settings and require no frontend rebuild. |
+| Feature flag is off | Set repository variable `FEATURE_MENY_CART=1`, then rebuild and deploy. |
+| Production build fails | Configure `ANALYTICS_ENABLED`, `FEATURE_MENY_CART`, and the App Insights secret explicitly. |
 | Old PWA remains visible | Reload once while online; the new service-worker cache version removes the old shell. |

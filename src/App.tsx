@@ -26,7 +26,7 @@ export default function App() {
   });
   const [toast, setToast] = useState('');
   const [editOpen, setEditOpen] = useState(false);
-  const [menyEnabled, setMenyEnabled] = useState(false);
+  const [menyEnabled] = useState(() => isMenyEnabled());
 
   const plan = useMemo(() => computePlan(catalog, cfg), [catalog, cfg]);
 
@@ -45,11 +45,6 @@ export default function App() {
 
   useEffect(() => writeConfig(cfg), [cfg]);
   useEffect(() => saveCatalog(catalog), [catalog]);
-
-  // Resolve the experimental "Handle på MENY" feature flag once on mount.
-  useEffect(() => {
-    isMenyEnabled().then(setMenyEnabled).catch(() => setMenyEnabled(false));
-  }, []);
 
   // Expand all <details> when printing so the checklist is fully visible.
   useEffect(() => {
