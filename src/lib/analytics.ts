@@ -1,5 +1,5 @@
 import type { ApplicationInsights, IEventTelemetry } from '@microsoft/applicationinsights-web';
-import { getAppConfig } from './config';
+import { BUILD_CONFIG } from './buildConfig';
 
 /**
  * Privacy-first (cookieless) Azure Application Insights wrapper.
@@ -37,11 +37,10 @@ function splitProps(properties?: Props) {
   return { props, measurements };
 }
 
-/** Initialise analytics. Fetches the connection string from the server at runtime. */
+/** Initialise analytics from the configuration embedded by Vite. */
 export async function initAnalytics(): Promise<void> {
   try {
-    const cfg = await getAppConfig();
-    const connectionString: string | undefined = cfg?.appInsights?.connectionString;
+    const connectionString = BUILD_CONFIG.appInsightsConnectionString;
 
     if (!connectionString) {
       ready = true;

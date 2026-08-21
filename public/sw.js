@@ -1,4 +1,4 @@
-const CACHE = 'bursdag-v2';
+const CACHE = 'bursdag-v3';
 const ASSETS = ['/', '/index.html', '/icon.svg', '/manifest.webmanifest'];
 
 self.addEventListener('install', (e) => {
@@ -17,6 +17,22 @@ self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
   if (url.pathname.startsWith('/api/')) return; // never cache API
   if (e.request.method !== 'GET') return;
+
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE).then((cache) => cache.put('/index.html', copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match('/index.html'))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then(
       (cached) =>

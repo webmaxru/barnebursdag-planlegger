@@ -17,6 +17,13 @@ test('title contains Kakeklar', async ({ page }) => {
   await expect(page).toHaveTitle(/Kakeklar/);
 });
 
+test('runtime config endpoint is removed', async ({ request }) => {
+  const response = await request.get('/api/config');
+
+  expect(response.status()).toBe(404);
+  await expect(response.json()).resolves.toEqual({ error: 'Fant ikke API-endepunktet.' });
+});
+
 test('age slider max is 14', async ({ page }) => {
   await page.goto('/');
 

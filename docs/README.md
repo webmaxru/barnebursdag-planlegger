@@ -7,7 +7,7 @@ Detailed documentation for the Norwegian kids' birthday party purchase planner.
 | [architecture.md](architecture.md) | System design, request flow, components, directory map, design decisions |
 | [calculation-engine.md](calculation-engine.md) | How quantities are computed: modes, age bands, pack rounding, worked examples |
 | [configuration.md](configuration.md) | The fully-configurable goods list: `GoodItem` schema, editor, import/export, persistence |
-| [api.md](api.md) | Server API reference: `/api/health`, `/api/config`, `/api/kassal/products`, `/api/meny/cart` |
+| [api.md](api.md) | Server API reference: `/api/health`, `/api/kassal/products`, `/api/meny/cart` |
 | [meny-cart.md](meny-cart.md) | **Handle på MENY** (experimental): shareable meny.no cart, the reverse-engineered NGData protocol, the feature flag |
 | [webmcp.md](webmcp.md) | **WebMCP tools**: exposing the planner to in-browser AI agents (`document.modelContext`), the two imperative tools, input/result schemas |
 | [development.md](development.md) | Local setup, scripts, env vars, ports, icon generation, **e2e tests** |

@@ -48,7 +48,8 @@ Web Apps; Express is not in the production request path.
 | `npm run dev` | Express adapter + Vite client |
 | `npm run dev:client` | Vite only (`:5173`) |
 | `npm run dev:server` | Express only (`:8080`), watch + `.env` |
-| `npm run build` | Vite production build → `dist/` |
+| `npm run build` | Vite build with local/default configuration → `dist/` |
+| `npm run build:production` | Validate build-time variables, then build → `dist/` |
 | `npm run test:api` | Node unit tests for shared API behavior |
 | `npm run typecheck` | TypeScript check without emitting |
 | `npm run test:e2e` | Playwright desktop + Pixel 5 suite |
@@ -66,6 +67,9 @@ npm run build
 npm run test:e2e
 ```
 
+CI runs `build:production` after E2E so the uploaded artifact contains production configuration while
+tests continue to cover the default feature-off behavior.
+
 Playwright's `webServer` starts `node server/index.js` on `:8080` against the prebuilt `dist/`. Because
 Express imports `api/shared/handlers.cjs`, browser tests exercise the same request validation,
 responses, and upstream adapters deployed to managed Functions.
@@ -78,14 +82,16 @@ network call is made in the release gate.
 | Variable | Used by | Notes |
 |----------|---------|-------|
 | `KASSAL_API_KEY` | managed API + local adapter | Optional Kassal.app credential. |
-| `APPLICATIONINSIGHTS_CONNECTION_STRING` | managed API + local adapter | Runtime config for cookieless browser analytics. |
-| `FEATURE_MENY_CART` | managed API + local adapter | `1`/`true` enables the MENY action. |
+| `VITE_ANALYTICS_ENABLED` | Vite/browser | Explicit build-time analytics switch. |
+| `VITE_APPLICATIONINSIGHTS_CONNECTION_STRING` | Vite/browser | Intentionally client-visible telemetry connection string. |
+| `VITE_FEATURE_MENY_CART` | Vite/browser | Build-time MENY UI switch; `?meny=1` still previews it. |
 | `MENY_CHAIN_ID` | managed API + local adapter | Optional; defaults to `1300`. |
 | `MENY_STORE_GLN` | managed API + local adapter | Optional; defaults to `7080001150488`. |
 | `PORT` | local adapter | Defaults to `8080`. |
 
-`.env` and `api/local.settings.json` are git-ignored. Production values are encrypted Static Web Apps
-environment variables and are available only to the managed API.
+`.env` and `api/local.settings.json` are git-ignored. `VITE_*` values are embedded into JavaScript and
+must never contain server secrets. Production Vite values come from GitHub Actions settings;
+`KASSAL_API_KEY` remains an encrypted Static Web Apps API environment variable.
 
 ## Ports
 

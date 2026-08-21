@@ -14,27 +14,11 @@ Returns integration status and a current timestamp.
 {
   "status": "ok",
   "kassal": true,
-  "analytics": false,
-  "menyCart": true,
   "time": "2026-08-21T12:00:00.000Z"
 }
 ```
 
 This endpoint is useful for smoke checks but is no longer an Azure Container Apps liveness probe.
-
-## `GET /api/config`
-
-Returns runtime client configuration with `Cache-Control: no-store`.
-
-```json
-{
-  "appInsights": { "connectionString": "InstrumentationKey=…" },
-  "features": { "menyCart": true }
-}
-```
-
-`appInsights` is `null` when analytics is not configured. Values come from encrypted Static Web Apps
-environment variables, so flags and analytics settings can change without rebuilding the frontend.
 
 ## `GET /api/kassal/products`
 

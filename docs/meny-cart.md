@@ -5,7 +5,7 @@ shareable **[meny.no](https://meny.no)** shopping cart. The user gets a
 `https://meny.no/delt-handlevogn/<id>` link they can open or send to a co-parent, who can then add the
 whole cart to their own MENY basket.
 
-> **Status: experimental, behind a feature flag.** Hidden unless `FEATURE_MENY_CART` is enabled (or the
+> **Status: experimental, behind a feature flag.** Hidden unless `VITE_FEATURE_MENY_CART` is enabled at build time (or the
 > page is opened with `?meny=1`). Off by default.
 
 ## Why this works without a login
@@ -63,8 +63,8 @@ browser.
 
 | Where | How |
 |-------|-----|
-| Production (Azure Static Web Apps) | set API environment variable `FEATURE_MENY_CART=1` (no rebuild) |
-| Local | `FEATURE_MENY_CART=1` in `.env`, or just open `http://localhost:8080/?meny=1` |
+| Production (Azure Static Web Apps) | set repository variable `FEATURE_MENY_CART=1`, then rebuild/deploy |
+| Local | `VITE_FEATURE_MENY_CART=1` in `.env`, or open `http://localhost:5173/?meny=1` |
 | Preview/share | append `?meny=1` to any URL |
 
 Optional resolver overrides: `MENY_CHAIN_ID` (default `1300`) and `MENY_STORE_GLN`
@@ -91,8 +91,8 @@ Optional resolver overrides: `MENY_CHAIN_ID` (default `1300`) and `MENY_STORE_GL
 | Shared HTTP handlers | `api/shared/handlers.cjs` |
 | Managed route | `api/meny-cart/` → `POST /api/meny/cart` |
 | Local/E2E adapter | `server/index.js` |
-| Feature flag (managed API) | `/api/config` → `features.menyCart` |
-| Feature flag (client) | `src/lib/meny.ts → isMenyEnabled` + `src/lib/config.ts` |
+| Build-time configuration | `src/lib/buildConfig.ts` |
+| Feature flag (client) | `src/lib/meny.ts → isMenyEnabled` |
 | List → search items | `src/lib/meny.ts → planToMenyItems` |
 | Button + modal UI | `src/components/MenyCart.tsx`, styles in `src/styles.css` |
 | E2E | `e2e/meny-cart.spec.ts` |
