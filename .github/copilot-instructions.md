@@ -85,9 +85,8 @@ deployment token to the GitHub secret, and configure API environment variables i
 
 ### 4. Keep managed Functions dependency-free
 
-The API uses the Functions `function.json` model and CommonJS modules, so `skip_api_build: true` can
-upload it without installing a second dependency tree. Shared business logic belongs in
-`api/shared/`; function entry points stay thin.
+The API uses the Functions `function.json` model and CommonJS modules without third-party runtime
+dependencies. Shared business logic belongs in `api/shared/`; function entry points stay thin.
 
 ### 5. Managed API requests have a 45-second ceiling
 
