@@ -34,7 +34,7 @@ Trigger: push to `main` (docs/markdown-only changes are ignored) or manual dispa
 2. **`deploy`**
    - downloads the exact artifact tested by the gate
    - deploys `dist/` with `skip_app_build: true`
-   - deploys the dependency-free managed Functions in `api/` with `skip_api_build: true`
+   - deploys the dependency-free managed Functions in `api/`
 
 The workflow needs one GitHub repository secret:
 
@@ -125,7 +125,7 @@ build.
 |--------|-------------|
 | Deploy action reports an invalid token | Refresh `AZURE_STATIC_WEB_APPS_API_TOKEN` from `az staticwebapp secrets list`. |
 | A content URL returns 404 | Confirm `dist/staticwebapp.config.json` exists and contains the `/index.html` navigation fallback. |
-| `/api/*` returns 404 | Confirm the workflow uploads `api/`, `skip_api_build` is true, and `apiRuntime` is `node:22`. |
+| `/api/*` returns 404 | Confirm the workflow uploads `api/` and `apiRuntime` is `node:22`. |
 | Price lookup returns 503 | Add `KASSAL_API_KEY` to the Production environment variables. |
 | MENY returns 504 | The resolver exhausted its 30-second budget; retry. Successful partial results are still usable. |
 | Feature flag is off | Set `FEATURE_MENY_CART=1`; environment variables are runtime settings and require no frontend rebuild. |
