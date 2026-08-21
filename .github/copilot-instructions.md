@@ -1,158 +1,163 @@
 # Copilot instructions — Kakeklar
 
-Guidance for AI agents (and humans) working in this repo. The **Hard-won lessons** section near the
-bottom is the important part: it lists the things that cost the most time during the first build so
-the next change ships smoothly.
+Guidance for agents and humans working in this repository. Read the **Hard-won lessons** before
+changing deployment or API code.
 
 ## What this is
 
-A Norwegian kids' birthday party (*barnebursdag*) purchase planner. A **3-step mobile wizard**
-(`src/components/Wizard.tsx`) — age/guests/adults (with a note that restrictions come next) →
-allergies and food restrictions → food choices —
-produces an age-aware shopping list (food, drink, tableware, decorations) + a printable checklist. The slider screen
-(`Controls.tsx`) is the **advanced mode** (reached via "Hopp over"); after the wizard the app **leads
-with the result** (Handleliste). Mobile-first, no login, Norwegian (Bokmål) UI, with a shared footer on
-every page (including the wizard) saying "Kakeklar er gratis…" plus crediting Maxim Salnikov and linking to LinkedIn + GitHub.
+Kakeklar is a Norwegian kids' birthday party purchase planner. A **3-step mobile wizard**
+(`src/components/Wizard.tsx`) asks for age/guests/adults, allergies/restrictions, and food choices,
+then produces an age-aware shopping list and printable checklist. `Controls.tsx` is advanced mode.
 
-- **Server:** Node.js + Express 4 (ESM), `server/index.js` — serves the built SPA + `/api/health`, `/api/config` (runtime feature flags + cookieless App Insights string), a Kassal.app price proxy, and an experimental MENY shared-cart resolver (`server/meny.js`). API reference: [`docs/api.md`](../docs/api.md).
-- **Client:** Vite + React 18 + TypeScript in `src/`. Wizard-first (`Wizard.tsx`) + advanced `Controls.tsx`. All party math runs client-side (`src/lib/engine.ts`).
-- **Data, not code:** the goods catalog (`src/lib/catalog.ts`) is generic data; the engine evaluates each item's `mode`. Users edit it live (`ConfigEditor.tsx`), persisted in `localStorage`.
-- **Ship:** multi-stage `Dockerfile` → GHCR (public) → Azure Container Apps via `.github/workflows/deploy.yml`.
+- **Client:** Vite + React 18 + TypeScript. All party math runs in `src/lib/engine.ts`.
+- **Production API:** dependency-free Node.js 22 managed Functions under `api/`.
+- **Shared API core:** `api/shared/handlers.cjs` and `api/shared/meny.cjs`.
+- **Local/E2E adapter:** Express 4 in `server/index.js` serves `dist/` and calls the shared handlers.
+- **State:** query string plus optional custom catalog in `localStorage`; no database.
+- **Hosting:** Azure Static Web Apps Free via `.github/workflows/deploy.yml`.
+- **Compatibility:** the Dockerfile still runs the Express adapter, but production does not deploy a
+  container.
 
-Full docs in [`/docs`](../docs/README.md).
+Full docs live in [`/docs`](../docs/README.md).
 
 ## Conventions
 
-- **UI text is Norwegian Bokmål.** Keep new strings in nb. Numbers via `Intl.NumberFormat('nb-NO')` (`src/lib/format.ts`).
-- **Mobile-first.** Big touch targets (≥40px), sticky bottom action bar, hand-written CSS in `src/styles.css` — a **tokenised design system** (CSS custom properties in `:root`): a warm-paper canvas with a single **berry** accent (`--berry #D7264A`), **not** a pink/candy kids theme. Display type is **Bricolage Grotesque**, body is **Hanken Grotesk**, both **self-hosted via `@fontsource-variable/*`** (devDependencies, imported in `main.tsx`) with tabular figures on quantities/prices. The result view's "✨ Veiviser" button is intentionally larger, and the summary guest/age values are inline `.inline-num` number inputs (`inputMode="numeric"`) that recompute immediately. `:focus-visible` and `prefers-reduced-motion` are wired up — keep them. Anything that must not print gets the `no-print` class; verify `@media print`.
-- **Brand & signature.** The signature is a **festfane garland** (`Garland.tsx`) — decorative only, `aria-hidden`, rendered in the hero and wizard header; never attach state or test hooks to it. Keep the palette consistent across brand assets: `index.html` `theme-color`, `manifest.webmanifest`, `public/icon.svg` and `public/og-image.svg` all use `#D7264A`. After editing an SVG, regenerate the committed PNG/ICO/OG with `npm i sharp png-to-ico --no-save && npm run icons` (sharp stays out of `package.json`).
-- **Keep the server stateless.** No DB. State = URL query (`?gjester=…&alder=…&brod=70`) + optional custom catalog in `localStorage`.
-- **Catalog changes:** bump `CATALOG_VERSION` in `catalog.ts` if you change the default catalog's shape or content (it invalidates stale saved copies). Add new item fields to `ConfigEditor.tsx` so they stay editable. Default `kassalSearch` terms are validated against Kassal.app so **Sjekk pris** returns the right popular Norwegian product; omit `kassalSearch` when there is no useful grocery match.
-- **Two entry modes, one config:** the wizard (`Wizard.tsx`, default) and advanced (`Controls.tsx`) both write the same `PartyConfig` — which now includes `adults`, `mainDish`, and `breadRatio` (0–100 percent lompe). Keep them in sync. Catalog items are gated by `showIf` (`mainDish` only), `breadKind` splits lomper/pølsebrød, and `audience: 'all'|'kids'` decides whether accompanying adults are counted. Iskake is an enabled, home-only mat item; Pinata is a catalog item with `enabled: false` (no `showIf`), enabled in **Tilpass varelisten**; `PartyConfig.pinata` and `pinata=1` are gone. Keep `CATALOG_VERSION` at **7** for this catalog shape/content.
-- **Bread-ratio styling:** the wizard's "Brød: lompe og pølsebrød" inline range input uses a solid track background. Do not add a static value-split gradient there; the `--pct` fill variable is only set by the shared `Slider` component.
-- **Wizard footer placement:** the shared `Footer` renders on the wizard too, inside `.wizard` above the fixed bottom nav so it stays visible on first load.
-- **Experimental MENY cart (opt-in).** "Handle på MENY" turns the list into a shareable [meny.no](https://meny.no) cart. It's hidden unless `FEATURE_MENY_CART` is enabled (server exposes it via `/api/config` → `features.menyCart`, read once by the memoized `getAppConfig()` in `src/lib/config.ts`) **or** the page is opened with `?meny=1`. The flag is **on in production** (`deploy.yml` sets `FEATURE_MENY_CART=1`). Division of labour: the server **only resolves** list items to real products (`POST /api/meny/cart` → `resolveItems` in `server/meny.js`); the **browser creates** the shared cart directly (see lesson 15). UI lives in `src/components/MenyCart.tsx` + `src/lib/meny.ts`. Details in [`docs/meny-cart.md`](../docs/meny-cart.md).
-- **E2E is a release gate.** Keep the Playwright specs in `e2e/` green and add tests for new flows — `build-and-deploy` `needs: e2e`, so a red suite blocks the deploy. Run locally with `npm run build && npm run test:e2e`. Stable selectors use `data-testid` (wizard steps, `bread-ratio`, `meny-cart-button|modal|link|loading|result`) + `.row-name` for result items; inline summary inputs use labels "Antall gjester" and "Barnets alder". The MENY specs drive the UI with `?meny=1` and **mock** the `/api/meny/cart` + meny.no endpoints (no live network). There is no `toggle-pinata` test.
-- **Secrets stay server-side / in platform secrets.** Never log secret values; never commit `.env`.
+- **UI text is Norwegian Bokmål.** Format numbers with `Intl.NumberFormat('nb-NO')`.
+- **Mobile-first.** Touch targets are at least 40px. The tokenised CSS in `src/styles.css` uses a
+  warm-paper canvas and one berry accent (`--berry #D7264A`), not a pink/candy theme. Display type is
+  Bricolage Grotesque and body type is Hanken Grotesk, both self-hosted through Fontsource. Preserve
+  `:focus-visible`, `prefers-reduced-motion`, tabular figures, and `no-print` behavior.
+- **Brand signature.** `Garland.tsx` is decorative (`aria-hidden`) and must not carry state or test
+  hooks. Keep `#D7264A` consistent across HTML metadata, manifest, icon, and OG assets. After editing
+  SVGs, run `npm i sharp png-to-ico --no-save && npm run icons`; do not add those native tools to
+  `package.json`.
+- **Keep the service stateless.** State is URL query
+  (`?gjester=…&alder=…&brod=70`) plus optional local catalog data.
+- **Catalog changes:** bump `CATALOG_VERSION` only when default catalog shape/content changes. Add new
+  fields to `ConfigEditor.tsx`. Keep `CATALOG_VERSION` at **7** for the current catalog.
+- **Two entry modes, one config.** Wizard and advanced controls both write `PartyConfig`, including
+  `adults`, `mainDish`, and `breadRatio`. `showIf`, `breadKind`, and `audience` drive catalog behavior.
+  Iskake is enabled/home-only; Pinata is a disabled-by-default catalog item.
+- **Bread ratio styling:** the wizard's inline bread range uses a solid track. Only the shared
+  `Slider` sets `--pct`; do not add a static split gradient.
+- **Wizard footer:** render the shared footer inside `.wizard`, above the fixed bottom navigation.
+- **MENY cart:** hidden unless `FEATURE_MENY_CART` is enabled by `/api/config` or `?meny=1` is present.
+  The managed API resolves products; the browser creates the shared cart. Never move cart creation to
+  the server.
+- **E2E is a release gate.** CI runs API tests, type checking, Vite build, then Playwright on desktop
+  Chromium and Pixel 5. MENY tests mock both our resolver route and the meny.no endpoint.
+- **Secrets stay in platform settings.** Never log values or commit `.env` /
+  `api/local.settings.json`.
 
 ## Known-good commands
 
 ```bash
 npm install
-npm run dev          # Vite :5173 + API :8080
-npm run build        # client → dist/
-npm run start:local  # serve dist/ + API with .env on :8080
-npm run build && npm run test:e2e   # Playwright e2e gate (desktop + Pixel 5 mobile)
-docker build -t barnebursdag:test .
+npm run dev
+npm run test:api
+npm run typecheck
+npm run build
+npm run test:e2e
+docker build -t barnebursdag:test .   # optional compatibility check
 ```
 
-CI/CD is push-to-`main` (docs-only pushes are skipped via `paths-ignore`).
+CI/CD runs on pushes to `main`; docs-only pushes are skipped.
 
 ---
 
-## Hard-won lessons (read before building or deploying)
+## Hard-won lessons
 
-These are the exact things that ate time the first round. Follow them and the next pass is smooth.
+### 1. Create directories before files
 
-### 1. Create directories before creating files
-The file-creation tooling **does not create parent directories** ("Parent directory does not exist").
-When scaffolding, `mkdir` the folders first (`server/`, `src/lib/`, `src/components/`, `public/`,
-`scripts/`, `.github/workflows/`) before writing files into them.
+Some file tools do not create parent directories. Create `api/`, nested function folders, `public/`,
+and workflow directories before adding files when the editing tool requires it.
 
-### 2. Keep `sharp` out of Docker — pre-generate icons locally
-PWA PNG icons are generated from `public/icon.svg` by `scripts/gen-icons.mjs` (uses `sharp`) and the
-PNGs are **committed**. `sharp` is intentionally **not** in `package.json`, so the `node:22-alpine`
-build never compiles native modules. To regenerate: `npm i sharp --no-save && npm run icons`. Don't
-add `sharp` (or other native deps) to `dependencies`/`devDependencies` just for a build-time asset.
+### 2. Keep native icon tools out of production
 
-### 3. You usually can't push to GHCR from the local machine
-The local `gh`/Git token typically lacks the `write:packages` scope (it had `gist, read:org, repo,
-workflow` only). So **build & push the image in GitHub Actions**, where `GITHUB_TOKEN` has
-`packages: write`. Don't waste time trying `docker push ghcr.io/...` locally or `gh auth refresh`
-(interactive, won't work headless).
+PWA PNG/ICO/OG files are generated locally and committed. `sharp` and `png-to-ico` must remain
+one-off `--no-save` tools so the Static Web Apps build stays portable.
 
-### 4. Make the GHCR package public so ACA can pull anonymously
-Azure Container Apps pulls the image on cold start / node moves. If the package is private with only an
-ephemeral token, those pulls eventually fail. The workflow handles this with a **three-part safety net**:
-1. best-effort `gh api PATCH /user/packages/container/<name>/visibility -f visibility=public`,
-2. passes GHCR pull credentials to ACA at deploy (works during the run regardless), and
-3. `--min-replicas 1` so it stays warm.
-The PATCH worked here (the package is public). If it ever doesn't, set the package public once in
-GitHub → Packages settings.
+### 3. Static Web Apps deploys with its own token
 
-### 5. Pre-provision the Azure environment and wait for it
-`az containerapp env create` takes **several minutes** (it provisions a Log Analytics workspace) and
-needs `Microsoft.OperationalInsights` + `Microsoft.App` registered. Create the resource group + env
-**before** the first push and wait for `provisioningState: Succeeded`, so the workflow's deploy step
-(which references the env by name) doesn't race ahead and fail. The deploy step itself is idempotent
-(`az containerapp show` → create-or-update).
+The workflow uses `AZURE_STATIC_WEB_APPS_API_TOKEN`, not GHCR permissions or
+`AZURE_CREDENTIALS`. Provision the Free resource with `infra/static-web-app.bicep`, copy its
+deployment token to the GitHub secret, and configure API environment variables in the Static Web App.
 
-### 6. Node `--env-file` throws if the file is missing — split the scripts
-Local dev/run uses Node 22's native `--env-file=.env` (no `dotenv` dependency). But the container has
-**no** `.env`. So:
-- `start` = `node server/index.js` (no `--env-file`) → used by Docker/ACA (env comes from the platform).
-- `start:local` / `dev:server` = `node --env-file=.env …` → local only.
-Don't put `--env-file=.env` in the script Docker runs, or the container crashes on boot.
+### 4. Keep managed Functions dependency-free
 
-### 7. Express is pinned to v4 for the SPA fallback
-`app.get('*', …)` (SPA catch-all) uses Express 4 path syntax. **Do not** upgrade to Express 5 without
-rewriting that route — v5 changed wildcard matching.
+The API uses the Functions `function.json` model and CommonJS modules, so `skip_api_build: true` can
+upload it without installing a second dependency tree. Shared business logic belongs in
+`api/shared/`; function entry points stay thin.
 
-### 8. The Vite build does not type-check
-`npm run build` (esbuild) transpiles only; TypeScript errors **won't** fail the build. Bugs surface at
-runtime, not build time. Keep types correct; run `tsc --noEmit` yourself if you want a strict gate.
+### 5. Managed API requests have a 45-second ceiling
 
-### 9. Kassal.app contract — and keep the key server-side
-`GET https://kassal.app/api/v1/products?search=<term>&size=<n>` with `Authorization: Bearer <40-char key>`.
-The browser must call our proxy `/api/kassal/products`; the key is read from `process.env.KASSAL_API_KEY`
-in `server/index.js` and never sent to the client. The app degrades gracefully without a key (503 on the
-proxy, price button shows a message).
+The MENY resolver's global deadline is 30 seconds. Keep every upstream timeout below the platform
+limit and return explicit partial/timeout responses; never restore unbounded per-item retries.
+
+### 6. Local `.env` loading is intentionally split
+
+`start:local` / `dev:server` use Node's `--env-file=.env`; plain `start` does not. Node throws when an
+explicit env file is missing, so the optional container must continue receiving settings from its
+runtime.
+
+### 7. Express is an adapter, not production hosting
+
+Express 4 preserves the local SPA wildcard and gives Playwright a single-origin server. API behavior
+must be implemented in shared handlers first, then adapted by Express and Azure Functions. Do not let
+the two paths drift.
+
+### 8. Vite does not type-check
+
+`npm run build` transpiles only. CI therefore runs `npm run typecheck` explicitly before building and
+uploading the artifact.
+
+### 9. Kassal.app contract and secret
+
+The browser calls `/api/kassal/products`; only the managed API sends the upstream authorization
+credential from `KASSAL_API_KEY`. The upstream request has a 15-second timeout. Missing configuration
+returns 503 and leaves the rest of the app usable.
 
 ### 10. PowerShell / Windows specifics
-- Use **`curl.exe`** (not the `curl` alias, which is `Invoke-WebRequest`).
-- Read `.env` without echoing values; pipe the service-principal JSON straight into `gh secret set …` (don't print it).
-- Create dirs with `New-Item -ItemType Directory -Force`.
+
+- Use `curl.exe`, not the `curl` alias.
+- Pipe deployment tokens directly into `gh secret set`; do not print them.
+- Create directories with `New-Item -ItemType Directory -Force`.
 
 ### 11. GitHub identity
-The account is **`webmaxru`** (the request said "webmax", which doesn't exist). Two accounts may be
-logged into `gh` (`webmaxru` active + another) — always target the repo explicitly with
-`-R webmaxru/barnebursdag-planlegger` for `gh` package/secret/run commands.
 
-### 12. ACA env vars vs. secrets
-The Kassal key is an ACA **secret** (`kassal-api-key`) referenced by the env var as
-`KASSAL_API_KEY=secretref:kassal-api-key`. Update the secret with `az containerapp secret set` and the
-env var with `--set-env-vars` / `--env-vars`. Ingress target port is **8080** (matches `PORT`).
+The account/repository is `webmaxru/barnebursdag-planlegger`. Always target it explicitly in `gh`
+commands when repository context is ambiguous.
 
-### 13. GHCR is public → do NOT store registry creds on the Container App
-The image is a **public** GHCR package, so ACA should pull it **anonymously**. Do not configure
-`--registry-server/--registry-username/--registry-password` on the app: those store an **ephemeral
-`GITHUB_TOKEN`** that expires, and once a registry credential is present ACA stops pulling anonymously —
-so the next cold start / new revision fails with `Pending:ImagePullBackOff`. If you ever see that:
-`az containerapp registry remove -n barnebursdag -g rg-barnebursdag --server ghcr.io` (no `--yes` flag —
-it's not supported), then force a fresh revision (`az containerapp update --image …:latest
---revision-suffix x`). The workflow deliberately does **not** set registry creds.
+### 12. Runtime settings belong to the managed API
 
-Also: issuing several `az containerapp` writes back-to-back can hit
-`ConflictingConcurrentWriteNotAllowed` — the deploy serialises (secret set → sleep → retry update).
+Configure `KASSAL_API_KEY`, `APPLICATIONINSIGHTS_CONNECTION_STRING`, `FEATURE_MENY_CART`, and optional
+MENY overrides as Static Web Apps environment variables. They are available to Functions, not the
+static Vite bundle.
 
-### 14. Analytics is cookieless on purpose (no consent banner)
-Application Insights is configured cookieless (`disableCookiesUsage`, no session-storage buffer, no
-persistent id) so **no cookie banner is legally required** (EU ePrivacy / ekomloven §3-15). The
-connection string is delivered at runtime via `GET /api/config` (ACA secret
-`appinsights-connection-string`), never bundled, and the SDK is lazy-loaded as a separate chunk. With
-no connection string the app disables analytics gracefully. See `docs/analytics.md`.
+### 13. Free-plan boundaries affect architecture
 
-### 15. MENY shared-cart: the browser creates the cart, the server only resolves
-The "Handle på MENY" feature (experimental, flag `FEATURE_MENY_CART`, **on in prod**) splits work on
-purpose. `POST /api/meny/cart` (server, `server/meny.js`) resolves each list item to a real MENY
-product via **anonymous** NGData search (`platform-rest-prod.ngdata.no`, chain `1300`, store GLN
-`7080001150488` — overridable via `MENY_CHAIN_ID` / `MENY_STORE_GLN` / `MENY_SHARE_BASE`, **no API
-key needed**). The actual shared cart is then created **from the browser** against `api.sylinder.no`,
-because that endpoint **rate-limits per source IP** (~1/min) — funnelling it through the server would
-throttle every user to one shared IP. Do **not** "simplify" this by moving cart creation server-side.
-The resolved cart items **must** keep their full `product` object or meny.no's shared-cart page
-crashes. Toggle locally with `?meny=1` or `FEATURE_MENY_CART=1` in `.env` (see `.env.example`). Full
-protocol notes in [`docs/meny-cart.md`](../docs/meny-cart.md).
+Free provides managed Functions, 100 GB monthly bandwidth, 250 MB per environment, two custom domains,
+and no SLA. Linking an existing Container App as a same-origin backend requires Standard; do not
+reintroduce that dependency into the Free design.
+
+### 14. Analytics stays cookieless
+
+`/api/config` returns the Application Insights connection string at runtime. The browser SDK disables
+cookies, persistent identifiers, session storage buffering, and automatic fetch tracking. With no
+setting, analytics disables itself.
+
+### 15. MENY shared-cart split is intentional
+
+`api/shared/meny.cjs` resolves catalog entries through anonymous NGData product search, keeping the
+full product object in each cart line. The browser then calls `api.sylinder.no` from the user's IP,
+because cart creation is rate-limited per source IP. Completed matches can be returned with
+`partial: true` when the 30-second resolver deadline is reached.
+
+### 16. Preserve the public origin during cutover
+
+Keep `https://kakeklar.no` as the custom domain so localStorage, shared links, canonical URLs, and PWA
+scope survive. The service-worker cache version must change during hosting migrations, and `/sw.js`
+must be served with `Cache-Control: no-cache`.
 
 ---
 
@@ -163,22 +168,23 @@ protocol notes in [`docs/meny-cart.md`](../docs/meny-cart.md).
 | Calculation logic / modes | `src/lib/engine.ts` |
 | Default goods + version | `src/lib/catalog.ts` |
 | Editable catalog UI | `src/components/ConfigEditor.tsx` |
-| Wizard (3-step onboarding) | `src/components/Wizard.tsx` |
+| Wizard | `src/components/Wizard.tsx` |
 | Shared footer | `src/components/Footer.tsx` |
-| Design system + tokens + print/reduced-motion | `src/styles.css` |
-| Festfane signature garland (decorative) | `src/components/Garland.tsx` |
-| Advanced mode (sliders, food/adults choices) | `src/components/Controls.tsx`, `Slider.tsx` |
-| Result list + checklist + price lookup | `src/components/Results.tsx` |
-| URL state + localStorage + import/export | `src/lib/store.ts` |
-| Runtime config + feature flags (client) | `src/lib/config.ts` |
-| WebMCP tools (browser AI-agent integration) | `src/lib/webmcp.ts`, `src/webmcp.d.ts` |
-| Cookieless analytics (App Insights) | `src/lib/analytics.ts` |
-| Timeline + checklist data | `src/lib/checklist.ts` |
-| Action toolbar (share / print / customise) | `src/components/ActionToolbar.tsx` |
-| MENY shared-cart UI + client | `src/components/MenyCart.tsx`, `src/lib/meny.ts` |
-| MENY resolver (anonymous, server-side) | `server/meny.js` |
-| Server (static + health + config + Kassal + MENY) | `server/index.js` |
-| CI/CD (e2e gate → build → deploy) | `.github/workflows/deploy.yml` |
+| Design system / print / reduced motion | `src/styles.css` |
+| Festfane garland | `src/components/Garland.tsx` |
+| Advanced mode | `src/components/Controls.tsx`, `Slider.tsx` |
+| Result list + price lookup | `src/components/Results.tsx` |
+| URL/localStorage state | `src/lib/store.ts` |
+| Runtime config client | `src/lib/config.ts` |
+| WebMCP tools | `src/lib/webmcp.ts`, `src/webmcp.d.ts` |
+| Cookieless analytics | `src/lib/analytics.ts` |
+| MENY UI/client | `src/components/MenyCart.tsx`, `src/lib/meny.ts` |
+| Shared HTTP behavior | `api/shared/handlers.cjs` |
+| MENY resolver | `api/shared/meny.cjs` |
+| Managed Function routes | `api/config/`, `api/health/`, `api/kassal-products/`, `api/meny-cart/` |
+| Local/E2E server | `server/index.js` |
+| Static Web Apps config | `public/staticwebapp.config.json` |
+| Static Web App IaC | `infra/static-web-app.bicep` |
+| CI/CD | `.github/workflows/deploy.yml` |
 | E2E tests | `e2e/`, `playwright.config.ts` |
-| Engagement workbook (IaC) | `infra/` |
 | Docs | `docs/` |

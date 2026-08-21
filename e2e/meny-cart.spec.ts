@@ -41,7 +41,8 @@ test('MENY cart flow shows a shareable link', async ({ page }) => {
           { name: 'Pølser', query: 'grillpølse', ean: '1', title: 'Grillpølser', subtitle: '600g', brand: 'Prior', price: 56.9, quantity: 3 },
           { name: 'Lomper', query: 'lomper', ean: '2', title: 'Lomper', subtitle: '10stk', brand: '', price: 10.8, quantity: 3 }
         ],
-        unmatched: [{ name: 'Bursdagskrone', query: 'krone' }]
+        unmatched: [{ name: 'Bursdagskrone', query: 'krone' }],
+        partial: true
       })
     })
   );
@@ -60,4 +61,5 @@ test('MENY cart flow shows a shareable link', async ({ page }) => {
   await expect(page.getByTestId('meny-cart-modal')).toBeVisible();
   await expect(page.getByTestId('meny-cart-link')).toHaveValue('https://meny.no/delt-handlevogn/test-123');
   await expect(page.getByText('Grillpølser')).toBeVisible();
+  await expect(page.getByText(/Oppslaget nådde tidsgrensen/)).toBeVisible();
 });

@@ -1,93 +1,90 @@
 # API reference
 
-The server (`server/index.js`) exposes a handful of JSON endpoints plus static hosting of the SPA. It
-is an Express 4 app, ESM, listening on `PORT` (default `8080`).
+Production endpoints are Azure Static Web Apps managed Node.js Functions under `api/`. Local
+development and Playwright use `server/index.js`, which adapts the same framework-neutral handlers to
+Express.
+
+All routes are anonymous and stateless.
 
 ## `GET /api/health`
 
-Liveness probe used by Azure Container Apps.
+Returns integration status and a current timestamp.
 
-**200 OK**
 ```json
-{ "status": "ok", "kassal": true, "analytics": false, "menyCart": false, "time": "2026-06-20T23:03:48.153Z" }
+{
+  "status": "ok",
+  "kassal": true,
+  "analytics": false,
+  "menyCart": true,
+  "time": "2026-08-21T12:00:00.000Z"
+}
 ```
-- `kassal` — whether a `KASSAL_API_KEY` is configured (price lookups available).
-- `analytics` — whether an Application Insights connection string is configured.
-- `menyCart` — whether the experimental MENY shared-cart feature is enabled (`FEATURE_MENY_CART`).
+
+This endpoint is useful for smoke checks but is no longer an Azure Container Apps liveness probe.
 
 ## `GET /api/config`
 
-Runtime client config (cookieless Application Insights connection string + feature flags). Sent with
-`Cache-Control: no-store`.
+Returns runtime client configuration with `Cache-Control: no-store`.
 
-**200 OK**
 ```json
 {
   "appInsights": { "connectionString": "InstrumentationKey=…" },
-  "features": { "menyCart": false }
+  "features": { "menyCart": true }
 }
 ```
-`appInsights` is `null` when no connection string is configured. `features.menyCart` mirrors
-`FEATURE_MENY_CART`. The client (`src/lib/config.ts`) fetches this once and memoizes it.
+
+`appInsights` is `null` when analytics is not configured. Values come from encrypted Static Web Apps
+environment variables, so flags and analytics settings can change without rebuilding the frontend.
 
 ## `GET /api/kassal/products`
 
-Server-side proxy to the [Kassal.app](https://kassal.app) product search. The API key is read from
-`process.env.KASSAL_API_KEY` and sent as `Authorization: Bearer …` — it never reaches the browser.
+Server-side proxy to Kassal.app. `KASSAL_API_KEY` is read only by the managed API and is never included
+in the browser bundle.
 
-**Query params**
-| Param | Required | Notes |
+| Query | Required | Rules |
 |-------|----------|-------|
-| `search` | yes | search term, trimmed to ≤ 100 chars |
-| `size` | no | results, clamped 1–20 (default 5) |
+| `search` | yes | Trimmed and capped at 100 characters. |
+| `size` | no | Integer clamped to 1–20; default 5. |
 
-**200 OK**
+Example response:
+
 ```json
 {
-  "search": "ballonger",
+  "search": "pølser",
   "count": 1,
   "products": [
     {
       "id": 14441,
-      "name": "Ballonger Metallic 10stk Unik",
-      "brand": "Unik",
+      "name": "Grillpølser",
+      "brand": "Prior",
       "store": "SPAR",
-      "price": 27.5,
-      "unitPrice": 27.5,
+      "price": 56.9,
+      "unitPrice": 94.83,
       "image": "https://…",
-      "url": "https://spar.no/…",
-      "weight": 1,
-      "weightUnit": "piece"
+      "url": "https://…",
+      "weight": 600,
+      "weightUnit": "g"
     }
   ]
 }
 ```
-Responses are sent with `Cache-Control: public, max-age=3600`.
 
-**Error responses**
-| Status | When |
-|--------|------|
-| `400` | missing `search` |
-| `503` | `KASSAL_API_KEY` not configured (app still works; price button just shows the message) |
-| `502` | Kassal.app unreachable |
-| `4xx/5xx` | propagated from Kassal (`Kassal svarte <code>.`) |
+Successful results use `Cache-Control: public, max-age=3600`.
 
-### Upstream contract (for reference)
+| Status | Meaning |
+|--------|---------|
+| `400` | Missing search term. |
+| `503` | `KASSAL_API_KEY` is not configured. |
+| `502` | Kassal.app was unreachable or exceeded the 15-second upstream timeout. |
+| upstream status | Kassal.app returned a non-success status. |
 
-```
-GET https://kassal.app/api/v1/products?search=<term>&size=<n>
-Authorization: Bearer <40-char key>
-```
-Verified working before the client was written; the key length is 40 characters.
+## `POST /api/meny/cart`
 
-## `POST /api/meny/cart`  (experimental)
+Resolves shopping-list entries to real MENY products. The browser then creates the shared cart
+directly from the user's IP; the managed API never performs that rate-limited create call.
 
-Resolves the computed list to real **meny.no** products and returns the cart items. The browser then
-creates the shared cart directly against meny.no's anonymous endpoint (see why below). Gated by
-`FEATURE_MENY_CART` in the UI, but the route itself is always available (it only proxies meny.no's
-anonymous product search — no secrets). See [meny-cart.md](meny-cart.md) for the full protocol.
+Request:
 
-**Request body**
 ```json
 {
   "items": [
@@ -96,54 +93,66 @@ anonymous product search — no secrets). See [meny-cart.md](meny-cart.md) for t
   ]
 }
 ```
-- `query` — grocery search term (the catalog's `kassalSearch`), trimmed to ≤ 100 chars.
-- `quantity` — clamped 1–50.
-- `name` — display label echoed back, ≤ 80 chars.
-- The array is capped at 40 items.
 
-**200 OK**
+- `query` is trimmed and capped at 100 characters.
+- `name` is capped at 80 characters.
+- `quantity` is clamped to 1–50.
+- At most 40 entries are accepted.
+
+Response:
+
 ```json
 {
   "cartItems": [
-    { "ean": "7039610025205", "quantity": 3, "product": { "title": "Grillpølser", "ean": "7039610025205", "...": "…full MENY product…" }, "pricePerUnit": 56.9, "linePrice": 170.7, "comparePricePerUnit": null }
+    {
+      "ean": "7039610025205",
+      "quantity": 3,
+      "product": { "title": "Grillpølser", "ean": "7039610025205" },
+      "pricePerUnit": 56.9,
+      "linePrice": 170.7,
+      "comparePricePerUnit": null
+    }
   ],
-  "count": 2,
+  "count": 1,
   "matched": [
-    { "name": "Pølser", "query": "grillpølse", "ean": "7039610025205", "title": "Grillpølser",
-      "subtitle": "Kylling/Kalkun 600g Prior", "brand": "Prior", "price": 56.9, "image": "https://…", "quantity": 3 }
+    {
+      "name": "Pølser",
+      "query": "grillpølse",
+      "ean": "7039610025205",
+      "title": "Grillpølser",
+      "subtitle": "600g",
+      "brand": "Prior",
+      "price": 56.9,
+      "quantity": 3
+    }
   ],
-  "unmatched": [ { "name": "Bursdagskrone", "query": "krone" } ]
+  "unmatched": [],
+  "partial": false
 }
 ```
-The client POSTs `cartItems` to meny.no and builds `https://meny.no/delt-handlevogn/<id>`. Each cart
-item carries the **full MENY `product` object** — the shared-cart page reads `product.title` etc., so a
-`product: null` item makes meny.no's page throw `Cannot read properties of null (reading 'title')`.
 
-**Error responses**
-| Status | When |
-|--------|------|
-| `400` | no usable items in the body |
-| `422` | none of the items matched a MENY product (`{ error, unmatched }`) |
-| `502` | meny.no/NGData product search unreachable |
+The full upstream `product` object is retained in each cart item because MENY's shared-cart page reads
+fields from it.
 
-### Upstream contract (for reference)
+The resolver uses three concurrent workers, bounded retries, and a **30-second global deadline**. This
+keeps it below Static Web Apps' 45-second API limit. If some products matched before the deadline, the
+endpoint returns them with `partial: true`; the UI tells the user the cart is incomplete.
 
-```
-GET  https://platform-rest-prod.ngdata.no/api/products/1300/<gln>/?search=<term>&page=1&page_size=<n>&fieldset=maximal   (server-side)
-POST https://api.sylinder.no/handlevogn/delehandlevogn/v1/api/   (browser-side)
-     body: [{ "ean": "…", "quantity": 2, "product": { …full MENY product… }, "pricePerUnit": 56.9, "linePrice": 113.8, "comparePricePerUnit": null }]  -> { "id": "…" }
-```
-Both are anonymous (no Trumf login). `1300` is the MENY chain id; `gln` is a MENY store
-(`MENY_STORE_GLN`, default `7080001150488`). The shared link is `https://meny.no/delt-handlevogn/<id>`.
-**The create call is made from the browser** because that endpoint rate-limits **per source IP** (~1/min)
-— routing every user through one server egress IP would throttle it; the browser uses each user's own IP
-(`Access-Control-Allow-Origin: *`, so the cross-origin POST is allowed).
+| Status | Meaning |
+|--------|---------|
+| `400` | No usable items. |
+| `422` | All searches completed but none matched. |
+| `504` | The deadline expired before any product matched. |
+| `502` | An unexpected resolver/upstream failure occurred. |
 
-## Static hosting / SPA fallback
+Successful responses use `Cache-Control: no-store`.
 
-```js
-app.use(express.static(DIST, { maxAge: '1h', index: false }));
-app.get('*', (_req, res) => res.sendFile(path.join(DIST, 'index.html')));
-```
-> The `'*'` catch-all relies on **Express 4** path syntax. Do not bump to Express 5 without changing
-> this route (Express 5 changed wildcard matching).
+## Static hosting and SPA fallback
+
+`public/staticwebapp.config.json` is copied to `dist/` and configures:
+
+- navigation fallback to `/index.html` for client-rendered content pages;
+- exclusions for `/api`, Vite assets, and static files;
+- `Cache-Control: no-cache` for `/sw.js`;
+- basic security headers;
+- the managed Functions runtime `node:22`.

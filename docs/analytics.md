@@ -29,16 +29,16 @@ See [`src/lib/analytics.ts`](../src/lib/analytics.ts).
 
 ```mermaid
 graph LR
-  B["Browser"] -->|GET /api/config| S["Express server"]
-  S -->|connectionString (from ACA secret)| B
+  B["Browser"] -->|GET /api/config| S["Managed Function"]
+  S -->|connectionString (from managed API setting)| B
   B -->|lazy import SDK| C["@microsoft/applicationinsights-web (separate chunk)"]
   C -->|cookieless events| AI["Application Insights (kakeklar-insights)"]
   AI --> WB["Workbook: Kakeklar – User Engagement"]
 ```
 
-- The connection string is **never bundled**. The server exposes it at runtime via `GET /api/config`
-  (sourced from the ACA secret `appinsights-connection-string` / env
-  `APPLICATIONINSIGHTS_CONNECTION_STRING`). Locally, with no key, `/api/config` returns
+- The connection string is **never bundled**. The managed Function exposes it at runtime via
+  `GET /api/config` from the encrypted Static Web Apps environment variable
+  `APPLICATIONINSIGHTS_CONNECTION_STRING`. Locally, with no value, `/api/config` returns
   `{ appInsights: null }` and analytics is **disabled gracefully**.
 - The SDK is **code-split** (lazy `import()`), so it never blocks first paint — the main bundle stays
   ~55 kB gzip; the ~77 kB gzip SDK chunk loads after render.
@@ -153,6 +153,6 @@ extension, resolves the app id from `kakeklar-insights` (override with `-AppId`/
 
 ## Turning analytics off
 
-Remove/empty the `APPLICATIONINSIGHTS_CONNECTION_STRING` env var (or the ACA secret). The client then
+Remove/empty the `APPLICATIONINSIGHTS_CONNECTION_STRING` Static Web Apps environment variable. The client then
 receives `null` from `/api/config` and never loads the SDK — the app works identically, just without
 telemetry. No code change required.

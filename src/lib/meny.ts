@@ -24,6 +24,7 @@ export interface MenyCartResult {
   count: number;
   matched: MenyMatchedItem[];
   unmatched: MenyUnmatchedItem[];
+  partial: boolean;
 }
 
 export interface MenyCartRequestItem {
@@ -37,6 +38,7 @@ interface MenyResolveResult {
   count: number;
   matched: MenyMatchedItem[];
   unmatched: MenyUnmatchedItem[];
+  partial?: boolean;
 }
 
 // meny.no's own (anonymous, CORS-open) shared-cart endpoint. We create the cart
@@ -109,6 +111,7 @@ export async function createMenyCart(items: MenyCartRequestItem[]): Promise<Meny
     id: created.id,
     count: resolved.count,
     matched: resolved.matched,
-    unmatched: resolved.unmatched
+    unmatched: resolved.unmatched,
+    partial: Boolean(resolved.partial)
   };
 }

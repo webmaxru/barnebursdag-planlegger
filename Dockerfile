@@ -17,6 +17,7 @@ COPY package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=build /app/dist ./dist
 COPY server ./server
+COPY api/shared ./api/shared
 EXPOSE 8080
 USER node
 CMD ["node", "server/index.js"]

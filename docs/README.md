@@ -11,16 +11,15 @@ Detailed documentation for the Norwegian kids' birthday party purchase planner.
 | [meny-cart.md](meny-cart.md) | **Handle på MENY** (experimental): shareable meny.no cart, the reverse-engineered NGData protocol, the feature flag |
 | [webmcp.md](webmcp.md) | **WebMCP tools**: exposing the planner to in-browser AI agents (`document.modelContext`), the two imperative tools, input/result schemas |
 | [development.md](development.md) | Local setup, scripts, env vars, ports, icon generation, **e2e tests** |
-| [deployment.md](deployment.md) | Docker, GHCR, Azure Container Apps, CI/CD (**e2e gate**), secrets, troubleshooting |
+| [deployment.md](deployment.md) | Azure Static Web Apps Free, managed Functions, CI/CD (**e2e gate**), settings, cutover |
 | [analytics.md](analytics.md) | Cookieless Application Insights, the no-cookie-banner rationale, event catalog, engagement workbook |
 
 ## At a glance
 
 - **Live:** https://kakeklar.no
 - **Repo:** https://github.com/webmaxru/barnebursdag-planlegger
-- **Image:** `ghcr.io/webmaxru/barnebursdag-planlegger` (public)
-- **Stack:** Node.js + Express (server) · Vite + React + TypeScript (client) · Kassal.app (prices)
-- **Hosting:** Azure Container Apps (Norway East), CI/CD via GitHub Actions
+- **Stack:** Static Web Apps managed Node.js Functions · Vite + React + TypeScript · Kassal.app
+- **Hosting:** Azure Static Web Apps Free (global static edge + managed API in West Europe)
 
 ## The product in one paragraph
 

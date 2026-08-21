@@ -1,0 +1,9 @@
+{
+  "name": "kakeklar-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Managed HTTP functions for Kakeklar",
+  "engines": {
+    "node": ">=22 <23"
+  }
+}
