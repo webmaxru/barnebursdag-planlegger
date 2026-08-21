@@ -1,6 +1,6 @@
 # Azure deployment plan
 
-**Status:** Ready for Validation
+**Status:** Validated
 
 ## Goal
 
