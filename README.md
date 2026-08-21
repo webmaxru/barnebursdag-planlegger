@@ -26,10 +26,9 @@ decorations) plus a printable checklist and timeline. Everything else is optiona
 | Layer | Tech |
 |-------|------|
 | Frontend | Vite + React + TypeScript (mobile-first) |
-| Backend | Node.js + Express (serves the SPA + `/api`) |
-| Prices | Kassal.app API via server-side proxy (`/api/kassal/products`) |
-| Container | Multi-stage Dockerfile → **GHCR** (public) |
-| Hosting | **Azure Container Apps** (CI/CD via GitHub Actions) |
+| Backend | Azure Static Web Apps managed Node.js Functions (`/api`); Express adapter for local development |
+| Prices | Kassal.app API via server-side managed Function (`/api/kassal/products`) |
+| Hosting | **Azure Static Web Apps Free** (CI/CD via GitHub Actions) |
 
 ## 🚀 Quick start (local)
 
@@ -41,7 +40,7 @@ npm run dev                 # Vite (5173) + API server (8080) with hot reload
 
 Open http://localhost:5173. The app works without a Kassal key — only live price lookups are disabled.
 
-### Production build & run
+### Production build and local preview
 
 ```bash
 npm run build               # builds the client into dist/
@@ -54,36 +53,43 @@ npm run start:local         # serves dist/ + API on http://localhost:8080 (reads
 npm i sharp --no-save && npm run icons   # rasterizes public/icon.svg → PNGs
 ```
 
-## 🐳 Docker
+## 🐳 Optional compatibility container
 
 ```bash
 docker build -t barnebursdag:latest .
 docker run -p 8080:8080 -e KASSAL_API_KEY=xxxx barnebursdag:latest
 ```
 
-## ☁️ Deployment (Azure Container Apps + GHCR)
+The container runs the same shared API handlers as the managed Functions, but it is no longer used by
+the production deployment.
+
+## ☁️ Deployment (Azure Static Web Apps Free)
 
 Pushing to `main` runs `.github/workflows/deploy.yml`, which:
 
-1. Builds the image and pushes it to `ghcr.io/<owner>/barnebursdag-planlegger` (public).
-2. Logs in to Azure and creates/updates the Container App from that image.
+1. Runs API unit tests and TypeScript checking.
+2. Builds the Vite client and runs the desktop/mobile Playwright release gate.
+3. Deploys `dist/` plus the managed Functions in `api/` to Azure Static Web Apps.
 
-**Required repository secrets:**
+**Required GitHub repository secret:**
 
 | Secret | What |
 |--------|------|
-| `AZURE_CREDENTIALS` | Service-principal JSON (`az ad sp create-for-rbac --sdk-auth`). |
-| `KASSAL_API_KEY` | Your Kassal.app API key (stored as an ACA secret). |
+| `AZURE_STATIC_WEB_APPS_API_TOKEN` | Deployment token from the `kakeklar` Static Web App. |
 
-Azure resources (created once): resource group `rg-barnebursdag`, Container Apps env `cae-barnebursdag`,
-app `barnebursdag` (ingress on port **8080**).
+`KASSAL_API_KEY`, `APPLICATIONINSIGHTS_CONNECTION_STRING`, and `FEATURE_MENY_CART=1` are configured as
+Static Web Apps environment variables for the managed API. The Free resource is defined in
+[`infra/static-web-app.bicep`](infra/static-web-app.bicep). See [deployment.md](docs/deployment.md) for
+provisioning, custom-domain cutover, and rollback instructions.
 
 ## 🔌 API
 
 | Endpoint | Description |
 |----------|-------------|
-| `GET /api/health` | Health probe — `{ status, kassal, time }`. |
+| `GET /api/health` | Integration status and timestamp. |
+| `GET /api/config` | Runtime feature flags and cookieless analytics config. |
 | `GET /api/kassal/products?search=pølser&size=5` | Proxied Kassal.app price lookup (key stays server-side). |
+| `POST /api/meny/cart` | Resolve shopping-list items to MENY products. |
 
 ## ⚙️ Configuring the goods list
 
@@ -95,13 +101,14 @@ Defaults live in [`src/lib/catalog.ts`](src/lib/catalog.ts).
 ## 📁 Structure
 
 ```
-server/index.js          Express server (static + /api proxy + health)
+api/                     Managed Functions + shared API handlers
+server/index.js          Local/E2E adapter (static dist/ + shared /api handlers)
 index.html               SPA entry (meta, OG, JSON-LD, PWA)
 src/lib/                 types · catalog (default goods) · engine · checklist · store · kassal · format
 src/components/          Slider · Controls · Results · ConfigEditor
 public/                  manifest, service worker, icons
-Dockerfile               multi-stage build → Node runtime
-.github/workflows/       build → GHCR → Azure Container Apps
+infra/static-web-app.bicep  Azure Static Web Apps Free resource + API settings
+.github/workflows/       test gate → Azure Static Web Apps
 ```
 
 ---

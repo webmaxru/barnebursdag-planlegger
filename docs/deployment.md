@@ -1,105 +1,132 @@
 # Deployment
 
-The app ships as a Docker image to **GitHub Container Registry (GHCR, public)** and runs on
-**Azure Container Apps (ACA)**. Pushing to `main` builds, pushes, and deploys automatically.
+Production runs on **Azure Static Web Apps Free**:
 
-## Image
+- Vite's `dist/` output is served as globally distributed static content.
+- The HTTP endpoints under `api/` run as managed Azure Functions.
+- `staticwebapp.config.json` provides the SPA fallback and selects the Node.js 22 API runtime.
+- Pushing to `main` deploys automatically after API, type, build, and Playwright checks pass.
 
-```dockerfile
-# multi-stage: build with all deps, run with prod deps only
-FROM node:22-alpine AS build   → npm ci → npm run build (dist/)
-FROM node:22-alpine AS runtime → npm ci --omit=dev → copy dist/ + server/ → node server/index.js
-```
+The Express server and Dockerfile remain local compatibility tools. They use the same shared API
+handlers, but neither is part of the production deployment.
 
-Local build & run:
-```bash
-docker build -t barnebursdag:latest .
-docker run -p 8080:8080 -e KASSAL_API_KEY=xxxx barnebursdag:latest
-# verify
-curl http://localhost:8080/api/health
-```
+## Free-plan boundaries
 
-> `sharp` is deliberately not a dependency, so this Alpine build never has to compile native modules.
-> Icons are pre-generated and committed.
+The current app fits comfortably within the Free-plan limits: 250 MB per environment, 100 GB monthly
+bandwidth, two custom domains, and three preview environments. The plan has no SLA and bandwidth
+overage is unavailable, so traffic should be monitored before it approaches the quota.
+
+Managed API requests have a 45-second maximum duration. The MENY resolver therefore has its own
+30-second global deadline and can return a partial set of matched products.
 
 ## CI/CD — `.github/workflows/deploy.yml`
 
-Trigger: push to `main` (docs/markdown-only changes are ignored via `paths-ignore`) or manual dispatch.
+Trigger: push to `main` (docs/markdown-only changes are ignored) or manual dispatch.
 
-Jobs:
+1. **`e2e` release gate**
+   - `npm ci`
+   - `npm run test:api`
+   - `npm run typecheck`
+   - `npm run build`
+   - verify `dist/staticwebapp.config.json`
+   - run Playwright on desktop Chromium and Pixel 5
+   - upload the verified `dist/` artifact
+2. **`deploy`**
+   - downloads the exact artifact tested by the gate
+   - deploys `dist/` with `skip_app_build: true`
+   - deploys the dependency-free managed Functions in `api/` with `skip_api_build: true`
 
-1. **`e2e` gate** — checks out the repo, sets up Node 22, runs `npm ci`, builds with
-   `npm run build`, installs Chromium (`npx playwright install --with-deps chromium`), and
-   runs `npm run test:e2e`.
-2. **`build-and-deploy`** — has `needs: e2e`, so it only starts after the Playwright suite passes.
+The workflow needs one GitHub repository secret:
 
-Deploy steps:
-1. **Log in to GHCR** with `GITHUB_TOKEN` (the workflow has `packages: write`).
-2. **Build & push** `ghcr.io/<owner>/barnebursdag-planlegger:latest` and `:<sha>`.
-3. **Make the GHCR package public** (best-effort `gh api PATCH …/visibility`).
-4. **Azure login** with the `AZURE_CREDENTIALS` service-principal secret.
-5. **Deploy** to ACA: create the app on first run, otherwise update the image. Sets the Kassal secret, registry pull credentials, env vars, and ingress.
+| Secret | Purpose |
+|--------|---------|
+| `AZURE_STATIC_WEB_APPS_API_TOKEN` | Authorizes `Azure/static-web-apps-deploy` to upload the site and managed API. |
 
-The deploy step is **idempotent** (`az containerapp show` → create-or-update).
+## Provision the Free resource
 
-## Required GitHub secrets
+The resource and managed-API settings are declared in `infra/static-web-app.bicep`.
 
-| Secret | How to create |
-|--------|---------------|
-| `AZURE_CREDENTIALS` | `az ad sp create-for-rbac --name sp-barnebursdag-gh --role Contributor --scopes /subscriptions/<SUB_ID> --sdk-auth` → paste the JSON |
-| `KASSAL_API_KEY` | your Kassal.app key (also stored as an ACA secret) |
-
-Set them with the GitHub CLI (avoid printing the values):
-```bash
-gh secret set AZURE_CREDENTIALS -R <owner>/barnebursdag-planlegger < creds.json
-gh secret set KASSAL_API_KEY   -R <owner>/barnebursdag-planlegger
+```powershell
+az provider register --namespace Microsoft.Web --wait
+az group create --name rg-barnebursdag --location norwayeast
+az deployment group create `
+  --resource-group rg-barnebursdag `
+  --template-file infra/static-web-app.bicep `
+  --parameters staticWebAppName=kakeklar location=westeurope
 ```
 
-## Azure resources (one-time)
+`kakeklar` must be globally unique. Override `staticWebAppName` if Azure reports that it is already in
+use.
 
-Pre-create the resource group and Container Apps environment **before** the first deploy so the
-workflow's deploy step doesn't race ahead (env creation takes a few minutes):
+Configure these values under **Static Web App → Environment variables → Production**:
 
-```bash
-az provider register -n Microsoft.App --wait
-az provider register -n Microsoft.OperationalInsights --wait      # ACA needs Log Analytics
-az group create -n rg-barnebursdag -l norwayeast
-az containerapp env create -n cae-barnebursdag -g rg-barnebursdag -l norwayeast
+| Setting | Required | Notes |
+|---------|----------|-------|
+| `KASSAL_API_KEY` | No | Server-side Kassal.app key; price lookup returns 503 when omitted. |
+| `APPLICATIONINSIGHTS_CONNECTION_STRING` | No | Returned by `/api/config` to the cookieless browser SDK. |
+| `FEATURE_MENY_CART` | Yes in production | Set to `1` to show the MENY action. |
+| `MENY_CHAIN_ID` | No | Defaults to `1300`. |
+| `MENY_STORE_GLN` | No | Defaults to `7080001150488`. |
+
+The Bicep template also accepts the first three values as parameters. They are marked secure, but do
+not put their values in a committed parameter file.
+
+Copy the deployment token to GitHub without printing it:
+
+```powershell
+az staticwebapp secrets list `
+  --name kakeklar `
+  --resource-group rg-barnebursdag `
+  --query properties.apiKey `
+  --output tsv |
+  gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN -R webmaxru/barnebursdag-planlegger
 ```
 
-The container app itself (`barnebursdag`) is created by the workflow:
-- ingress external, **target port 8080**
-- secret `kassal-api-key`, env `KASSAL_API_KEY=secretref:kassal-api-key`, `PORT=8080`
-- `--min-replicas 1` (always warm — no cold starts; set to 0 to save cost)
-- registry pull credentials provided as a fallback even though the package is public
+Run the workflow manually once and verify the generated `*.azurestaticapps.net` hostname before
+changing public DNS.
 
-Get the URL:
-```bash
-az containerapp show -n barnebursdag -g rg-barnebursdag \
-  --query properties.configuration.ingress.fqdn -o tsv
-```
+## Custom-domain cutover
 
-## Why the image is built in CI, not locally
+Keep the browser origin as `https://kakeklar.no`. This preserves saved catalog edits, wizard state,
+PWA scope, canonical URLs, and existing shared links.
 
-A local `gh`/Docker login usually **cannot push to GHCR** because the local token lacks the
-`write:packages` scope. The workflow's `GITHUB_TOKEN` has it, so building & pushing in CI is the
-reliable path. ACA then pulls the **public** image anonymously (the workflow also stores pull
-credentials as a belt-and-braces fallback).
+1. Add and validate `kakeklar.no` on the Static Web App.
+2. Verify `/`, all content routes, `/api/config`, price lookup, MENY cart creation, analytics, and PWA
+   installation on the Azure hostname.
+3. Lower DNS TTL before cutover.
+4. Point the domain to Static Web Apps and wait for its managed certificate.
+5. Re-test on `https://kakeklar.no`.
+6. Keep the Container App available during the observation window.
+
+`public/sw.js` uses a new cache version for this migration, while the Static Web Apps route explicitly
+serves `/sw.js` with `Cache-Control: no-cache`.
+
+## Retiring the old hosting
+
+Only after the custom-domain deployment is stable:
+
+- stop the old Container App or set its minimum replica count to zero;
+- remove the obsolete Container Apps environment and Log Analytics workspace only after confirming
+  nothing else uses them;
+- archive or remove the old GHCR package if it is no longer needed.
+
+These are intentionally manual, destructive steps and are not performed by the deployment workflow.
+Application Insights remains independent and can continue receiving cookieless browser telemetry.
+
+## Rollback
+
+If validation fails, point `kakeklar.no` back to the existing Container App. The local Express adapter
+and optional Docker image preserve the same `/api` responses, so rollback does not require a client
+build.
 
 ## Troubleshooting
 
 | Symptom | Cause / fix |
 |--------|-------------|
-| `denied: permission_scope` pushing to GHCR locally | Local token lacks `write:packages`. Push via the Actions workflow instead. |
-| ACA can't pull image (`UNAUTHORIZED`) on scale-out | Make sure the GHCR **package is public** (Packages → settings), or keep `--min-replicas 1`. The workflow attempts to set it public automatically. |
-| `az containerapp env create` very slow | Normal (several minutes; it provisions a Log Analytics workspace). Pre-create it; wait for `provisioningState: Succeeded`. |
-| Deploy step fails: env not found | The Container Apps environment must exist first. Pre-create `cae-barnebursdag`. |
-| Health 200 but blank page | Check the JS asset returns 200 (`/assets/index-*.js`); a 404 means the static copy/dist step is off. |
-| `Microsoft.OperationalInsights not registered` | `az provider register -n Microsoft.OperationalInsights --wait`. |
-| Node 20 deprecation warning in Actions | Harmless; the actions are auto-forced to Node 24. |
-
-## Cost note
-
-`--min-replicas 1` keeps one replica always running (snappy, no cold start) — small but continuous
-cost. Set `--min-replicas 0` for scale-to-zero if cost matters more than first-hit latency (the public
-image still pulls anonymously).
+| Deploy action reports an invalid token | Refresh `AZURE_STATIC_WEB_APPS_API_TOKEN` from `az staticwebapp secrets list`. |
+| A content URL returns 404 | Confirm `dist/staticwebapp.config.json` exists and contains the `/index.html` navigation fallback. |
+| `/api/*` returns 404 | Confirm the workflow uploads `api/`, `skip_api_build` is true, and `apiRuntime` is `node:22`. |
+| Price lookup returns 503 | Add `KASSAL_API_KEY` to the Production environment variables. |
+| MENY returns 504 | The resolver exhausted its 30-second budget; retry. Successful partial results are still usable. |
+| Feature flag is off | Set `FEATURE_MENY_CART=1`; environment variables are runtime settings and require no frontend rebuild. |
+| Old PWA remains visible | Reload once while online; the new service-worker cache version removes the old shell. |

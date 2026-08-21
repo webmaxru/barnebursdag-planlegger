@@ -203,6 +203,12 @@ export default function MenyCart({
                   </p>
                 )}
 
+                {result.partial && (
+                  <p className="meny-unmatched">
+                    Oppslaget nådde tidsgrensen. Handlevognen inneholder varene som rakk å bli funnet.
+                  </p>
+                )}
+
                 <p className="meny-note">
                   Lenken er en MENY-handlevogn du kan dele. Priser og varer kan variere etter butikk.
                 </p>

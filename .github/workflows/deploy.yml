@@ -1,4 +1,4 @@
-name: Build and deploy to Azure Container Apps
+name: Test and deploy to Azure Static Web Apps
 
 on:
   push:
@@ -8,11 +8,9 @@ on:
       - 'docs/**'
   workflow_dispatch:
 
-env:
-  IMAGE: ghcr.io/${{ github.repository_owner }}/barnebursdag-planlegger
-  RESOURCE_GROUP: rg-barnebursdag
-  CONTAINERAPPS_ENV: cae-barnebursdag
-  CONTAINERAPP_NAME: barnebursdag
+concurrency:
+  group: production-static-web-app
+  cancel-in-progress: false
 
 jobs:
   e2e:
@@ -27,86 +25,47 @@ jobs:
 
       - run: npm ci
 
+      - run: npm run test:api
+
+      - run: npm run typecheck
+
       - run: npm run build
+
+      - name: Verify Static Web Apps configuration
+        run: test -f dist/staticwebapp.config.json
 
       - run: npx playwright install --with-deps chromium
 
       - run: npm run test:e2e
 
-  build-and-deploy:
+      - uses: actions/upload-artifact@v4
+        with:
+          name: static-site
+          path: dist
+          if-no-files-found: error
+          retention-days: 1
+
+  deploy:
     needs: e2e
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
     steps:
       - uses: actions/checkout@v4
 
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
+      - uses: actions/download-artifact@v4
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          name: static-site
+          path: dist
 
-      - name: Build and push image
-        uses: docker/build-push-action@v6
+      - name: Deploy frontend and managed API
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          context: .
-          push: true
-          tags: |
-            ${{ env.IMAGE }}:latest
-            ${{ env.IMAGE }}:${{ github.sha }}
-
-      - name: Make GHCR package public (best effort)
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh api --method PATCH \
-            -H "Accept: application/vnd.github+json" \
-            /user/packages/container/barnebursdag-planlegger/visibility \
-            -f visibility=public \
-            && echo "Package set to public." \
-            || echo "Could not set visibility automatically – set it once in Package settings if needed (ACA also has pull credentials)."
-
-      - name: Azure login
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Deploy to Azure Container Apps
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            set -e
-            IMAGE="${{ env.IMAGE }}:${{ github.sha }}"
-
-            if az containerapp show -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" >/dev/null 2>&1; then
-              echo "Updating existing container app..."
-              az containerapp secret set -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
-                --secrets kassal-api-key="${{ secrets.KASSAL_API_KEY }}" appinsights-connection-string="${{ secrets.APPINSIGHTS_CONNECTION_STRING }}"
-              # Give the secret update time to settle, then retry the image/env update on transient ACA write conflicts.
-              sleep 10
-              n=0
-              until az containerapp update -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
-                --image "$IMAGE" \
-                --set-env-vars KASSAL_API_KEY=secretref:kassal-api-key APPLICATIONINSIGHTS_CONNECTION_STRING=secretref:appinsights-connection-string FEATURE_MENY_CART=1 PORT=8080; do
-                n=$((n+1)); if [ "$n" -ge 5 ]; then echo "update failed after $n retries"; exit 1; fi
-                echo "Transient conflict — retry $n in 15s..."; sleep 15
-              done
-            else
-              echo "Creating container app..."
-              az containerapp create -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" \
-                --environment "${{ env.CONTAINERAPPS_ENV }}" \
-                --image "$IMAGE" \
-                --target-port 8080 --ingress external \
-                --secrets kassal-api-key="${{ secrets.KASSAL_API_KEY }}" appinsights-connection-string="${{ secrets.APPINSIGHTS_CONNECTION_STRING }}" \
-                --env-vars KASSAL_API_KEY=secretref:kassal-api-key APPLICATIONINSIGHTS_CONNECTION_STRING=secretref:appinsights-connection-string FEATURE_MENY_CART=1 PORT=8080 \
-                --min-replicas 1 --max-replicas 3 \
-                --cpu 0.5 --memory 1.0Gi
-            fi
-
-            FQDN=$(az containerapp show -n "${{ env.CONTAINERAPP_NAME }}" -g "${{ env.RESOURCE_GROUP }}" --query properties.configuration.ingress.fqdn -o tsv)
-            echo "### 🎂 Deployed to https://$FQDN" >> "$GITHUB_STEP_SUMMARY"
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: upload
+          app_location: dist
+          api_location: api
+          output_location: ''
+          skip_app_build: true
+          skip_api_build: true
+          production_branch: main
