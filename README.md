@@ -26,7 +26,7 @@ decorations) plus a printable checklist and timeline. Everything else is optiona
 Every page loads the [agentprose](https://agentprose.cloud) snippet once in `<head>` (key and tag in
 `scripts/content.mjs` → `AGENTPROSE_SNIPPET`, injected by `scripts/prerender.mjs`). It exposes read-only WebMCP
 tools (search, list, get article, citations) next to the calculator's own `plan_birthday_party` /
-`get_shopping_list`, and powers hosted search for agents.
+`get_shopping_list` / `get_agent_prompt`, and powers hosted search for agents.
 
 The script comes from agentprose Cloud's evergreen 0.x channel (`https://agentprose.cloud/v/0/agentprose.min.js`):
 it always serves the latest compatible 0.x release and is cached for about an hour, so library fixes reach the site

@@ -308,6 +308,25 @@ h1, h2, h3 {
   color: var(--ink-faint);
 }
 
+/* Agent prompt dialog (the alternative to the MENY cart) */
+.agent-hint { margin: 0 0 12px; font-size: 0.84rem; color: var(--ink-soft); }
+.agent-hint code { font-size: 0.8rem; background: var(--surface-2); padding: 1px 5px; border-radius: 6px; }
+.agent-label { display: block; margin: 0 0 6px; font-size: 0.78rem; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+.agent-preview {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font: 0.78rem/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--ink);
+  resize: vertical;
+  white-space: pre-wrap;
+}
+.agent-manual { margin: 10px 0 0; font-size: 0.84rem; font-weight: 600; color: var(--berry-deep); }
+
+
 @keyframes meny-spin { to { transform: rotate(360deg); } }
 @keyframes meny-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes meny-rise { from { transform: translateY(16px); opacity: 0.6; } to { transform: translateY(0); opacity: 1; } }

@@ -3,15 +3,17 @@ import type { GoodItem, PartyConfig } from './types';
 import { computePlan, CATEGORY_LABEL, type PlanResult } from './engine';
 import { shareUrl } from './store';
 import { track } from './analytics';
+import { buildAgentPrompt, DELIVERY_PLACEHOLDER } from './agentPrompt';
 
 /**
  * WebMCP integration for Kakeklar.
  *
  * Exposes the party planner to in-browser AI agents through the imperative
  * WebMCP API (`document.modelContext.registerTool`, with a `navigator.modelContext`
- * fallback for older Chrome previews). Two tools are registered — one that writes
- * the party configuration and regenerates the shopping list, and one read-only
- * tool that returns the current list. Both declare a strict `inputSchema` and a
+ * fallback for older Chrome previews). Three tools are registered — one that writes
+ * the party configuration and regenerates the shopping list, one read-only
+ * tool that returns the current list, and one read-only tool that returns the
+ * list as a ready-to-paste prompt for a grocery-ordering agent. Both declare a strict `inputSchema` and a
  * `outputSchema` (result schema) and return MCP-style structured content.
  *
  * See `.agents/skills/webmcp/references/webmcp-reference.md` for the contract.
@@ -116,6 +118,19 @@ const PLAN_INPUT_SCHEMA: Record<string, unknown> = {
   },
   required: ['age', 'guests'],
   additionalProperties: false,
+};
+
+const AGENT_PROMPT_OUTPUT_SCHEMA: Record<string, unknown> = {
+  type: 'object',
+  description: 'A Norwegian prompt for a grocery-ordering agent, built from the current shopping list.',
+  properties: {
+    prompt: { type: 'string', description: 'The full prompt text (Norwegian bokmål), ready to paste into a grocery-ordering agent.' },
+    language: { type: 'string', enum: ['nb'], description: 'Language of the prompt.' },
+    itemCount: { type: 'integer', description: 'Number of shopping-list items in the prompt.' },
+    deliveryPlaceholder: { type: 'string', description: 'Placeholder in the prompt the user must replace with a delivery date and time window.' },
+    shareUrl: { type: 'string', description: 'Absolute URL that reproduces this exact list.' },
+  },
+  required: ['prompt', 'language', 'itemCount', 'deliveryPlaceholder', 'shareUrl'],
 };
 
 const EMPTY_INPUT_SCHEMA: Record<string, unknown> = {
@@ -306,7 +321,28 @@ function buildPartyTools(ref: MutableRefObject<WebMcpToolsArgs>): ModelContextTo
     },
   };
 
-  return [planTool, listTool];
+  const promptTool: ModelContextTool = {
+    name: 'get_agent_prompt',
+    title: 'Hent prompt til handleagent',
+    description:
+      "Return the current shopping list as a ready-to-paste Norwegian prompt for a grocery-ordering agent (for example one connected to Oda's MCP server): every item with quantities and pack sizes, the party facts and allergies, and rules to fill the cart without checking out. The prompt contains a delivery-date placeholder the user must fill in. Read-only; does not change any settings.",
+    inputSchema: EMPTY_INPUT_SCHEMA,
+    outputSchema: AGENT_PROMPT_OUTPUT_SCHEMA,
+    annotations: { readOnlyHint: true },
+    execute: () => {
+      const args = ref.current;
+      const plan = computePlan(args.catalog, args.cfg);
+      const url = shareUrl(args.cfg);
+      const prompt = buildAgentPrompt(plan, args.cfg, url);
+      track('webmcp_tool', { tool: 'get_agent_prompt', guests: args.cfg.guests, age: args.cfg.age });
+      return {
+        content: [{ type: 'text', text: prompt }],
+        structuredContent: { prompt, language: 'nb', itemCount: plan.itemCount, deliveryPlaceholder: DELIVERY_PLACEHOLDER, shareUrl: url },
+      };
+    },
+  };
+
+  return [planTool, listTool, promptTool];
 }
 
 // ---------------------------------------------------------------------------
