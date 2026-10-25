@@ -144,8 +144,8 @@ function document(page) {
     <script type="application/ld+json">${ld}</script>
     ${adsenseMeta}
     ${hasAds ? adsenseLoader : ''}
+    ${page.path === '/personvern' ? `<script src="/consent.js" data-publisher="${esc((adsenseClient || DEFAULT_ADSENSE_CLIENT).replace(/^ca-/, ''))}"></script>` : ''}
     ${AGENTPROSE_SNIPPET}
-    ${page.path === '/personvern' ? `<script defer src="/consent.js" data-publisher="${esc((adsenseClient || DEFAULT_ADSENSE_CLIENT).replace(/^ca-/, ''))}"></script>` : ''}
   </head>
   <body>
     <div class="content-page">

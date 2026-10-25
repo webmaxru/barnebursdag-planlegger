@@ -3,7 +3,7 @@
   "title": "Personvernerklæring",
   "description": "Hva Kakeklar lagrer, hvilke informasjonskapsler som brukes, hvordan annonser fra Google AdSense fungerer og hvordan du endrer samtykket ditt.",
   "date": "2026-08-07",
-  "updated": "2026-10-18",
+  "updated": "2026-10-25",
   "section": "sider",
   "slug": "personvern"
 }
@@ -23,6 +23,8 @@ Planen din (antall gjester, alder, valg av mat og allergier) ligger i adressen t
 ## Bruksstatistikk
 
 Produksjonssiden kan bruke Microsoft Application Insights for enkel, cookieløs bruksstatistikk – for eksempel om kalkulatoren blir brukt eller en handleliste blir skrevet ut. Vi bruker ikke informasjonskapsler, vedvarende bruker-ID eller øktlagring for denne statistikken. Statistikken er deaktivert når tjenesten ikke har en konfigurasjon for den.
+
+Vi bruker også [PostHog](https://posthog.com) (EU-skyen) på samme cookieløse måte: hendelser som «plan delt» eller «handleliste skrevet ut», tekniske feilmeldinger og logger når en deling eller MENY-handlekurv fullføres. PostHog setter ingen informasjonskapsler og lagrer ingenting i nettleseren; identifikatoren ligger bare i minnet og forsvinner når du lukker eller laster siden på nytt. Det sendes ikke navn, kontaktinformasjon eller allergivalg. Opptak av økter er slått av.
 
 ## Prisoppslag og eksterne tjenester
 

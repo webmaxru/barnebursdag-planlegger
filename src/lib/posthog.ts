@@ -15,22 +15,17 @@ export const posthogLogger = {
   }
 };
 
-if (!projectToken) {
+if (!projectToken || !host) {
   if (import.meta.env.DEV) {
-    throw new Error(
-      'VITE_POSTHOG_KEY variable required by PostHog is missing or un-configured, this causes events to be silently missed. This error stops appearing once VITE_POSTHOG_KEY is configured'
-    );
-  }
-} else if (!host) {
-  if (import.meta.env.DEV) {
-    throw new Error(
-      'VITE_POSTHOG_HOST variable required by PostHog is missing or un-configured, this causes events to be silently missed. This error stops appearing once VITE_POSTHOG_HOST is configured'
-    );
+    console.warn('PostHog is disabled: set both VITE_POSTHOG_KEY and VITE_POSTHOG_HOST to send events.');
   }
 } else {
   posthog.init(projectToken, {
     api_host: host,
     defaults: '2026-05-30',
+    // Cookieless like Application Insights: no cookies, localStorage or persistent identifiers.
+    persistence: 'memory',
+    disable_session_recording: true,
     logs: {
       serviceName: 'kakeklar-web',
       environment: import.meta.env.MODE

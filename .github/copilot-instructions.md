@@ -146,7 +146,9 @@ reintroduce that dependency into the Free design.
 
 The production build embeds the Application Insights connection string. The browser SDK disables
 cookies, persistent identifiers, session storage buffering, and automatic fetch tracking. Set
-`ANALYTICS_ENABLED=0` and rebuild to disable it.
+`ANALYTICS_ENABLED=0` and rebuild to disable it. PostHog (`src/lib/posthog.ts`) must keep
+`persistence: 'memory'` and session recording off; it is enabled only when the `VITE_POSTHOG_KEY` and
+`VITE_POSTHOG_HOST` secrets are both set.
 
 ### 15. MENY shared-cart split is intentional
 

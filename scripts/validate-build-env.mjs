@@ -14,4 +14,15 @@ if (!/^(1|0)$/.test(menyCart || '')) {
   throw new Error('VITE_FEATURE_MENY_CART must be 1 or 0.');
 }
 
+const posthogKey = process.env.VITE_POSTHOG_KEY?.trim();
+const posthogHost = process.env.VITE_POSTHOG_HOST?.trim();
+
+if (Boolean(posthogKey) !== Boolean(posthogHost)) {
+  throw new Error('Set both VITE_POSTHOG_KEY and VITE_POSTHOG_HOST, or neither.');
+}
+
+if (posthogHost && !/^https:\/\/[^/]+$/.test(posthogHost)) {
+  throw new Error('VITE_POSTHOG_HOST must be an https origin without a trailing path.');
+}
+
 console.log('Production build configuration is present.');

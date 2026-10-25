@@ -43,6 +43,26 @@ graph LR
 - The SDK is **code-split** (lazy `import()`), so it never blocks first paint — the main bundle stays
   ~55 kB gzip; the ~77 kB gzip SDK chunk loads after render.
 
+## PostHog (product events, logs, error tracking)
+
+[`src/lib/posthog.ts`](../src/lib/posthog.ts) initialises `posthog-js` against the EU cloud when both
+`VITE_POSTHOG_KEY` and `VITE_POSTHOG_HOST` are embedded at build time (GitHub Actions secrets of the
+same names; see `.env.example`). Without both values PostHog is a no-op and local dev only warns.
+
+- **Cookieless:** `persistence: 'memory'` — no cookies, localStorage or sessionStorage; the anonymous
+  id is regenerated on every load, matching the Application Insights stance above. Session recording
+  is disabled. The production smoke test (`e2e/build-config.spec.ts`) fails if `ph_*` storage appears.
+- **Product events:** `track()` forwards only the allow-listed events in `POSTHOG_EVENTS`
+  (`src/lib/analytics.ts`) with a reduced property set (no allergy details).
+- **Logs:** service `kakeklar-web` — `plan share completed` (info, `src/App.tsx`), `meny cart creation
+  completed` (info) and `meny cart creation failed` with `failure_kind` (error, `src/components/MenyCart.tsx`).
+- **Error tracking:** unhandled errors and rejections. CI uploads hidden source maps with
+  `@posthog/cli` when the `POSTHOG_CLI_API_KEY` (personal key with *error tracking write* +
+  *organization read*) and `POSTHOG_CLI_PROJECT_ID` secrets exist (`POSTHOG_CLI_HOST` variable defaults
+  to `https://eu.posthog.com`), then deletes every `.map` before publishing; the artifact check
+  fails if any map remains.
+- Enable **Discard client IP data** in the PostHog project settings so no IP addresses are stored.
+
 ## Event catalog
 
 `track(name, properties)` in [`src/lib/analytics.ts`](../src/lib/analytics.ts) sends these custom events:

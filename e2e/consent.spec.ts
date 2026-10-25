@@ -21,6 +21,8 @@ test('guide to privacy flow loads only the CMP on demand and opens consent withd
   });
   await page.route(manager, (route) => route.fulfill({ contentType: 'application/javascript', body: readyManager }));
   await page.goto('/guider/hvor-mye-mat-til-barnebursdag');
+  // A slow third-party script must not delay the consent control on the next page.
+  await page.route('**/agentprose.cloud/**', () => {});
   await page.evaluate(() => localStorage.setItem('test-consent', 'granted'));
   await page.locator('.foot-nav a[href="/personvern"]').click();
   expect(await page.evaluate(() => localStorage.getItem('test-consent'))).toBe('granted');
