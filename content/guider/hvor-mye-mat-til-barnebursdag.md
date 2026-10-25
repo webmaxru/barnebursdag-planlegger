@@ -70,19 +70,19 @@ En femåring havner i aldersgruppen 5–6 år. Med åtte barn og pølser som hov
 
 | Vare | Behov | Kjøp |
 |---|---|---|
-| Pølser | 8 × 2 = 16 stk | 2 pakker à 8 |
-| Lomper (halvparten + 15 %) | 10 stk | 2 pakker à 8 |
-| Pølsebrød (halvparten + 15 %) | 10 stk | 2 pakker à 8 |
+| Pølser | 8 × 2 = 16 stk | 2 pakker à 600 g (ca. 8 stk) |
+| Lomper (halvparten + 15 %) | 10 stk | 1 pakke à 10 |
+| Pølsebrød (halvparten + 15 %) | 10 stk | 1 pakke à 10 |
 | Ketchup, sennep, stekt løk | 1 av hver | 1 av hver |
 | Bursdagskake | 8 stykker | 1 langpanne |
 | Frukt | 8 × 130 g ≈ 1 kg | for eksempel druer, melon og jordbær |
-| Snacks | 8 × 35 g = 280 g | 2 poser à 165 g |
+| Snacks | 8 × 35 g = 280 g | 2 poser à 200 g |
 
-Du får noen lomper og pølsebrød til overs, og det er meningen. Kaken holder med god margin – en langpanne gir rundt 20 stykker, så det blir igjen til de voksne og til dagen etter.
+Bufferen ligger allerede i brødet (15 prosent ekstra). Kaken holder med god margin – en langpanne gir rundt 20 stykker, så det blir igjen til de voksne og til dagen etter.
 
 ## Regneeksempel: 12 barn på 8 år
 
-Åtteåringer er i den eldste gruppen, og tolv barn er en ganske stor bursdag. Her gir 2,5 pølser per barn 30 pølser, altså 4 pakker à 8 (32 stk). Med halvt om halvt lomper og pølsebrød trenger du 18 av hver, som blir 3 pakker av hver.
+Åtteåringer er i den eldste gruppen, og tolv barn er en ganske stor bursdag. Her gir 2,5 pølser per barn 30 pølser, altså 4 pakker à 600 g (ca. 32 stk). Med halvt om halvt lomper og pølsebrød trenger du 18 av hver, som blir 2 pakker à 10 av hver.
 
 Kaken: 12 × 1,25 = 15 stykker, som fortsatt går inn i én langpanne. Frukt: 12 × 140 g ≈ 1,7 kg. Snacks: 12 × 40 g = 480 g, altså 3 poser. Ketchup, sennep og stekt løk holder med én av hver, siden kalkulatoren regner én ketchup per 20 gjester, én sennep per 25 og én boks stekt løk per 15.
 
@@ -114,16 +114,16 @@ Hjemme har du mer frihet, men det er lurt å holde det enkelt. Én hovedrett, é
 
 Ti barn på 6 år, pølser som hovedrett, halvt om halvt lomper og pølsebrød, ingen voksne regnet med:
 
-- Pølser: 20 stk – 3 pakker à 8
-- Lomper: 12 stk – 2 pakker à 8
-- Pølsebrød: 12 stk – 2 pakker à 8
+- Pølser: 20 stk – 3 pakker à 600 g (kalkulatoren regner 8 pølser per pakke)
+- Lomper: 12 stk – 2 pakker à 10
+- Pølsebrød: 12 stk – 2 pakker à 10
 - Ketchup: 1 flaske
 - Sennep: 1 tube
 - Stekt løk: 1 boks
 - Bursdagskake: 10 stykker – 1 langpanne
 - Frukt: ca. 1,3 kg oppkuttet
-- Snacks: 350 g – 3 poser à 165 g
-- Saft: 5 liter ferdig blandet – 2 flasker konsentrat
+- Snacks: 350 g – 2 poser à 200 g
+- Saft: 5 liter ferdig blandet – 1 flaske konsentrat på 1,5 liter
 - Smågodt til godteposer: ca. 1 kg
 - Kakelys: 7 stk
 - Pappkrus og papptallerkener: 12 av hver

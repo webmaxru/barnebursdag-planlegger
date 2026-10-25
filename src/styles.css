@@ -628,6 +628,11 @@ input[type='range']::-moz-range-thumb {
   font-variant-numeric: tabular-nums;
 }
 .price { color: var(--ok); font-size: 0.84rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.price-flag {
+  color: var(--ink-soft); font-size: 0.74rem; font-weight: 600;
+  border: 1px dashed var(--line); border-radius: 8px; padding: 1px 7px;
+}
+.price-source { margin: 2px 0 8px; font-size: 0.8rem; color: var(--ink-soft); }
 .row-note {
   margin: 8px 0 0; font-size: 0.83rem; color: var(--warn-ink);
   background: var(--warn-bg); border: 1px solid var(--warn-line);
@@ -736,6 +741,14 @@ input[type='range']::-moz-range-thumb {
   background: var(--ink); color: #fff; padding: 11px 20px; border-radius: var(--radius-pill);
   font-size: 0.9rem; font-weight: 600; z-index: 40; box-shadow: var(--shadow-lg);
 }
+
+.share-fallback {
+  position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+  width: min(92vw, 520px); display: grid; gap: 8px; z-index: 41;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  padding: 12px 14px; box-shadow: var(--shadow-lg); font-size: 0.9rem;
+}
+.share-fallback input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; }
 
 /* ---------- Integration / polish ---------- */
 .wizard-head h1 { font-size: clamp(1.45rem, 5.6vw, 1.9rem); line-height: 1.12; margin: 2px 0 0; }

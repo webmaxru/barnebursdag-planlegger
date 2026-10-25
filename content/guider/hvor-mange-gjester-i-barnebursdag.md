@@ -82,14 +82,14 @@ Det er vanlig at en forelder blir med de yngste barna. Det betyr flere personer 
 
 Kostnaden øker ikke helt i takt med antall barn, fordi noe er likt uansett: kaken, bursdagskronen, duken og ketchupen. Samtidig kjøper du hele pakker, så kostnaden går i trinn.
 
-Med kalkulatorens standardpriser for en seksårsbursdag med pølser i lompe ser spennet slik ut (uten frukt og smågodt, som du må prise selv):
+Med kalkulatorens standardpriser (ordinære priser hos Oda 25. oktober 2026, og anslag for det Oda ikke selger) ser spennet for en seksårsbursdag med pølser i lompe slik ut. Frukt og smågodt er ikke med, dem må du prise selv:
 
 | Antall barn | Typisk spenn |
 |---|---|
-| 4 | ca. 760–1 420 kr |
-| 7 | ca. 1 050–1 980 kr |
-| 12 | ca. 1 330–2 490 kr |
-| 20 | ca. 1 860–3 450 kr |
+| 4 | ca. 780–1 280 kr |
+| 7 | ca. 910–1 510 kr |
+| 12 | ca. 1 200–2 000 kr |
+| 20 | ca. 1 540–2 580 kr |
 
 Prisene er typiske spenn, og det er stor forskjell mellom butikker og merker. Legg inn ditt eget antall i [kalkulatoren på forsiden](/) for en liste som passer festen din. Les mer om å holde kostnadene nede i [guiden om budsjett for barnebursdag](/guider/budsjett-for-barnebursdag).
 

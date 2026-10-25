@@ -155,8 +155,8 @@ export default function ConfigEditor({
 
               <label>Pakkestørrelse<input type="number" value={it.packSize ?? ''} placeholder="—" onChange={(e) => update(it.id, { packSize: e.target.value ? num(e.target.value) : undefined })} /></label>
               <label>Pakke-tekst<input value={it.packUnit || ''} onChange={(e) => update(it.id, { packUnit: e.target.value })} /></label>
-              <label>Pris fra (kr)<input type="number" value={it.priceMinNok ?? ''} onChange={(e) => update(it.id, { priceMinNok: e.target.value ? num(e.target.value) : undefined })} /></label>
-              <label>Pris til (kr)<input type="number" value={it.priceMaxNok ?? ''} onChange={(e) => update(it.id, { priceMaxNok: e.target.value ? num(e.target.value) : undefined })} /></label>
+              <label>Pris fra (kr)<input type="number" value={it.priceMinNok ?? ''} onChange={(e) => update(it.id, { priceMinNok: e.target.value ? num(e.target.value) : undefined, priceSource: 'egen' })} /></label>
+              <label>Pris til (kr)<input type="number" value={it.priceMaxNok ?? ''} onChange={(e) => update(it.id, { priceMaxNok: e.target.value ? num(e.target.value) : undefined, priceSource: 'egen' })} /></label>
               <label>Kassal-søk<input value={it.kassalSearch || ''} onChange={(e) => update(it.id, { kassalSearch: e.target.value })} /></label>
               <label className="check"><input type="checkbox" checked={!!it.homeOnly} onChange={(e) => update(it.id, { homeOnly: e.target.checked })} /> Kun hjemmefest (skjul i barnehage)</label>
 

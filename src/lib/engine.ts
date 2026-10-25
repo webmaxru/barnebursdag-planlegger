@@ -112,6 +112,8 @@ export function computeLineItem(item: GoodItem, cfg: PartyConfig): LineItem | nu
     packUnit: item.packUnit,
     priceMin,
     priceMax,
+    priceSource: priceMin != null ? item.priceSource : undefined,
+    buyWeightG: packs != null && item.packWeightG ? packs * item.packWeightG : undefined,
     note: notes.join(' '),
     kassalSearch: item.kassalSearch
   };

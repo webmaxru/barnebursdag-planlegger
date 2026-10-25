@@ -24,6 +24,8 @@ export interface GoodItem {
   packUnit?: string;                     // human label, e.g. 'pakke (8 stk)'
   priceMinNok?: number;                  // price per pack (or per item if no packSize)
   priceMaxNok?: number;
+  priceSource?: 'oda' | 'egen';          // 'oda' = ordinary Oda price (see PRICE_SOURCE); 'egen' = set by the user; unset = rough estimate
+  packWeightG?: number;                  // weight of one pack in grams, for goods sold by weight (e.g. grillpølser)
   homeOnly?: boolean;                    // hidden in barnehage (kindergarten) mode
   allergyTags?: string[];                // e.g. ['svin','gluten','melk']
   allergyScope?: string;                 // allergy-safe item scoped to affected kids
@@ -58,6 +60,8 @@ export interface LineItem {
   packUnit?: string;
   priceMin?: number;
   priceMax?: number;
+  priceSource?: 'oda' | 'egen';
+  buyWeightG?: number;                   // packs × packWeightG, for goods sold by weight
   note?: string;
   kassalSearch?: string;
 }

@@ -1,6 +1,7 @@
 import type { PlanResult } from './engine';
 import { CATEGORY_LABEL } from './engine';
 import type { PartyConfig } from './types';
+import { PRICE_SOURCE } from './catalog';
 import { krRange, n1, plural } from './format';
 
 /** Ticked-off items survive a reload, so the list can be reopened in the shop. Keyed by item id. */
@@ -36,7 +37,7 @@ function summary(cfg: PartyConfig) {
 /** Plain-text list with tick boxes – pastes cleanly into Notes, Messenger, SMS or an e-mail. */
 export function planToText(plan: PlanResult, cfg: PartyConfig, checked: Record<string, boolean>, url: string): string {
   const lines = ['Handleliste til barnebursdag', summary(cfg)];
-  if (plan.hasPrice) lines.push(`Estimert kostnad: ${krRange(plan.priceMin, plan.priceMax)}`);
+  if (plan.hasPrice) lines.push(`Estimert kostnad: ${krRange(plan.priceMin, plan.priceMax)} (${PRICE_SOURCE.label.replace('Priser: ', '')})`);
   for (const g of plan.groups) {
     lines.push('', CATEGORY_LABEL[g.category].toUpperCase());
     for (const it of g.items) {

@@ -32,10 +32,15 @@
     },
     {
       "q": "Er prisene i Kakeklar oppdaterte?",
-      "a": "Standardprisene er typiske spenn per pakke, ikke dagens pris i en bestemt butikk. Sjekk alltid prisen der du handler."
+      "a": "De fleste standardprisene er ordinære priser hos Oda, hentet 25. oktober 2026, fra billigste variant til kjent merke. Varer som Oda ikke selger, som kake, iskake, pynt og godteposer, har et grovt anslag. Sjekk alltid prisen der du handler."
     }
   ],
-  "sources": []
+  "sources": [
+    {
+      "title": "Oda: ordinære priser hentet 25. oktober 2026",
+      "url": "https://oda.com/no/"
+    }
+  ]
 }
 ---
 Jeg bygde Kakeklar rundt tre spørsmål. Hvor mange barn kommer, hvor gamle er de, og hva slags fest blir det (hjemme eller i barnehagen, pølser eller pizza, voksne og allergier)? Hver vare har en mengde per barn, per gjest eller per bord, og resultatet rundes alltid opp til hele pakker. Her er metoden forklart enkelt, og her står også hva kalkulatoren ikke gjør.
@@ -78,15 +83,15 @@ Ikke alt passer å regne per barn. Hver vare har derfor én av fem beregningsmå
 
 ## Avrunding til hele pakker
 
-Du kan ikke kjøpe 1,5 pakke pølser. Derfor regner Kakeklar først ut hvor mye du trenger, og runder så opp til hele pakker. Pølser, lomper og pølsebrød regnes i 8-pakninger, potetgull i poser på 165 g, og en flaske saftkonsentrat regnes som ca. 3 liter ferdig saft.
+Du kan ikke kjøpe 1,5 pakke pølser. Derfor regner Kakeklar først ut hvor mye du trenger, og runder så opp til hele pakker. Lomper og pølsebrød regnes i pakker à 10, potetgull i poser på 200 g, og en flaske saftkonsentrat på 1,5 liter regnes som 7,5 liter ferdig saft. Grillpølser selges etter vekt. Pakkene hos Oda som oppgir både vekt og antall, ligger på 62–80 g per pølse, så Kakeklar regner en pakke på 600 g som 8 pølser.
 
-Eksempel: 10 barn på 5 år trenger 20 pølser. Med 8 i pakken blir det 3 pakker, altså 24 pølser. De fire ekstra er buffer.
+Eksempel: 10 barn på 5 år trenger 20 pølser. Med 8 i pakken blir det 3 pakker (1,8 kg), altså rundt 24 pølser. De ekstra er buffer.
 
 ## 15 prosent ekstra brød
 
 Når hovedretten er pølser, kan du velge hvor stor andel som skal være lomper og hvor mye som skal være pølsebrød. Standard er halvparten av hver. Fordi barn ofte ombestemmer seg, legger Kakeklar 15 prosent ekstra på begge brødtypene.
 
-For de samme 10 barna blir det 20 × 0,5 × 1,15 = 11,5 lomper, rundet opp til 12, altså 2 pakker. Det samme for pølsebrød.
+For de samme 10 barna blir det 20 × 0,5 × 1,15 = 11,5 lomper, rundet opp til 12, altså 2 pakker à 10. Det samme for pølsebrød.
 
 ## Voksne som blir
 
@@ -100,9 +105,29 @@ I barnehagemodus fjernes varer som er merket «bare hjemme»: kake, iskake, snac
 
 Du kan skru på gluten, melk, egg, nøtter og uten svin, og skrive hvor mange gjester det gjelder. Da legger Kakeklar til en egen vare beregnet for akkurat det antallet, for eksempel glutenfri lompe, melkefri eller eggfri kake, nøttefritt godteri eller kyllingpølser uten svin. Hvis en vanlig vare på listen ofte inneholder allergenet, vises et notat ved den. Kalkulatoren vet ikke hva som står på pakken i din butikk, så les alltid ingredienslisten. Se [guiden om allergier](/guider/allergier-i-barnebursdag).
 
-## Priser er spenn
+## Hvor prisene kommer fra
 
-Hver vare med pris har et typisk spenn per pakke, og totalen er antall pakker ganget med spennet. Frukt og smågodt har ingen standardpris. Prisene er ment som et grovt anslag, ikke dagens pris i en bestemt butikk. I [budsjettguiden](/guider/budsjett-for-barnebursdag) har jeg sammenlignet anslagene med ordinære priser hos Oda 25. oktober 2026. Kalkulatoren kan også hente faktiske priser fra norske butikker for enkeltvarer når det er tilgjengelig.
+Hver vare med pris har et spenn per pakke, og totalen er antall pakker ganget med spennet. For de vanligste varene bruker jeg ordinære priser hos nettbutikken Oda, hentet 25. oktober 2026 (varer på tilbud er holdt utenfor). Den lave prisen er den billigste varianten som passer, den høye er som regel et kjent merke.
+
+| Vare | Pakning i kalkulatoren | Produkter hos Oda (lav – høy pris) | Pris per pakke |
+|---|---|---|---|
+| Grillpølser | pakke 600 g (regnet som 8 stk) | Gilde Go' & Magrere 600 g – Gilde Grillpølser 600 g | 39,00–64,90 kr |
+| Kyllingpølser (uten svin) | pakke 400–460 g (regnet som 6 stk) | Solvinge grillpølser av kylling 460 g – Åkeberg Skoglunn grillpølse kylling 6 stk | 33,60–42,90 kr |
+| Lomper | pakke à 10 | Vår Laveste Pris frosne lomper – Buer Lomper Original | 10,90–17,20 kr |
+| Pølsebrød | pakke à 10–12 (regnet som 10) | Prima Lavpris 12 stk – Hatting grove pølsebrød 10 stk | 18,90–26,70 kr |
+| Glutenfrie lomper | pakke à 6 | Engers Lefsebakeri | 32,50 kr |
+| Ketchup | flaske | Idun Tomatketchup 530 g – Heinz Tomatketchup 1 kg | 26,90–54,40 kr |
+| Sennep | tube ca. 500 g | Idun Pølsesennep 490 g – Bergbys Sennep 510 g | 22,90–29,90 kr |
+| Sprøstekt løk | boks 100 g | Prima Lavpris – Ps | 9,90–19,70 kr |
+| Potetgull | pose 200–240 g (regnet som 200 g) | KiMs Salt crunch 200 g – Maarud classic salt 240 g | 37,20–41,90 kr |
+| Saftkonsentrat | flaske 1,5 l (regnet som 7,5 l ferdig) | Prima Lavpris husholdningssaft – Lerum husholdningssaft uten tilsatt sukker | 36,40–69,40 kr |
+| Brus | 10 × 0,33 l | Solo Super – Coca-Cola | 89,00–97,40 kr |
+| Papptallerkener | pakke à 25 | REMA 1000 papptallerken 18 cm – dyp 19 cm | 31,40–36,50 kr |
+| Drikkebeger | pakke à 80 | R Drikkebeger 200 ml | 53,60 kr |
+| Servietter | pakke à 50–75 (regnet som 50) | Prima Lavpris bordpakning 75 stk – R Servietter hvit 50 stk | 22,40–28,60 kr |
+| Bestikk | 20 gafler + 20 skjeer i tre | R engangsgafler + R engangsskjeer, 20 stk av hver | 42,60 kr |
+
+Kake, iskake, minipizza, allergivennlig bakst, papirduk, ballonger, bursdagskrone, kakelys og godteposer selges ikke hos Oda. De har et grovt anslag og er merket «anslag» i handlelisten. Frukt og smågodt har ingen standardpris. Servise med motiv koster mange ganger mer enn de enkle variantene over, det viser [budsjettguiden](/guider/budsjett-for-barnebursdag). Prisene endrer seg, så sjekk prisen der du handler. Kalkulatoren kan også hente faktiske priser fra norske butikker for enkeltvarer når det er tilgjengelig.
 
 ## Slik endrer du varelisten
 

@@ -10,6 +10,7 @@ import ActionToolbar from './ActionToolbar';
 import { loadChecked, saveChecked, planToText, planToCsv, downloadFile, fileStem } from '../lib/exportList';
 import { affiliateLinksFor, AFFILIATE_DISCLOSURE } from '../lib/affiliates';
 import { shareUrl } from '../lib/store';
+import { PRICE_SOURCE } from '../lib/catalog';
 import type { Category } from '../lib/types';
 
 function PriceLookup({ search }: { search: string }) {
@@ -66,10 +67,16 @@ function Row({ it, done, onToggle }: { it: LineItem; done: boolean; onToggle: ()
       </div>
       <div className="row-sub">
         {it.packs != null && (
-          <span className="badge">{it.packs} × {it.packUnit || 'pakke'} = {it.buyQty} {it.unit}</span>
+          <span className="badge">
+            {it.packs} × {it.packUnit || 'pakke'} = {it.buyQty} {it.unit}
+            {it.buyWeightG ? ` (${n1(it.buyWeightG / 1000)} kg)` : ''}
+          </span>
         )}
         {it.packs == null && it.packUnit && <span className="badge">{it.packUnit}</span>}
         {it.priceMin != null && <span className="price">{krRange(it.priceMin, it.priceMax)}</span>}
+        {it.priceMin != null && !it.priceSource && (
+          <span className="price-flag" title="Varen finnes ikke hos Oda, så prisen er et grovt anslag">anslag</span>
+        )}
       </div>
       {it.note && <p className="row-note">{it.note.startsWith('Trygt') ? '✅' : '⚠️'} {it.note}</p>}
       {it.kassalSearch && <PriceLookup search={it.kassalSearch} />}
@@ -130,6 +137,7 @@ export default function Results({
   onChange,
   onOpenConfig,
   onShare,
+  onCopyLink,
   onPrint
 }: {
   plan: PlanResult;
@@ -137,6 +145,7 @@ export default function Results({
   onChange: (cfg: PartyConfig) => void;
   onOpenConfig: () => void;
   onShare: () => void;
+  onCopyLink: () => void;
   onPrint: () => void;
 }) {
   const [checked, setChecked] = useState<Record<string, boolean>>(() => loadChecked());
@@ -182,11 +191,16 @@ export default function Results({
           år{cfg.type === 'barnehage' ? ' (barnehage)' : ''} trenger du:
         </p>
         {plan.hasPrice && (
-          <p className="total">Estimert kostnad: <strong>{krRange(plan.priceMin, plan.priceMax)}</strong></p>
+          <>
+            <p className="total">Estimert kostnad: <strong>{krRange(plan.priceMin, plan.priceMax)}</strong></p>
+            <p className="price-source" data-testid="price-source">
+              {PRICE_SOURCE.label}. Varer merket «anslag» selges ikke hos Oda og har et grovt prisanslag.
+            </p>
+          </>
         )}
         <p className="method-note" data-testid="method-note">
           Slik regner vi: hver vare har en mengde per barn (etter aldersgruppe), per gjest eller per bord. Voksne regnes med der
-          de spiser, og alt rundes opp til hele pakker. Prisene er omtrentlige spenn, ikke dagens butikkpris.{' '}
+          de spiser, og alt rundes opp til hele pakker. Prisene går fra billigste variant til kjent merke og er ikke dagens pris i din butikk.{' '}
           <a href="/guider/slik-beregner-kakeklar">Les hele metoden</a>
         </p>
       </div>
@@ -215,9 +229,13 @@ export default function Results({
         <h2>Ta med listen</h2>
         <p className="muted">
           Kryss av det du har kjøpt. Avkrysningen lagres på denne enheten, så listen er klar når du åpner Kakeklar i butikken.
+          Lenken tar med alder, antall gjester, voksne, mat og allergier, så den du deler med, får den samme listen.
           {doneCount > 0 && <> {doneCount} av {plan.itemCount} varer er krysset av.</>}
         </p>
         <div className="export-actions">
+          <button type="button" className="btn btn--secondary" onClick={onCopyLink} data-testid="copy-link">
+            🔗 Kopier lenke
+          </button>
           <button type="button" className="btn btn--secondary" onClick={copyText} data-testid="export-copy">
             {copied ? '✓ Kopiert' : '📋 Kopier som tekst'}
           </button>
