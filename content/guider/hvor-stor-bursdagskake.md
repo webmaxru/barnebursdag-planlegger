@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "mengder",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "sjokoladekake-i-langpanne",
     "blotkake-til-barnebursdag",
@@ -34,7 +34,7 @@
   "sources": []
 }
 ---
-Regn ett kakestykke per barn for 3–6-åringer og rundt 1,25 stykke per barn for 7–9-åringer. En langpanne på ca. 30 × 40 cm gir 20–24 stykker og holder til de fleste barnebursdager, mens en rund bløtkake på 24 cm gir 10–12 stykker. Har du mer enn 10–12 gjester, eller voksne som blir igjen, trenger du enten en langpanne eller to kaker.
+Ett kakestykke per barn holder for 3–6-åringer. For 7–9-åringer regner jeg rundt 1,25 stykke. En langpanne på ca. 30 × 40 cm gir 20–24 stykker og rekker til de fleste barnebursdager, og en rund bløtkake på 24 cm gir 10–12. Kommer det mer enn 10–12 gjester, eller blir foreldrene igjen? Da trenger du en langpanne eller to kaker.
 
 ## Kakestykker per barn
 
@@ -73,7 +73,7 @@ Kalkulatoren kan også legge inn iskake, regnet som én iskake per ti gjester. D
 
 ## Kjøpe eller bake?
 
-Det er ingen fasit. En hjemmebakt sjokoladekake i langpanne koster lite og tåler å bli laget dagen før. En kjøpt kake sparer tid, men koster gjerne fra 150 kroner og oppover, og en bestilt pyntekake fra konditori koster mer.
+Det er ingen fasit – en hjemmebakt sjokoladekake i langpanne koster lite og tåler å bli laget dagen før. En kjøpt kake sparer tid, men koster gjerne fra 150 kroner og oppover, og en bestilt pyntekake fra konditori koster mer.
 
 Bake selv hvis:
 - du har tid kvelden før eller morgenen samme dag
@@ -107,7 +107,7 @@ Server allergivennlig kake på eget fat og med egen kakespade, så den ikke får
 
 Tradisjonen er like mange lys som barnet fyller år. Kalkulatoren legger inn alder + 1 lys, så du har ett ekstra hvis et lys knekker eller ikke vil tenne. Kakelys selges vanligvis i pakker à 8 eller flere.
 
-Enkel pynt som fungerer på langpanne: strøssel, smågodt lagt som et tall, kokos, fersk frukt eller et navn skrevet med glasur fra en sprøytepose. Det trenger ikke være fancy. Barn husker at de fikk blåse ut lysene, ikke om kaken var perfekt.
+Enkel pynt som fungerer på langpanne: strøssel, smågodt lagt som et tall, kokos, fersk frukt eller et navn skrevet med glasur fra en sprøytepose. Det trenger ikke være fancy – det barna husker, er at de fikk blåse ut lysene.
 
 ## Når skal kaken serveres?
 

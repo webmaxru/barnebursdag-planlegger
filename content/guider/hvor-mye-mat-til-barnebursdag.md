@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "mengder",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "hvor-mye-drikke-til-barnebursdag",
     "hvor-stor-bursdagskake",
@@ -34,7 +34,7 @@
   "sources": []
 }
 ---
-Regn med 1,5 pølser eller minipizzaer per barn for 3–4-åringer, 2 for 5–6-åringer og 2,5 for 7–9-åringer, pluss ett kakestykke per barn (1,25 for de eldste). Legg til rundt 120–140 g oppkuttet frukt og 30–40 g snacks per barn, så har du nok uten å sitte igjen med en hel kjøleskapshylle med rester. Under finner du hele tabellen, regneeksempler og en ferdig handleliste for 10 barn.
+Dette er tallene jeg bruker i kalkulatoren. Regn 1,5 pølser eller minipizzaer per barn for 3–4-åringer, 2 for 5–6-åringer og 2,5 for 7–9-åringer, pluss ett kakestykke per barn (1,25 for de eldste). Legg til 120–140 g oppkuttet frukt og 30–40 g snacks per barn. Da har du nok, uten en hel kjøleskapshylle med rester etterpå. Under finner du hele tabellen, to regneeksempler og en ferdig handleliste for 10 barn.
 
 ## Mengder per barn, fordelt på alder
 
@@ -56,11 +56,11 @@ Noen ting å vite om tabellen:
 - Brød regnes med 15 prosent ekstra. Lomper revner, pølsebrød blir mast, og noen barn vil ha brødet uten pølse. Velger du halvt om halvt lomper og pølsebrød, deler du antallet på to og legger til buffer på begge.
 - Kake er regnet i vanlige stykker. Mange barn spiser bare halve, men noen vil gjerne ha en bit til, så det jevner seg ut.
 
-Vil du vite mer om hver rett, har vi egne guider til [pølsefest](/guider/polsefest-barnebursdag) og [hvor stor kaken bør være](/guider/hvor-stor-bursdagskake).
+Vil du vite mer om hver rett, finnes det egne guider til [pølsefest](/guider/polsefest-barnebursdag), [pizza](/guider/pizza-til-barnebursdag), [taco](/guider/taco-til-barnebursdag) og [hvor stor kaken bør være](/guider/hvor-stor-bursdagskake).
 
 ## Hvorfor spiser barn så lite?
 
-Det overrasker mange hvor lite som går med. Barn i bursdag er opptatt av lek, gaver og hverandre, ikke av maten. De yngste spiser ofte en halv pølse, tar en bit kake og løper videre. Sju- og åtteåringer spiser mer, særlig gutter og jenter som har vært ute og løpt på forhånd, men selv de stopper sjelden på mer enn to–tre pølser.
+Det overrasker mange hvor lite som går med. Barn i bursdag er opptatt av lek, gaver og hverandre. De yngste spiser ofte en halv pølse, tar en bit kake og løper videre. Sju- og åtteåringer spiser mer (særlig gutter og jenter som har vært ute og løpt på forhånd), men selv de stopper sjelden på mer enn to–tre pølser.
 
 Det er også derfor tallene for 3–4 år er lavere enn du kanskje tror. Det er bedre å ha et par ekstra pølser i fryseren enn å koke tre pakker som ingen spiser.
 
@@ -78,7 +78,7 @@ En femåring havner i aldersgruppen 5–6 år. Med åtte barn og pølser som hov
 | Frukt | 8 × 130 g ≈ 1 kg | for eksempel druer, melon og jordbær |
 | Snacks | 8 × 35 g = 280 g | 2 poser à 165 g |
 
-Du får noen lomper og pølsebrød til overs, og det er meningen. Kaken holder med god margin: en langpanne gir rundt 20 stykker, så det blir igjen til de voksne og til dagen etter.
+Du får noen lomper og pølsebrød til overs, og det er meningen. Kaken holder med god margin – en langpanne gir rundt 20 stykker, så det blir igjen til de voksne og til dagen etter.
 
 ## Regneeksempel: 12 barn på 8 år
 

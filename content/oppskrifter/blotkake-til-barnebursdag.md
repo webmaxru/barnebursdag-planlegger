@@ -6,7 +6,7 @@
   "section": "oppskrifter",
   "category": "oppskrifter",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "image": {
     "src": "/img/oppskrifter/blotkake-til-barnebursdag.svg",
     "png": "/img/oppskrifter/blotkake-til-barnebursdag.png",
@@ -110,7 +110,7 @@
   }
 }
 ---
-Bløtkake er bursdagskaken mange husker fra egen barndom: luftig sukkerbrød, vaniljekrem, syltetøy og et tykt lag krem med jordbær på toppen. Den ser festlig ut på bordet og er perfekt til å sette lys i. En rund kake på 24 cm gir 10–12 stykker.
+Bløtkake er den klassiske norske bursdagskaken – luftig sukkerbrød, vaniljekrem, syltetøy og et tykt lag krem med jordbær på toppen. Den ser festlig ut og er perfekt å sette lys i. En rund kake på 24 cm gir 10–12 stykker, så til en stor gjeng trenger du to.
 
 {{recipe}}
 
@@ -133,7 +133,7 @@ Sukkerbrødet kan gjerne stekes én til to dager før festen. Det blir lettere �
 
 ## Fukting: hvor mye?
 
-Sukkerbrødet trenger litt fukt, ellers blir kaken tørr. Melk er det vanligste i barnebursdag, men tynn saft, for eksempel jordbærsaft, gir en fin smak og farge. Bruk en skje eller en pensel, og fordel jevnt. Rundt 1 dl til hele kaken er nok. For mye fukt gjør kaken bløt og vanskelig å skjære.
+Sukkerbrødet trenger litt fukt, ellers blir kaken tørr. Melk er det vanligste i barnebursdag, men tynn saft (for eksempel jordbærsaft) gir en fin smak og farge. Bruk en skje eller en pensel, og fordel jevnt. Rundt 1 dl til hele kaken er nok. For mye fukt gjør kaken bløt og vanskelig å skjære.
 
 ## Fyll og variasjoner
 

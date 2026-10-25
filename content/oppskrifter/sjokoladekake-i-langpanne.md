@@ -6,7 +6,7 @@
   "section": "oppskrifter",
   "category": "oppskrifter",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "image": {
     "src": "/img/oppskrifter/sjokoladekake-i-langpanne.svg",
     "png": "/img/oppskrifter/sjokoladekake-i-langpanne.png",
@@ -108,7 +108,7 @@
   }
 }
 ---
-Sjokoladekake i langpanne er den mest brukte bursdagskaken i Norge, og det er lett å forstå hvorfor. Den er billig, rask å lage, tåler å bli laget dagen før og gir rundt 24 stykker. Nesten alle barn liker den, og den er lett å pynte etter bursdagsbarnets ønsker.
+Sjokoladekake i langpanne er en klassiker i norske barnebursdager, og jeg skjønner godt hvorfor. Den er billig og rask å lage, den tåler å bli laget dagen før, og den gir rundt 24 stykker. Den er også lett å pynte etter det bursdagsbarnet ønsker seg.
 
 {{recipe}}
 
@@ -116,7 +116,7 @@ Sjokoladekake i langpanne er den mest brukte bursdagskaken i Norge, og det er le
 
 En langpanne gir mange stykker for lite arbeid. Med ett stykke per barn for 3–6-åringer og 1,25 stykke per barn for 7–9-åringer, som er tallene i [Kakeklar-kalkulatoren](/), holder én langpanne til 16–20 barn, eller til en vanlig bursdag med 8–12 barn og noen voksne. Har du flere gjester, kan du lage to langpanner eller supplere med muffins.
 
-Kaken er også stabil. Den tåler å bli transportert til barnehagen eller et leid lokale, og glasuren stivner nok til at stykkene kan løftes rett fra panna. Mer om hvor mange stykker du trenger, finner du i [guiden om hvor stor bursdagskaken bør være](/guider/hvor-stor-bursdagskake).
+Kaken er også stabil – den tåler å bli transportert til barnehagen eller et leid lokale, og glasuren stivner nok til at stykkene kan løftes rett fra panna. Mer om hvor mange stykker du trenger, finner du i [guiden om hvor stor bursdagskaken bør være](/guider/hvor-stor-bursdagskake).
 
 ## Slik lykkes du
 

@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "mengder",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "hvor-mye-mat-til-barnebursdag",
     "polsefest-barnebursdag",
@@ -29,7 +29,7 @@
   "sources": []
 }
 ---
-Regn 1,5 pizzastykker eller minipizzaer per barn for 3–4-åringer, 2 for 5–6-åringer og 2,5 for 7–9-åringer. En vanlig pizza på rundt 30 cm deles i 8 stykker, så ti barn på 6 år trenger 20 stykker, altså 3 pizzaer. Har du sultne 8–9-åringer eller voksne som spiser med, er det lurt å ha én pizza ekstra i fryseren.
+Pizza følger samme regel som pølser i kalkulatoren: 1,5 stykker eller minipizzaer per barn for 3–4-åringer, 2 for 5–6-åringer og 2,5 for 7–9-åringer. En vanlig pizza på rundt 30 cm deles i 8 stykker. Ti barn på 6 år trenger altså 20 stykker, det vil si 3 pizzaer. Er det sultne 8–9-åringer eller voksne som spiser med? Legg én ekstra pizza i fryseren.
 
 ## Pizza per barn
 
@@ -52,7 +52,7 @@ Når tallet går nesten opp, som 16 stykker på 2 pizzaer, er det greit å kjøp
 
 ## Frossen, hjemmelaget eller bestilt?
 
-**Frossenpizza** er det enkleste. Den er billig, barn kjenner smaken, og du vet nøyaktig hvor mange du får. Ulempen er at ovnen bare tar én eller to om gangen.
+**Frossenpizza** er det enkleste – den er billig, barn kjenner smaken, og du vet nøyaktig hvor mange du får. Ulempen er at ovnen bare tar én eller to om gangen.
 
 **Hjemmelaget langpannepizza** er overraskende praktisk til mange barn. Én langpanne kan skjæres i 20–24 firkanter, som passer godt til små hender. En vanlig deig til én langpanne er 25 g gjær, 3 dl lunkent vann, 1 ts salt, 2 ss olje og ca. 8 dl hvetemel. Bunnen kan forstekes dagen før og fryses, så legger du på fyll og steker den ferdig når gjestene kommer.
 
@@ -82,7 +82,7 @@ Hjemme kan det være stas å la barna lage sin egen minipizza. Lag små runde bu
 
 **Uten svin:** Skinke og pepperoni er som regel laget av svin. Bruk kylling, kjøttdeig av storfe eller bare ost. Sjekk ingredienslisten på ferdigpizza.
 
-**Melk:** Ost inneholder melk. Det finnes melkefri ost og melkefrie ferdigpizzaer, men utvalget varierer. En pizza med tomatsaus og grønnsaker uten ost er også et alternativ.
+**Melk:** Ost inneholder melk – det finnes melkefri ost og melkefrie ferdigpizzaer, men utvalget varierer. En pizza med tomatsaus og grønnsaker uten ost er også et alternativ.
 
 **Gluten:** Vanlig pizzabunn inneholder hvete. Glutenfrie ferdigbunner og frossenpizzaer finnes i mange butikker. Stek dem på eget brett eller bakepapir, og bruk egen kniv eller pizzahjul.
 

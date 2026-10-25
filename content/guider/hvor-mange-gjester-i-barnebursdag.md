@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "planlegging",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "invitasjon-til-barnebursdag",
     "budsjett-for-barnebursdag",
@@ -33,7 +33,7 @@
   "sources": []
 }
 ---
-En vanlig tommelfingerregel er «alder pluss én»: en treåring kan ha fire gjester, en seksåring sju. Det gir en fest barnet klarer å ha oversikt over, og som du klarer å gjennomføre. Mange velger likevel å invitere hele gruppen eller klassen, og det fungerer også, bare med litt mer planlegging.
+En vanlig tommelfingerregel er «alder pluss én» – en treåring kan ha fire gjester, en seksåring sju. Jeg liker den fordi den gir en fest barnet klarer å ha oversikt over, og som du klarer å gjennomføre. Å invitere hele gruppen eller klassen fungerer også. Det krever bare litt mer planlegging.
 
 ## Regelen «alder pluss én»
 
@@ -49,7 +49,7 @@ Regelen er populær fordi den følger barnets utvikling. Små barn blir fort ove
 | 8 år | 9 |
 | 9 år | 10 |
 
-Kakeklar-kalkulatoren bruker samme regel som forslag når du velger alder, men du kan selvsagt endre antallet. Regelen er et utgangspunkt, ikke en fasit.
+Kakeklar-kalkulatoren bruker samme regel som forslag når du velger alder, men du kan selvsagt endre antallet. Regelen er bare et utgangspunkt.
 
 ## Hele klassen eller noen få venner?
 

@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "mengder",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "hvor-mye-mat-til-barnebursdag",
     "pizza-til-barnebursdag",
@@ -33,7 +33,7 @@
   "sources": []
 }
 ---
-Taco er et godt alternativ til pølser og pizza, særlig for 6–9-åringer som kjenner fredagstacoen hjemmefra. Regn omtrent 60–80 g kjøttdeig og 1–2 små tortillalefser per barn for de yngste, og 100–120 g kjøttdeig og 2–3 lefser per barn for 7–9-åringer. Hold krydderet mildt og sett frem tilbehøret i skåler, så kan barna bygge sin egen.
+Taco er et godt alternativ til pølser og pizza, særlig for 6–9-åringer som kjenner fredagstacoen hjemmefra. For de yngste regner jeg 60–80 g kjøttdeig og 1–2 små lefser per barn. For 7–9-åringer blir det 100–120 g kjøttdeig og 2–3 lefser. Hold krydderet mildt og sett tilbehøret frem i skåler, så bygger barna sin egen.
 
 ## Mengder per barn
 

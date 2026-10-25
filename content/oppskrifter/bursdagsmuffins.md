@@ -6,7 +6,7 @@
   "section": "oppskrifter",
   "category": "oppskrifter",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "image": {
     "src": "/img/oppskrifter/bursdagsmuffins.svg",
     "png": "/img/oppskrifter/bursdagsmuffins.png",
@@ -103,13 +103,13 @@
   }
 }
 ---
-Muffins er den enkleste bursdagsbaksten du kan lage: én bolle, en halvtime og tolv like store kaker som passer perfekt i små hender. De er ideelle til barnehagen, til store bursdager der en kake ikke rekker, og til å pynte sammen med barna.
+Muffins er den enkleste bursdagsbaksten jeg vet om. Én bolle, en halvtime i ovnen og tolv like store kaker som passer i små hender. De fungerer i barnehagen, i store bursdager der én kake ikke rekker, og som pynteaktivitet sammen med barna.
 
 {{recipe}}
 
 ## Hvorfor muffins fungerer så godt i bursdag
 
-Hvert barn får sin egen. Det betyr ingen kniv, ingen kakespade, ingen diskusjon om hvem som fikk det største stykket, og mindre søl. Regn én muffins per barn, som tilsvarer ett kakestykke i [Kakeklar-kalkulatoren](/). Til de eldste kan du lage noen ekstra, siden kalkulatoren regner 1,25 kakestykke per barn for 7–9-åringer.
+Hvert barn får sin egen – det betyr ingen kniv, ingen kakespade, ingen diskusjon om hvem som fikk det største stykket, og mindre søl. Regn én muffins per barn, som tilsvarer ett kakestykke i [Kakeklar-kalkulatoren](/). Til de eldste kan du lage noen ekstra, siden kalkulatoren regner 1,25 kakestykke per barn for 7–9-åringer.
 
 | Antall barn | Muffins | Porsjoner av oppskriften |
 |---|---|---|

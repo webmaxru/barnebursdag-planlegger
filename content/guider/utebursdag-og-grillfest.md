@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "planlegging",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "polsefest-barnebursdag",
     "leker-til-barnebursdag-6-9-ar",
@@ -38,7 +38,7 @@
   ]
 }
 ---
-En utebursdag gir plass til lek, mindre rydding hjemme og ofte en roligere stemning. Det viktigste er å sjekke grillreglene der dere skal være, ta med mat som tåler transport, ha drikke i kjølebag og ha en plan B hvis det regner. Pølser i lompe, oppkuttet frukt og kake i langpanne er et trygt og enkelt utgangspunkt.
+Ute er det plass til lek, og det blir mindre rydding hjemme. Før dere drar, sjekker du grillreglene der dere skal være, at maten tåler transport, og at drikken ligger i kjølebag. Ha også en plan B hvis det regner. Pølser i lompe, oppkuttet frukt og kake i langpanne er et trygt og enkelt utgangspunkt.
 
 ## Velg sted
 

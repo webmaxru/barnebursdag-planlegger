@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "mengder",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "hvor-mye-mat-til-barnebursdag",
     "hvor-mye-drikke-til-barnebursdag",
@@ -38,7 +38,7 @@
   "sources": []
 }
 ---
-Kakeklar regner ut handlelisten fra tre ting: antall barn, barnets alder og hvilke valg du gjør (hjemme eller barnehage, pølser eller pizza, voksne og allergier). Hver vare har en mengde per barn, per gjest eller per bord, og resultatet rundes alltid opp til hele pakker. Her er metoden, forklart enkelt, og det kalkulatoren ikke gjør.
+Jeg bygde Kakeklar rundt tre spørsmål. Hvor mange barn kommer, hvor gamle er de, og hva slags fest blir det (hjemme eller i barnehagen, pølser eller pizza, voksne og allergier)? Hver vare har en mengde per barn, per gjest eller per bord, og resultatet rundes alltid opp til hele pakker. Her er metoden forklart enkelt, og her står også hva kalkulatoren ikke gjør.
 
 ## Tre aldersgrupper
 
@@ -80,7 +80,7 @@ Ikke alt passer å regne per barn. Hver vare har derfor én av fem beregningsmå
 
 Du kan ikke kjøpe 1,5 pakke pølser. Derfor regner Kakeklar først ut hvor mye du trenger, og runder så opp til hele pakker. Pølser, lomper og pølsebrød regnes i 8-pakninger, potetgull i poser på 165 g, og en flaske saftkonsentrat regnes som ca. 3 liter ferdig saft.
 
-Eksempel: 10 barn på 5 år trenger 20 pølser. Med 8 i pakken blir det 3 pakker, altså 24 pølser. De fire ekstra er buffer, ikke svinn.
+Eksempel: 10 barn på 5 år trenger 20 pølser. Med 8 i pakken blir det 3 pakker, altså 24 pølser. De fire ekstra er buffer.
 
 ## 15 prosent ekstra brød
 
@@ -102,7 +102,7 @@ Du kan skru på gluten, melk, egg, nøtter og uten svin, og skrive hvor mange gj
 
 ## Priser er spenn
 
-Hver vare med pris har et typisk spenn per pakke, og totalen er antall pakker ganget med spennet. Frukt og smågodt har ingen standardpris. Prisene er ment som et grovt anslag, ikke dagens pris i en bestemt butikk. Kalkulatoren kan også hente faktiske priser fra norske butikker for enkeltvarer når det er tilgjengelig. Les mer i [guiden om budsjett](/guider/budsjett-for-barnebursdag).
+Hver vare med pris har et typisk spenn per pakke, og totalen er antall pakker ganget med spennet. Frukt og smågodt har ingen standardpris. Prisene er ment som et grovt anslag, ikke dagens pris i en bestemt butikk. I [budsjettguiden](/guider/budsjett-for-barnebursdag) har jeg sammenlignet anslagene med ordinære priser hos Oda 25. oktober 2026. Kalkulatoren kan også hente faktiske priser fra norske butikker for enkeltvarer når det er tilgjengelig.
 
 ## Slik endrer du varelisten
 

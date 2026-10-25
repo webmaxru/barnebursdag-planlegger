@@ -105,6 +105,68 @@
       #root .seo-fallback dd {
         margin: 0.25rem 0 0;
       }
+      .home-info {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 8px 16px 40px;
+        color: #221B2A;
+        line-height: 1.6;
+      }
+
+      .home-info .hi-card {
+        margin-top: 1.25rem;
+        padding: 1.1rem 1.25rem;
+        border: 1px solid #ECE4D8;
+        border-radius: 18px;
+        background: #fff;
+      }
+
+      .home-info h2 {
+        margin: 0 0 0.5rem;
+        font-size: 1.3rem;
+      }
+
+      .home-info ul,
+      .home-info ol {
+        padding-left: 1.25rem;
+      }
+
+      .home-info a {
+        color: #a4122f;
+        text-underline-offset: 3px;
+      }
+
+      .home-info dt {
+        margin-top: 0.9rem;
+        font-weight: 800;
+      }
+
+      .home-info dd {
+        margin: 0.25rem 0 0;
+      }
+
+      .home-info .hi-table {
+        overflow-x: auto;
+      }
+
+      .home-info table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+      }
+
+      .home-info th,
+      .home-info td {
+        padding: 6px 8px;
+        text-align: left;
+        border-bottom: 1px solid #ECE4D8;
+      }
+
+      @media print {
+        .home-info {
+          display: none;
+        }
+      }
     </style>
 
     <script type="application/ld+json">
@@ -150,7 +212,7 @@
             "name": "Hvor mange gjester bør man invitere i barnebursdag?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "En enkel tommelfingerregel er alder + 1 gjest. Et barn som fyller 6 år kan for eksempel invitere rundt 7 barn, justert etter plass, budsjett og barnets ønsker."
+              "text": "En vanlig tommelfingerregel er alder pluss én. Et barn som fyller 6 år, kan for eksempel invitere sju barn. Juster etter plass, budsjett og hva barnet ønsker."
             }
           },
           {
@@ -158,7 +220,7 @@
             "name": "Hvor mye mat trenger jeg per barn?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Planlegg omtrent 1–2 pølser med lompe per barn, litt snacks, kake og nok drikke. Kakeklar justerer mengdene etter alder og antall gjester."
+              "text": "Regn 1,5 pølser per barn for 3–4 år, 2 for 5–6 år og 2,5 for 7–9 år, pluss ett kakestykke per barn. Se tabellen over for drikke, frukt og snacks."
             }
           },
           {
@@ -166,7 +228,7 @@
             "name": "Er Kakeklar gratis?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Ja. Kakeklar er gratis å bruke og krever ingen betaling."
+              "text": "Ja. Kakeklar er gratis å bruke."
             }
           },
           {
@@ -174,7 +236,7 @@
             "name": "Fungerer Kakeklar for barnehagefeiring?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Ja. Du kan bruke Kakeklar til både feiring hjemme og i barnehage, med handleliste for enkle, praktiske bursdagsvalg."
+              "text": "Ja. Velg barnehage i veiviseren, så fjernes blant annet kake og godteposer fra listen."
             }
           },
           {
@@ -214,59 +276,86 @@
             så får du en alderssmart handleliste med mat, drikke, servise, pynt og en praktisk sjekkliste.
           </p>
 
-          <section class="card" aria-labelledby="how-it-works">
-            <h2 id="how-it-works">Slik funker det</h2>
-            <ol>
-              <li>Dra glideren for antall gjester.</li>
-              <li>Velg barnets alder, typisk 3–9 år.</li>
-              <li>Få forslag til riktige mengder og en handleklar liste for bursdagen.</li>
-            </ol>
-          </section>
-
-          <section class="card" aria-labelledby="shopping-list">
-            <h2 id="shopping-list">Eksempel på handleliste</h2>
-            <ul>
-              <li>Pølser</li>
-              <li>Lomper</li>
-              <li>Bursdagskake</li>
-              <li>Saft</li>
-              <li>Tallerkener</li>
-              <li>Ballonger</li>
-              <li>Godteposer</li>
-            </ul>
-          </section>
-
-          <section class="card" aria-labelledby="faq">
-            <h2 id="faq">Ofte stilte spørsmål</h2>
-            <dl>
-              <dt>Hvor mange gjester bør man invitere i barnebursdag?</dt>
-              <dd>En enkel tommelfingerregel er alder + 1 gjest, justert etter plass, budsjett og barnets ønsker.</dd>
-              <dt>Hvor mye mat trenger jeg per barn?</dt>
-              <dd>Planlegg omtrent 1–2 pølser med lompe per barn, litt snacks, kake og nok drikke.</dd>
-              <dt>Er Kakeklar gratis?</dt>
-              <dd>Ja. Kakeklar er gratis å bruke.</dd>
-              <dt>Fungerer Kakeklar for barnehagefeiring?</dt>
-              <dd>Ja. Kakeklar kan brukes til både feiring hjemme og i barnehage.</dd>
-              <dt>Trenger jeg å logge inn?</dt>
-              <dd>Nei. Kakeklar fungerer uten konto, innlogging eller registrering.</dd>
-            </dl>
-          </section>
-          <section class="card" aria-labelledby="guides">
-            <h2 id="guides">Guider til barnebursdag</h2>
-            <ul>
-              <li><a href="/guider/hvor-mye-mat-til-barnebursdag">Hvor mye mat til barnebursdag? Mengder per barn</a></li>
-              <li><a href="/guider/hvor-mye-drikke-til-barnebursdag">Hvor mye drikke trenger du?</a></li>
-              <li><a href="/guider/hvor-stor-bursdagskake">Hvor stor bursdagskake?</a></li>
-              <li><a href="/guider/planlegg-barnebursdag-steg-for-steg">Planlegg bursdagen steg for steg</a></li>
-              <li><a href="/guider/barnehagebursdag">Barnebursdag i barnehagen</a></li>
-              <li><a href="/guider/allergier-i-barnebursdag">Allergier i barnebursdag</a></li>
-              <li><a href="/guider/slik-beregner-kakeklar">Slik beregner Kakeklar mengdene</a></li>
-            </ul>
-            <p><a href="/guider">Alle guider</a> · <a href="/oppskrifter">Oppskrifter: sjokoladekake, bløtkake, muffins</a></p>
-          </section>
-          <p><a href="/om-kakeklar">Om Kakeklar</a> · <a href="/personvern">Personvern</a> · <a href="/vilkar">Vilkår</a> · <a href="/kontakt">Kontakt</a></p>
         </main>
       </div>
+    </div>
+    <div class="home-info" id="om-kalkulatoren">
+      <section class="hi-card" aria-labelledby="hi-how">
+        <h2 id="hi-how">Slik bruker du kalkulatoren</h2>
+        <ol>
+          <li>Velg hvor mange barn som kommer, og hvor gamle de er. Mengdene er delt i tre aldersgrupper: 3–4, 5–6 og 7–9 år.</li>
+          <li>Velg hjemme eller barnehage, pølser eller pizza, om voksne spiser med, og om noen har allergier.</li>
+          <li>Du får en liste med antall pakker og et prisspenn. Huk av i butikken, skriv den ut eller del lenken med den som handler.</li>
+        </ol>
+        <p>Alt kan justeres. Synes du det blir for mye saft eller for lite kake, endrer du mengden, og listen regnes om. Kakeklar er gratis og krever ingen innlogging.</p>
+      </section>
+
+      <section class="hi-card" aria-labelledby="hi-amounts">
+        <h2 id="hi-amounts">Mengder per barn</h2>
+        <p>Dette er tallene kalkulatoren bruker for en vanlig bursdag på et par timer:</p>
+        <div class="hi-table">
+          <table>
+            <thead><tr><th>Per barn</th><th>3–4 år</th><th>5–6 år</th><th>7–9 år</th></tr></thead>
+            <tbody>
+              <tr><td>Pølser eller minipizza</td><td>1,5 stk</td><td>2 stk</td><td>2,5 stk</td></tr>
+              <tr><td>Lomper eller pølsebrød</td><td>1,5 stk</td><td>2 stk</td><td>2,5 stk</td></tr>
+              <tr><td>Kake</td><td>1 stykke</td><td>1 stykke</td><td>1,25 stykke</td></tr>
+              <tr><td>Drikke, ferdig blandet</td><td>4 dl</td><td>5 dl</td><td>6 dl</td></tr>
+              <tr><td>Frukt, oppkuttet</td><td>120 g</td><td>130 g</td><td>140 g</td></tr>
+              <tr><td>Snacks</td><td>30 g</td><td>35 g</td><td>40 g</td></tr>
+              <tr><td>Smågodt til godteposer</td><td>50 g</td><td>100 g</td><td>125 g</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Brød regnes med 15 prosent ekstra, og alt rundes opp til hele pakker. Hvorfor tallene er som de er, står i <a href="/guider/slik-beregner-kakeklar">Slik beregner Kakeklar mengdene</a>.</p>
+      </section>
+
+      <section class="hi-card" aria-labelledby="hi-example">
+        <h2 id="hi-example">Eksempel: 10 barn på 6 år</h2>
+        <p>Pølser som hovedrett, halvt om halvt lomper og pølsebrød, ingen voksne som spiser med:</p>
+        <ul>
+          <li>Pølser: 20 stk (3 pakker à 8)</li>
+          <li>Lomper og pølsebrød: 12 av hver (2 pakker av hver)</li>
+          <li>Ketchup, sennep og stekt løk: 1 av hver</li>
+          <li>Kake: 10 stykker, det vil si 1 langpanne</li>
+          <li>Frukt: ca. 1,3 kg oppkuttet</li>
+          <li>Saft: 5 liter ferdig blandet</li>
+          <li>Smågodt til godteposer: ca. 1 kg</li>
+          <li>Kakelys: 7 stk</li>
+        </ul>
+        <p>Hva det koster, med priser hentet fra butikk 25. oktober 2026, står i <a href="/guider/budsjett-for-barnebursdag">budsjettguiden</a>.</p>
+      </section>
+
+      <section class="hi-card" aria-labelledby="hi-faq">
+        <h2 id="hi-faq">Ofte stilte spørsmål</h2>
+        <dl>
+          <dt>Hvor mange gjester bør man invitere i barnebursdag?</dt>
+          <dd>En vanlig tommelfingerregel er alder pluss én. Et barn som fyller 6 år, kan for eksempel invitere sju barn. Juster etter plass, budsjett og hva barnet ønsker.</dd>
+          <dt>Hvor mye mat trenger jeg per barn?</dt>
+          <dd>Regn 1,5 pølser per barn for 3–4 år, 2 for 5–6 år og 2,5 for 7–9 år, pluss ett kakestykke per barn. Se tabellen over for drikke, frukt og snacks.</dd>
+          <dt>Er Kakeklar gratis?</dt>
+          <dd>Ja. Kakeklar er gratis å bruke.</dd>
+          <dt>Fungerer Kakeklar for barnehagefeiring?</dt>
+          <dd>Ja. Velg barnehage i veiviseren, så fjernes blant annet kake og godteposer fra listen.</dd>
+          <dt>Trenger jeg å logge inn?</dt>
+          <dd>Nei. Kakeklar fungerer uten konto, innlogging eller registrering.</dd>
+        </dl>
+      </section>
+
+      <section class="hi-card" aria-labelledby="hi-guides">
+        <h2 id="hi-guides">Guider til barnebursdag</h2>
+        <ul>
+          <li><a href="/guider/planlegg-barnebursdag-steg-for-steg">Planlegg barnebursdagen steg for steg</a></li>
+          <li><a href="/guider/hvor-mye-mat-til-barnebursdag">Hvor mye mat til barnebursdag? Mengder per barn</a></li>
+          <li><a href="/guider/hvor-mye-drikke-til-barnebursdag">Hvor mye drikke trenger du?</a></li>
+          <li><a href="/guider/hvor-stor-bursdagskake">Hvor stor bursdagskake?</a></li>
+          <li><a href="/guider/budsjett-for-barnebursdag">Budsjett for barnebursdag, med priser fra butikk</a></li>
+          <li><a href="/guider/taco-til-barnebursdag">Taco til barnebursdag</a></li>
+          <li><a href="/guider/barnehagebursdag">Barnebursdag i barnehagen</a></li>
+          <li><a href="/guider/allergier-i-barnebursdag">Allergier i barnebursdag</a></li>
+        </ul>
+        <p><a href="/guider">Alle guider</a> · <a href="/oppskrifter">Oppskrifter: sjokoladekake, bløtkake, muffins og fruktspyd</a></p>
+      </section>
     </div>
     <noscript>Kakeklar trenger JavaScript for å vise den interaktive kalkulatoren.</noscript>
     <script type="module" src="/src/main.tsx"></script>

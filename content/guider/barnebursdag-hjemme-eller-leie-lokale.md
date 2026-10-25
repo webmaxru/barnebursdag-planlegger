@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "planlegging",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "hvor-mange-gjester-i-barnebursdag",
     "budsjett-for-barnebursdag",
@@ -33,12 +33,12 @@
   "sources": []
 }
 ---
-Hjemme er nesten alltid rimeligst og mest fleksibelt, men krever plass og rydding. Et grendehus, velhus eller skolelokale gir mer plass til en rimelig leie, mens lekeland, bowling og svømmehall gir ferdig aktivitet til en høyere pris. Valget avhenger av antall gjester, barnas alder og hvor mye du vil gjøre selv.
+Hjemme er nesten alltid billigst og mest fleksibelt. Prisen du betaler, er plass og rydding. Et grendehus, velhus eller skolelokale gir mer gulv for en rimelig leie, og lekeland, bowling og svømmehall gir ferdig aktivitet til en høyere pris. Hva som passer, avhenger av tre ting: hvor mange som kommer, hvor gamle de er, og hvor mye du orker å gjøre selv.
 
 ## De fire vanligste alternativene
 
 ### Hjemme
-Den klassiske løsningen. Du bestemmer alt selv, kan lage maten på kjøkkenet og trenger ikke bekymre deg for tid eller regler fra en utleier. Ulempen er plassen. Mange gjester i en liten leilighet blir fort trangt og bråkete, og du må rydde både før og etter.
+Den klassiske løsningen. Du bestemmer alt selv, kan lage maten på kjøkkenet og trenger ikke bekymre deg for tid eller regler fra en utleier. Ulempen er plassen – mange gjester i en liten leilighet blir fort trangt og bråkete, og du må rydde både før og etter.
 
 Passer best for: små og mellomstore grupper, de minste barna, og når budsjettet er stramt.
 

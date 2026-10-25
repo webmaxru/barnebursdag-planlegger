@@ -3,13 +3,13 @@
   "title": "Om utvikleren: Maxim Salnikov",
   "description": "Maxim Salnikov er forelder i Oslo og utvikleren bak Kakeklar. Her er hvem han er, hvorfor han laget kalkulatoren og hvordan innholdet lages.",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "section": "sider",
   "slug": "om-utvikleren",
   "lead": "Forelder, utvikler i Oslo og mannen bak kalkulatoren, guidene og oppskriftene på Kakeklar."
 }
 ---
-Maxim Salnikov er forelder, bor i Oslo og er utvikleren som har laget Kakeklar. Han står bak kalkulatoren og har ansvaret for guidene og oppskriftene på nettstedet, og han oppdaterer dem når noe endrer seg – for eksempel pakningsstørrelser, prisnivå eller tilbakemeldinger fra foreldre som har brukt listene.
+Maxim Salnikov er forelder, bor i Oslo og er utvikleren som har laget Kakeklar. Han står bak kalkulatoren og har ansvaret for guidene og oppskriftene på nettstedet, og han oppdaterer dem når noe endrer seg – for eksempel pakningsstørrelser, prisnivå eller feil som blir meldt inn.
 
 <!-- TODO Maxim: legg inn 1–2 setninger med egen erfaring her, for eksempel hvor mange barn du har og hvilke aldre, og hvor mange barnebursdager du har arrangert. Del bare det du er komfortabel med. Kommentaren vises ikke på siden. -->
 
@@ -26,7 +26,7 @@ Maxim har jobbet med webutvikling i mange år og er kjent i det internasjonale u
 ## Slik lages innholdet
 
 - **Mengdene** i kalkulatoren bygger på mengde per barn eller per bord, justert for alder, og rundes opp til hele pakker. Hele metoden står i [Slik beregner Kakeklar mengdene](/guider/slik-beregner-kakeklar).
-- **Guidene og oppskriftene** bygger på erfaring fra norske barnebursdager, informasjon på produsentenes pakninger og vanlige norske pakningsstørrelser. Når en guide bygger på råd fra offentlige etater, for eksempel om allergier, lenker den til kilden.
+- **Guidene og oppskriftene** bygger på informasjon på produsentenes pakninger, vanlige norske pakningsstørrelser og, der det står butikkpriser, priser hentet fra norske nettbutikker med dato. Når en guide bygger på råd fra offentlige etater, for eksempel om allergier, lenker den til kilden.
 - **Datoer:** Hver side viser når den sist ble oppdatert.
 - **Annonser** og eventuelle annonselenker påvirker ikke hvilke mengder eller varer Kakeklar anbefaler. Lenker som kan gi provisjon, merkes alltid «Annonselenke». Les mer på [Om Kakeklar](/om-kakeklar).
 

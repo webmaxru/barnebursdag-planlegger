@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "allergier",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "invitasjon-til-barnebursdag",
     "barnehagebursdag",
@@ -43,7 +43,7 @@
   ]
 }
 ---
-Spør om allergier allerede i invitasjonen, avklar med foreldrene hvor alvorlig det er, og les ingredienslisten på alt du kjøper. På selve festen handler det om å holde den trygge maten adskilt og ha en voksen som passer på. Det viktigste er å ikke gjette: er du i tvil, spør foreldrene.
+Allergier er det ene området i en barnebursdag der jeg aldri ville gjettet. Spør i invitasjonen, avklar med foreldrene hvor alvorlig det er, og les ingredienslisten på alt du kjøper. På selve festen gjelder to ting – hold den trygge maten adskilt, og la én voksen ha ansvaret. Er du i tvil, spør foreldrene.
 
 ## Spør tidlig, og spør konkret
 
@@ -87,10 +87,10 @@ Tips:
 
 ## Smitte på bordet
 
-Mye av risikoen oppstår ikke i maten, men rundt den. Barn deler, søler og tar med hendene. Noen grep som hjelper:
+Mye av risikoen oppstår rundt maten. Barn deler, søler og tar med hendene. Noen grep som hjelper:
 
 - **Server allergivennlig mat først**, eller på et eget fat med egen kakespade.
-- **Bruk egne redskaper** til hver rett. En kniv som har skåret vanlig kake, skal ikke brukes på den glutenfrie.
+- **Bruk egne redskaper** til hver rett – en kniv som har skåret vanlig kake, skal ikke brukes på den glutenfrie.
 - **Varm og kok separat.** Glutenfrie lomper kan varmes før de vanlige, og pølser uten svin i egen kjele.
 - **Vask hender før maten**, både for barna og den voksne som serverer.
 - **La én voksen ha ansvar** for at allergikeren får riktig mat.
@@ -121,13 +121,13 @@ Godteposer er en vanlig kilde til nøtter og gelatin. Velg godteri uten nøtter,
 
 ## Intoleranser, vegetar og religiøse hensyn
 
-Ikke alle hensyn er allergier. Noen barn tåler ikke laktose, noen familier er vegetarianere, og noen spiser ikke svinekjøtt av religiøse grunner. Behandle det på samme måte: spør hva som gjelder, og ha et alternativ klart. Ved laktoseintoleranse holder det ofte med laktosefrie varianter, mens melkeallergi krever helt melkefri mat. Spør foreldrene hvis du er usikker på forskjellen for akkurat deres barn.
+Ikke alle hensyn er allergier. Noen barn tåler ikke laktose, noen familier er vegetarianere, og noen spiser ikke svinekjøtt av religiøse grunner. Behandle det på samme måte – spør hva som gjelder, og ha et alternativ klart. Ved laktoseintoleranse holder det ofte med laktosefrie varianter, mens melkeallergi krever helt melkefri mat. Spør foreldrene hvis du er usikker på forskjellen for akkurat deres barn.
 
 Et vegetaralternativ kan være vegetarpølser eller en minipizza uten kjøtt. Kjøtt uten svin finnes som kyllingpølser, men sjekk om familien også ønsker halal-merking. Feirer dere i barnehagen, har de ansatte oversikt, se [guiden om barnehagebursdag](/guider/barnehagebursdag).
 
 ## Hva du sier til barnet
 
-Barn med allergi er vant til å være forsiktige. Det hjelper likevel å si det enkelt: «Denne kaken er laget til deg, den er uten melk.» Unngå å gjøre et stort nummer ut av det foran de andre. Barnet skal føle seg inkludert, ikke annerledes.
+Barn med allergi er vant til å være forsiktige. Det hjelper likevel å si det enkelt: «Denne kaken er laget til deg, den er uten melk.» Unngå å gjøre et stort nummer ut av det foran de andre. Barnet skal føle seg inkludert.
 
 ## Hva du ikke bør love
 

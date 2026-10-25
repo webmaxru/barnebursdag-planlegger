@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "planlegging",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "planlegg-barnebursdag-steg-for-steg",
     "hvor-mange-gjester-i-barnebursdag",
@@ -33,13 +33,13 @@
   "sources": []
 }
 ---
-Send invitasjonen to til tre uker før bursdagen, og sørg for at den svarer på alt foreldrene lurer på: dato, tid, sted, henting, svarfrist, telefonnummer og et spørsmål om allergier. Under finner du en sjekkliste og tre ferdige tekster du kan kopiere og tilpasse.
+Send invitasjonen to–tre uker før. Den skal svare på alt foreldrene lurer på – dato, tid, sted, henting, svarfrist, et telefonnummer og et spørsmål om allergier. Under har jeg samlet en sjekkliste og tre ferdige tekster du kan kopiere og tilpasse.
 
 ## Når bør invitasjonen sendes?
 
 To til tre uker før er et godt utgangspunkt. Sender du for tidlig, glemmer folk datoen. Sender du for sent, har mange allerede planer. I perioder med mange arrangementer, som før jul eller sommerferien, kan du gjerne sende tre uker før.
 
-Sett svarfristen omtrent en uke før festen. Da har du tid til å handle riktig mengde og eventuelt purre.
+Sett svarfristen omtrent en uke før festen. Da har du tid til å handle riktig mengde og eventuelt purre. Resten av tidslinjen står i [planen uke for uke](/guider/planlegg-barnebursdag-steg-for-steg).
 
 ## Hva skal stå i invitasjonen?
 
@@ -58,11 +58,11 @@ Sluttidspunktet er viktigere enn mange tror. Foreldre trenger å vite når de sk
 
 ## Digital eller papir?
 
-Begge deler fungerer. En melding på telefon eller i foreldregruppen er rask, og det er lett å svare. Mange barnehager og skoler har også egne apper og meldingssystemer, men sjekk hvilke regler de har for private invitasjoner.
+Begge deler fungerer – en melding på telefon eller i foreldregruppen er rask, og det er lett å svare. Mange barnehager og skoler har også egne apper og meldingssystemer, men sjekk hvilke regler de har for private invitasjoner.
 
 Papirinvitasjoner er koselige, og barnet kan gjerne være med og tegne eller fargelegge dem. Gi dem direkte til foreldrene eller legg dem i postkassen. Skriv svarfrist og telefonnummer tydelig, så det er like lett å svare som på en melding.
 
-Uansett form: skriv i en tone som passer deg. Det trenger ikke være formelt.
+Uansett form – skriv i en tone som passer deg. Det trenger ikke være formelt.
 
 ## «Hele klassen» – hvordan gjør man det?
 
@@ -92,7 +92,7 @@ Det siste punktet er viktig for aktivitetslokaler: mange krever at du oppgir ant
 
 ## Svar og påminnelser
 
-Ikke alle svarer innen fristen. Det er helt vanlig, og som regel skyldes det travelhet, ikke uvilje. Send en kort, vennlig melding direkte til dem det gjelder et par dager etter fristen, for eksempel:
+Ikke alle svarer innen fristen. Det er helt vanlig, og som regel skyldes det bare travelhet. Send en kort, vennlig melding direkte til dem det gjelder et par dager etter fristen, for eksempel:
 
 > Hei! Bare en påminnelse om bursdagen til Jonas fredag kl. 16.30. Kommer Mia? Fint med svar innen onsdag, så vi vet hvor mye mat vi skal kjøpe.
 

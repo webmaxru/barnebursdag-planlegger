@@ -6,7 +6,7 @@
   "section": "oppskrifter",
   "category": "barnehage",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "image": {
     "src": "/img/oppskrifter/fruktspyd-og-sunn-bursdagsmat.svg",
     "png": "/img/oppskrifter/fruktspyd-og-sunn-bursdagsmat.png",
@@ -88,7 +88,7 @@
   }
 }
 ---
-Fruktspyd er den enkleste måten å få barn til å spise frukt i bursdag: Det ser festlig ut, det er lett å holde, og alle får sin egen porsjon. Regn ett spyd med 5–6 biter per barn. Oppskriften gir 10 spyd og passer like godt hjemme som i barnehagen.
+Fruktspyd er en enkel måte å få barn til å spise frukt i bursdag. Det ser festlig ut, det er lett å holde, og alle får sin egen porsjon. Regn ett spyd med 5–6 biter per barn. Oppskriften gir 10 spyd og passer like godt hjemme som i barnehagen.
 
 {{recipe}}
 
@@ -145,14 +145,14 @@ Grønnsakene forsvinner ofte raskere enn du tror når de står fremme mens barna
 
 ## Slik får du barn til å spise frukten
 
-- Lag mønstre og farger. Et regnbuespyd med jordbær, appelsin, banan, kiwi og blåbær ser mer spennende ut enn tilfeldige biter.
+- Lag mønstre og farger – et regnbuespyd med jordbær, appelsin, banan, kiwi og blåbær ser mer spennende ut enn tilfeldige biter.
 - Stikk spydene i en halv melon eller en kålrot, så blir det et «tre» midt på bordet.
 - Server frukten tidlig, mens barna er sultne, og ikke rett etter kaken.
 - La barna lage sine egne spyd. Det er en fin aktivitet for 5–9-åringer, med tilsyn.
 
 ## Forberedelser og oppbevaring
 
-Det meste kan forberedes. Melon, druer og jordbær kan skjæres kvelden før og stå i en tett boks i kjøleskapet. Eple og banan blir brune, så dem skjærer du rett før servering og vender i litt sitronsaft. Spydene bør settes sammen samme dag, helst et par timer før festen, og stå kaldt.
+Det meste kan forberedes. Melon, druer og jordbær kan skjæres kvelden før og stå i en tett boks i kjøleskapet. Eple og banan blir brune, så dem skjærer du rett før servering og vender i litt sitronsaft. Spydene bør settes sammen samme dag (helst et par timer før festen) og stå kaldt.
 
 Skal du ta spydene med til barnehagen, legg dem i en flat boks med lokk og et tørkepapir i bunnen. Spør barnehagen om de har kjøleskapsplass.
 

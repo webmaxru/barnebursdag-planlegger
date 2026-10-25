@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "aktiviteter",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "leker-til-barnebursdag-3-5-ar",
     "utebursdag-og-grillfest",
@@ -33,7 +33,7 @@
   "sources": []
 }
 ---
-Barn på 6–9 år liker leker med litt utfordring, lag og en tydelig vinner, men festen blir best når alle får være med hele veien. Skattejakt med gåter, quiz, pinata, limbo og stafetter fungerer nesten alltid. Planlegg fire til seks leker for en fest på tre timer, og ha en innevariant klar hvis været svikter.
+Barn på 6–9 år vil ha litt utfordring, lag og en tydelig vinner. Festen blir likevel best når alle får være med hele veien. Skattejakt med gåter, quiz, pinata, limbo og stafetter er trygge valg. For en fest på tre timer holder fire til seks leker, og ha en innevariant klar i tilfelle været svikter.
 
 ## Hva som fungerer i denne alderen
 
@@ -55,7 +55,7 @@ Heng opp en pinata i et tre eller en dørkarm med god plass rundt. Barna slår e
 Varighet: 10–15 minutter. Du trenger: pinata, godteri eller småting, pinne.
 
 ### 3. Quiz
-Lag 10–15 spørsmål om bursdagsbarnet, dyr, tegnefilmer eller sport. Barna svarer i lag. En quiz er rolig og passer fint rett før eller etter maten.
+Lag 10–15 spørsmål om bursdagsbarnet, dyr, tegnefilmer eller sport. Barna svarer i lag – en quiz er rolig og passer fint rett før eller etter maten.
 Varighet: 15 minutter. Du trenger: spørsmål, penn og papir.
 
 ### 4. Limbo
@@ -71,7 +71,7 @@ Del barna i to lag. Én fra hvert lag får et ord hvisket i øret og skal tegne 
 Varighet: 15 minutter. Du trenger: store ark eller tavle, tusjer, lapper med ord.
 
 ### 7. Kapteinsball
-Et klassisk lagspill ute: hvert lag har en kaptein på en kasse eller i et område bak motstanderne, og laget får poeng når kapteinen tar imot ballen. Enkle regler fungerer best.
+Et klassisk lagspill ute – hvert lag har en kaptein på en kasse eller i et område bak motstanderne, og laget får poeng når kapteinen tar imot ballen. Enkle regler fungerer best.
 Varighet: 15–20 minutter. Du trenger: myk ball, merker til banen.
 
 ### 8. Stiv heks eller sisten
@@ -107,7 +107,7 @@ Varighet: 10 minutter. Du trenger: et brett, småting, et håndkle.
 | 2:30–2:50 | Kake og bursdagssang |
 | 2:50–3:00 | Pinata, godteposer, henting |
 
-Pinata til slutt er praktisk: godteriet går rett i posene, og barna har noe å se fram til.
+Pinata til slutt er praktisk – godteriet går rett i posene, og barna har noe å se fram til.
 
 ## Tips for den voksne som styrer
 

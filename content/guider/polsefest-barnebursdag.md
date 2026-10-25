@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "mengder",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "hvor-mye-mat-til-barnebursdag",
     "pizza-til-barnebursdag",
@@ -34,7 +34,7 @@
   "sources": []
 }
 ---
-Pølser i lompe er den klassiske barnebursdagsmaten i Norge, og med god grunn: billig, enkelt og noe nesten alle barn spiser. Regn 1,5 pølser per barn for 3–4-åringer, 2 for 5–6-åringer og 2,5 for 7–9-åringer, og like mange lomper eller pølsebrød pluss 15 prosent ekstra. Én flaske ketchup og én tube sennep holder til de fleste bursdager.
+Pølser i lompe er den klassiske barnebursdagsmaten i Norge. Det er billig og enkelt, og de fleste barn spiser det. Regn 1,5 pølser per barn for 3–4-åringer, 2 for 5–6-åringer og 2,5 for 7–9-åringer. Kjøp like mange lomper eller pølsebrød, pluss 15 prosent ekstra. Én flaske ketchup og én tube sennep holder til de fleste bursdager.
 
 ## Mengder per barn
 

@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "aktiviteter",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "leker-til-barnebursdag-6-9-ar",
     "planlegg-barnebursdag-steg-for-steg",
@@ -33,11 +33,11 @@
   "sources": []
 }
 ---
-For 3–5-åringer fungerer korte, enkle leker der alle får være med hele tiden: stopp-dans, såpebobler, fiskedam, skattejakt med bilder og ballongjakt. Planlegg fire til seks leker på fem til femten minutter hver, ha en rolig aktivitet før kaken, og la være å bruke smådeler som kan svelges.
+For 3–5-åringer fungerer enkle leker der alle får være med hele tiden: stopp-dans, såpebobler, fiskedam, skattejakt med bilder og ballongjakt. Jeg ville planlagt fire til seks leker på fem til femten minutter hver. Legg inn en rolig aktivitet før kaken, og la leker med smådeler som kan svelges, ligge.
 
 ## Slik tenker du om lek for de minste
 
-Små barn leker ofte side om side mer enn sammen, og de mister fort konsentrasjonen. Det gjør ingenting. Noen tips:
+Små barn leker ofte side om side mer enn sammen, og de mister fort konsentrasjonen. Det gjør ingenting – noen tips:
 
 - **Korte leker.** Fem til ti minutter er ofte nok.
 - **Ingen som går ut.** Gjør om leker slik at ingen må sitte og se på.

@@ -228,7 +228,7 @@ export function hubPages(pages) {
     },
     {
       path: '/oppskrifter', slug: 'oppskrifter', section: 'hub', title: 'Oppskrifter til barnebursdag',
-      description: 'Enkle, gjennomprøvde oppskrifter på bursdagskake, bløtkake, muffins og sunn bursdagsmat – med mengder som passer antall barn.',
+      description: 'Enkle oppskrifter på bursdagskake, bløtkake, muffins og sunn bursdagsmat – med mengder som passer antall barn.',
       eyebrow: 'Kakeklar · oppskrifter', date: '2026-10-17', updated: latest(recipes),
       lead: 'Kaker og mat som fungerer i barnebursdag: enkle å lage, lette å dele opp, og med tips til allergivennlige varianter.',
       html: oppskrifterBody, words: 0, items: recipes

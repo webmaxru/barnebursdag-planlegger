@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "mengder",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "hvor-mye-mat-til-barnebursdag",
     "barnehagebursdag",
@@ -33,7 +33,7 @@
   "sources": []
 }
 ---
-Regn med rundt 4 dl ferdig drikke per barn for 3–4-åringer, 5 dl for 5–6-åringer og 6 dl for 7–9-åringer, for en bursdag på cirka to timer. Det tilsvarer omtrent 2–3 dl i timen, eller to–tre kopper per barn. Ha i tillegg alltid vann tilgjengelig, og for de eldste kan én boks brus per barn være en fin ekstra.
+Regn rundt 4 dl ferdig drikke per barn for 3–4-åringer, 5 dl for 5–6-åringer og 6 dl for 7–9-åringer. Det er tallene kalkulatoren bruker, og de gjelder en bursdag på cirka to timer. Det blir omtrent 2–3 dl i timen, eller to–tre kopper per barn. Sett alltid frem vann i tillegg. For de eldste kan én boks brus per barn være en fin ekstra.
 
 ## Drikke per barn, fordelt på alder
 
@@ -56,7 +56,7 @@ Et grovt anslag er 2 dl i timen for de minste og 3 dl i timen for de eldste. Var
 
 ## Saftkonsentrat: hvor mange flasker?
 
-Kalkulatoren regner forsiktig med at én flaske konsentrat på 0,5 liter gir rundt 3 liter ferdig saft. Mange husholdningssafter skal blandes tynnere, for eksempel 1 del saft til 7 deler vann, og da rekker flasken lenger. Blandingsforholdet varierer mellom merker og typer, så sjekk flasken.
+Kalkulatoren regner forsiktig med at én flaske konsentrat på 0,5 liter gir rundt 3 liter ferdig saft. Mange husholdningssafter skal blandes tynnere (for eksempel 1 del saft til 7 deler vann), og da rekker flasken lenger. Blandingsforholdet varierer mellom merker og typer, så sjekk flasken.
 
 Regneeksempler med kalkulatorens tall:
 
@@ -68,7 +68,7 @@ Et tips: Bland saften litt svakere enn du ville gjort til deg selv. Barn drikker
 
 ## Kjøpe ferdig drikke i 1,5-literflasker
 
-Vil du slippe å blande, kan du kjøpe ferdig drikke eller brus i 1,5-literflasker. Da regner du slik: totalt antall desiliter delt på 15, og runder opp.
+Vil du slippe å blande, kan du kjøpe ferdig drikke eller brus i 1,5-literflasker. Da regner du slik – totalt antall desiliter delt på 15, og runder opp.
 
 | Antall barn | 5–6 år (5 dl) | 7–9 år (6 dl) |
 |---|---|---|

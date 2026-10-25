@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "barnehage",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "allergier-i-barnebursdag",
     "hvor-mye-mat-til-barnebursdag",
@@ -38,7 +38,7 @@
   ]
 }
 ---
-Det viktigste med en bursdag i barnehagen er å spørre barnehagen først. Mange barnehager har egne regler for hva som kan serveres, og noen ønsker frukt fremfor kake. Når du vet rammene, er det enkelt: ta med et fruktfat eller noe annet barnehagen godtar, regn 120–130 gram frukt per barn, og la de ansatte styre selve markeringen.
+Spør barnehagen før du kjøper noe. Det er det viktigste rådet jeg har her. Mange barnehager har egne regler for hva som kan serveres, og noen vil heller ha frukt enn kake (Helsedirektoratet anbefaler det samme, se lenger ned). Når du kjenner rammene, er resten enkelt – ta med et fruktfat eller noe annet barnehagen godtar, regn 120–130 gram frukt per barn, og la de ansatte styre selve markeringen.
 
 ## Start med å spørre barnehagen
 
@@ -52,6 +52,12 @@ Hver barnehage gjør det litt forskjellig. Før du handler noe, er det lurt å s
 - Er godteposer eller gaver til de andre barna greit? Mange barnehager ønsker det ikke.
 
 Helsedirektoratets nasjonale retningslinje for mat og måltider i barnehagen anbefaler at barnehagen fastsetter rammer for mat og måltider, også for feiring av bursdager. Retningslinjen sier at de fleste feiringer og markeringer bør gjennomføres uten servering av søt og fet mat og søt drikke, og oppfordrer barnehagen til å finne alternativer. Det er altså ikke uvanlig at barnehagen sier nei til kake, og det er ikke rettet mot deg.
+
+Retningslinjen sier også dette:
+
+> Feiringen i barnehagen behøver ikke omfatte spesiell mat og drikke. Aktiviteter og opplevelser kan være vel så spennende for barna.
+
+Jeg synes det er et godt utgangspunkt for praten med de ansatte. Spør hva barna pleier å gjøre på bursdager, og om dere kan bidra med en aktivitet, en sang eller en bok i stedet for mat.
 
 ## Hva kan du ta med?
 
@@ -83,7 +89,7 @@ Tar du med muffins eller kake, regn én muffins eller ett stykke per barn, og no
 
 ## Slik gjør du det praktisk
 
-Barnehagebursdag handler mye om logistikk. Noen tips:
+Barnehagebursdag handler mye om logistikk – noen tips:
 
 - **Kutt frukten hjemme**, morgenen samme dag eller kvelden før. Epler og bananer blir brune, så de kan kuttes i barnehagen eller dryppes med litt sitron.
 - **Bruk bokser med lokk** som er enkle å bære og stable. Merk dem med barnets navn.
@@ -96,7 +102,7 @@ Det kan være koselig for bursdagsbarnet å få bære inn fatet selv, eller vær
 
 ## Det barnet husker best
 
-For de fleste barnehagebarn er det ikke maten som er høydepunktet, men å være i sentrum. Bursdagskrone, sang, et flagg på bordet og å få velge en lek eller en sang betyr ofte mer enn hva som står på fatet. Mange barnehager lar bursdagsbarnet sitte på en egen stol, telle årene sine med fingrene eller blåse ut et lys sammen med de voksne.
+For de fleste barnehagebarn er høydepunktet å være i sentrum. Bursdagskrone, sang, et flagg på bordet og å få velge en lek eller en sang betyr ofte mer enn hva som står på fatet. Mange barnehager lar bursdagsbarnet sitte på en egen stol, telle årene sine med fingrene eller blåse ut et lys sammen med de voksne.
 
 Vil du bidra med noe ekstra, kan du spørre om barnet kan ta med en favorittbok som de voksne leser høyt, eller et bilde fra da barnet var lite som kan vises i samlingsstunden. Det koster ingenting, og barnet blir stolt.
 
@@ -114,4 +120,4 @@ I [Kakeklar-kalkulatoren](/) kan du velge barnehage i stedet for hjemme. Da tas 
 
 ## Når barnet også skal ha fest hjemme
 
-Mange gjør begge deler: en enkel markering i barnehagen og en fest hjemme med noen venner. Da kan barnehagen få frukt og sang, mens kaken og godteposene hører til hjemmefesten. Det gjør det også lettere å unngå at noen føler seg utenfor, siden hele gruppen får være med på markeringen i barnehagen.
+Mange gjør begge deler – en enkel markering i barnehagen og en fest hjemme med noen venner. Da kan barnehagen få frukt og sang, mens kaken og godteposene hører til hjemmefesten. Det gjør det også lettere å unngå at noen føler seg utenfor, siden hele gruppen får være med på markeringen i barnehagen.

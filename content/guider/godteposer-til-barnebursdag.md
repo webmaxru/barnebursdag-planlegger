@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "planlegging",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "allergier-i-barnebursdag",
     "budsjett-for-barnebursdag",
@@ -34,7 +34,7 @@
   "sources": []
 }
 ---
-Én godtepose per barn er standard, og et passe innhold er rundt 50 g godteri for 3–4-åringer, 100 g for 5–6-åringer og 125 g for 7–9-åringer. For de minste bør posen være uten harde drops, hele nøtter og annet som er lett å sette i halsen. Mange foreldre legger også i en liten ting som ikke er godteri, som et viskelær eller en ballong.
+Én godtepose per barn er standard. Jeg regner rundt 50 g godteri for 3–4-åringer, 100 g for 5–6-åringer og 125 g for 7–9-åringer, og det er de mengdene kalkulatoren bruker. For de minste bør posen være uten harde drops, hele nøtter og annet som er lett å sette i halsen. En liten ting som ikke er godteri (et viskelær eller en ballong) gjør posen fin uten mer sukker.
 
 ## Godteri per pose, fordelt på alder
 
@@ -109,6 +109,6 @@ Et grovt overslag for 10 barn på 6 år: 1 kg smågodt, 2 pakker poser og eventu
 
 ## Når deles godteposene ut?
 
-De fleste deler ut posene når barna går hjem, ikke under festen. Da slipper du at godteriet blandes med maten, og foreldrene kan bestemme når det spises. Er det fiskedam eller skattejakt, kan posen være premien til alle. Ideer til leker finner du i [guiden om leker for 3–5-åringer](/guider/leker-til-barnebursdag-3-5-ar).
+Posene deles gjerne ut når barna går hjem. Da slipper du at godteriet blandes med maten, og foreldrene kan bestemme når det spises. Er det fiskedam eller skattejakt, kan posen være premien til alle. Ideer til leker finner du i [guiden om leker for 3–5-åringer](/guider/leker-til-barnebursdag-3-5-ar).
 
 I barnehagen er godteposer som regel ikke aktuelt. Kalkulatoren tar dem ut av listen når du velger barnehagemodus.

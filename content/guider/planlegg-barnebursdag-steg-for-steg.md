@@ -6,7 +6,7 @@
   "section": "guider",
   "category": "planlegging",
   "date": "2026-10-17",
-  "updated": "2026-10-17",
+  "updated": "2026-10-25",
   "related": [
     "invitasjon-til-barnebursdag",
     "hvor-mye-mat-til-barnebursdag",
@@ -34,7 +34,7 @@
   "sources": []
 }
 ---
-Den enkleste måten å planlegge en barnebursdag på er å dele jobben i små biter: bestem dato og gjester fire uker før, send invitasjonen to–tre uker før, handle tørrvarer uken før og ferskvarer dagen før. Da blir selve dagen mest pynting, lek og kake. Her får du en plan uke for uke, en sjekklistetabell og tips om hvem som kan gjøre hva.
+Del jobben i små biter, så blir den overkommelig. Bestem dato og gjester fire uker før, send invitasjonen to–tre uker før, kjøp tørrvarer uken før og ferskvarer dagen før. Da er selve dagen mest pynting, lek og kake. Her får du planen uke for uke, en sjekkliste og forslag til hvem som kan gjøre hva.
 
 ## Fire uker før: de store valgene
 
@@ -51,14 +51,14 @@ Det kan også være lurt å spørre bursdagsbarnet hva hun eller han ønsker seg
 
 ## To–tre uker før: invitasjon og allergier
 
-Nå sender du invitasjonen. To til tre uker gir foreldre tid til å planlegge, uten at datoen blir glemt. Sørg for at invitasjonen har dato, start- og sluttid, adresse, svarfrist og et telefonnummer, og at den spør om allergier. Du finner ferdige tekster i [guiden om invitasjon til barnebursdag](/guider/invitasjon-til-barnebursdag).
+Nå sender du invitasjonen – to til tre uker gir foreldre tid til å planlegge, uten at datoen blir glemt. Sørg for at invitasjonen har dato, start- og sluttid, adresse, svarfrist og et telefonnummer, og at den spør om allergier. Du finner ferdige tekster i [guiden om invitasjon til barnebursdag](/guider/invitasjon-til-barnebursdag).
 
 Spør tidlig om allergier og andre hensyn, som melk, gluten, nøtter, egg eller at noen ikke spiser svinekjøtt. Da rekker du å finne gode alternativer i stedet for å improvisere i siste liten.
 
 I samme periode kan du:
 
 - bestemme hovedretten (pølser i lompe, pizza eller noe annet)
-- velge kake: bake selv eller kjøpe
+- velge kake – bake selv eller kjøpe
 - planlegge lekene grovt
 - bestille kake hos baker hvis du skal kjøpe en spesialkake
 
