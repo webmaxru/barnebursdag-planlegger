@@ -31,7 +31,8 @@
     "postbuild": "node scripts/prerender.mjs && npm run index:agents"
   },
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "posthog-js": "^1.438.12"
   },
   "devDependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.2.10",

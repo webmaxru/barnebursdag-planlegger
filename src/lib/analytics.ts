@@ -1,5 +1,6 @@
 import type { ApplicationInsights, IEventTelemetry } from '@microsoft/applicationinsights-web';
 import { BUILD_CONFIG } from './buildConfig';
+import posthog, { isPostHogEnabled } from './posthog';
 
 /**
  * Privacy-first (cookieless) Azure Application Insights wrapper.
@@ -19,6 +20,57 @@ let ready = false;
 const queue: IEventTelemetry[] = [];
 
 type Props = Record<string, string | number | boolean | undefined | null>;
+
+const POSTHOG_EVENTS = new Set([
+  'plan_shared',
+  'plan_printed',
+  'config_opened',
+  'wizard_step',
+  'wizard_completed',
+  'wizard_skipped',
+  'party_type_changed',
+  'plan_exported',
+  'affiliate_click',
+  'meny_cart_started',
+  'meny_cart_created',
+  'meny_cart_shared',
+  'meny_cart_opened',
+  'agent_prompt_opened',
+  'agent_prompt_copied',
+  'pwa_installed'
+]);
+
+function posthogProperties(name: string, properties?: Props): Props | undefined {
+  if (!POSTHOG_EVENTS.has(name)) return undefined;
+
+  switch (name) {
+    case 'plan_shared':
+      return { method: properties?.method, guests: properties?.guests, age: properties?.age };
+    case 'plan_printed':
+      return { guests: properties?.guests, age: properties?.age };
+    case 'plan_exported':
+      return { format: properties?.format, guests: properties?.guests, age: properties?.age };
+    case 'meny_cart_started':
+    case 'agent_prompt_opened':
+      return { items: properties?.items, guests: properties?.guests, age: properties?.age };
+    case 'wizard_step':
+      return { step: properties?.step };
+    case 'party_type_changed':
+      return { type: properties?.type };
+    case 'affiliate_click':
+      return { category: properties?.category, merchant: properties?.merchant };
+    case 'meny_cart_created':
+      return { matched: properties?.matched, unmatched: properties?.unmatched };
+    case 'meny_cart_shared':
+      return { method: properties?.method };
+    case 'meny_cart_opened':
+      return { matched: properties?.matched };
+    case 'agent_prompt_copied':
+      return { method: properties?.method, items: properties?.items };
+    default:
+      return undefined;
+  }
+}
 
 function splitProps(properties?: Props) {
   const props: Record<string, string> = {};
@@ -77,6 +129,11 @@ export async function initAnalytics(): Promise<void> {
 
 /** Track a custom engagement event. No-ops (or buffers briefly) until init resolves. */
 export function track(name: string, properties?: Props): void {
+  const posthogEventProperties = posthogProperties(name, properties);
+  if (isPostHogEnabled && POSTHOG_EVENTS.has(name)) {
+    posthog.capture(name, posthogEventProperties);
+  }
+
   const { props, measurements } = splitProps(properties);
   const ev: IEventTelemetry = { name, properties: props, measurements };
   if (ai) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
+import './lib/posthog';
 import { initAnalytics, track } from './lib/analytics';
 import '@fontsource-variable/bricolage-grotesque/wght.css';
 import '@fontsource-variable/hanken-grotesk/wght.css';

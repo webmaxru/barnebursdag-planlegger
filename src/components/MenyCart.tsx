@@ -3,6 +3,7 @@ import type { PlanResult } from '../lib/engine';
 import type { PartyConfig } from '../lib/types';
 import { createMenyCart, planToMenyItems, type MenyCartResult } from '../lib/meny';
 import { track } from '../lib/analytics';
+import { posthogLogger } from '../lib/posthog';
 
 type Phase = 'idle' | 'loading' | 'done' | 'error';
 
@@ -47,11 +48,17 @@ export default function MenyCart({
       setResult(r);
       setPhase('done');
       track('meny_cart_created', { matched: r.matched.length, unmatched: r.unmatched.length });
+      posthogLogger.info('meny cart creation completed', {
+        matched_count: r.matched.length,
+        unmatched_count: r.unmatched.length,
+        partial: r.partial
+      });
     } catch (e) {
       const reason = (e instanceof Error ? e.message : 'unknown').slice(0, 100);
       setError(e instanceof Error ? e.message : 'Noe gikk galt.');
       setPhase('error');
       track('meny_cart_error', { reason });
+      posthogLogger.error('meny cart creation failed', { failure_kind: 'request_failed' });
     }
   };
 

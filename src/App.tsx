@@ -12,6 +12,7 @@ import { krRange } from './lib/format';
 import { loadCatalog, saveCatalog, parseConfig, writeConfig, shareUrl } from './lib/store';
 import type { GoodItem, PartyConfig } from './lib/types';
 import { track } from './lib/analytics';
+import { posthogLogger } from './lib/posthog';
 import { isMenyEnabled } from './lib/meny';
 import { useWebMcpTools } from './lib/webmcp';
 import ContentPage, { isContentPath } from './components/ContentPage';
@@ -83,6 +84,7 @@ export default function App() {
       setManualLink('');
       showToast('Lenke kopiert ✓');
       track('plan_shared', { method: 'clipboard', guests: cfg.guests, age: cfg.age });
+      posthogLogger.info('plan share completed', { method: 'clipboard' });
     } catch {
       setManualLink(url);
     }
@@ -100,6 +102,7 @@ export default function App() {
       try {
         await navigator.share(data);
         track('plan_shared', { method: 'webshare', guests: cfg.guests, age: cfg.age });
+        posthogLogger.info('plan share completed', { method: 'webshare' });
         return;
       } catch (e) {
         if (e instanceof DOMException && e.name === 'AbortError') return; // user closed the share sheet
