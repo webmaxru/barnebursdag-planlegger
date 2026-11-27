@@ -6,7 +6,7 @@ All editorial pages live as Markdown in `content/`:
 |---|---|---|
 | `content/guider/<slug>.md` | `/guider/<slug>` | Guides (Article JSON-LD) |
 | `content/oppskrifter/<slug>.md` | `/oppskrifter/<slug>` | Recipes (Recipe JSON-LD) |
-| `content/sider/<slug>.md` | `/<slug>` | Trust pages: om-kakeklar, kontakt, personvern, vilkar |
+| `content/sider/<slug>.md` | `/<slug>` | Trust pages: om-kakeklar, nytt, kontakt, personvern, vilkar |
 
 The hubs `/guider` and `/oppskrifter` are generated from the lists.
 

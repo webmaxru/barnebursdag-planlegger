@@ -18,7 +18,7 @@ type Page = {
 // Content pages (guides, recipes, trust pages) live in content/**/*.md. In production every page is
 // prerendered to its own static HTML by scripts/prerender.mjs; this component is the dev-server and
 // fallback renderer, reading the same generated public/content.json (scripts/build-content.mjs).
-const CONTENT_PREFIXES = ['/guider', '/oppskrifter', '/om-kakeklar', '/om-utvikleren', '/personvern', '/vilkar', '/kontakt'];
+const CONTENT_PREFIXES = ['/guider', '/oppskrifter', '/om-kakeklar', '/nytt', '/om-utvikleren', '/personvern', '/vilkar', '/kontakt'];
 
 export function isContentPath(path: string) {
   return CONTENT_PREFIXES.some((p) => path === p || path.startsWith(p + '/'));

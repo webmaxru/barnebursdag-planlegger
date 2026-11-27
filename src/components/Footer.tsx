@@ -4,6 +4,7 @@ export default function Footer() {
       <p>Kakeklar er gratis · ingen innlogging · for norske foreldre. Mengdene er anbefalinger – juster fritt.</p>
       <nav className="foot-nav" aria-label="Informasjon">
         <a href="/om-kakeklar">Om Kakeklar</a>
+        <a href="/nytt">Nytt</a>
         <a href="/om-utvikleren">Om utvikleren</a>
         <a href="/guider">Guider</a>
         <a href="/oppskrifter">Oppskrifter</a>

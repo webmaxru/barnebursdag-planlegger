@@ -38,12 +38,4 @@ Fant du en feil i en mengde, savner du en vare, eller har du en oppskrift som fo
 
 ## Slik holdes Kakeklar oppdatert
 
-Kakeklar har vært på nett siden juni 2026, og hele historikken ligger åpent på GitHub. Dette er de største endringene så langt:
-
-- **21. juni 2026:** Kalkulatoren lanseres, med glidere for gjester og alder, valg av mat og allergier, og en handleliste rundet opp til hele pakker.
-- **22. juni 2026:** Varelisten kontrolleres mot vanlige varer i norske butikker via Kassal.app.
-- **8. juli 2026:** Veiviseren får et eget valg for feiring hjemme eller i barnehagen.
-- **16.–17. oktober 2026:** 18 guider og 4 oppskrifter kommer på plass, med egne illustrasjoner til oppskriftene og nye sider om personvern og vilkår.
-- **25. oktober 2026:** Alle guider og oppskrifter er gått gjennom på nytt. Budsjettguiden har fått ordinære priser fra Oda, og forsiden forklarer mengdene per alder. Kalkulatoren regner nå med de samme Oda-prisene, og handlelisten viser kilde og dato for prisene.
-
-Hver guide viser når den sist ble endret. Datoen flyttes bare når innholdet faktisk er endret.
+De største endringene, med dato, står på [Nytt på Kakeklar](/nytt). Hver guide viser når den sist ble endret. Datoen flyttes bare når innholdet faktisk er endret.
